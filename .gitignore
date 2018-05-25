@@ -35,3 +35,11 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+ArduiBike/*
+!ArduiBike/*.cpp
+!ArduiBike/*.h
+!ArduiBike/*.hpp
+!ArduiBike/*.ino
+
+
