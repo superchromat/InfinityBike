@@ -989,10 +989,9 @@ MonoBehaviour:
   keyboardSpeed: 1000
   keyboardAngle: 512
   keyboardMultiplier: 100
-  comPort: 5
+  comPort: Code will select manually.
   baudRate: 9600
-  updateFrequency: 0
-  arduinoReadTimeout: 10
+  arduinoReadTimeout: 50
   values:
     rotation: 0
     speed: 0
@@ -1921,12 +1920,12 @@ Prefab:
     - target: {fileID: 146831153768986240, guid: a832bc973ea17a04e9dc0aa4f4b6d20a,
         type: 2}
       propertyPath: m_SuspensionDistance
-      value: 0.041765146
+      value: 0.07051913
       objectReference: {fileID: 0}
     - target: {fileID: 146581547871782794, guid: a832bc973ea17a04e9dc0aa4f4b6d20a,
         type: 2}
       propertyPath: m_SuspensionDistance
-      value: 0.041765146
+      value: 0.07051913
       objectReference: {fileID: 0}
     - target: {fileID: 1113714082753182, guid: a832bc973ea17a04e9dc0aa4f4b6d20a, type: 2}
       propertyPath: m_IsActive

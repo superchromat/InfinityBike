@@ -67,12 +67,15 @@ void allHandler()
 
 void StartCommunication()
 {	
-	Serial.println("READY");
+	Serial.end();
 	digitalWrite(LED_BUILTIN, HIGH);
+
+	Serial.begin(9600);
+	Serial.println("READY");
 }	
+
 void StopCommunication()
 {
-
 	Serial.println("DONE");
 	digitalWrite(LED_BUILTIN, LOW);
 }

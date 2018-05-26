@@ -12,104 +12,69 @@ public class ArduinoThread : MonoBehaviour
     public bool useArduinoPort = true;
     public float keyboardSpeed = 100 ;
     public float keyboardAngle = 550;
-    public float keyboardMultiplier = 100; 
-
+    public float keyboardMultiplier = 100;
 
 	// Use this for initialization
-	public enum COM{ COM1 = 1,COM2 = 2,COM3 = 3,COM4 = 4,COM5 = 5 , COM6 = 6 , COM7 = 7,COM8 = 8, COM9 = 9,COM10 = 10,COM11 = 11, COM12 = 12, COM13 = 13, COM14 = 14, COM15 = 15, macPort = 16} ;
-	public COM comPort;
-
+	public string comPort = "Code will select manually.";
 	public enum BaudRate{ _9600 = 9600,_14400= 14400} ;
-	public BaudRate baudRate;
+	public BaudRate baudRate = BaudRate._9600;
 
-	public int arduinoReadTimeout = 1;
+	public int arduinoReadTimeout = 50;
 
-	public ArduinoValueStorage values;
-	private Thread activeThread;
+	public ArduinoValueStorage values = new ArduinoValueStorage ();
 
-	private SerialPort arduinoPort;
-
+	private Thread activeThread = null;
+	private SerialPort arduinoPort = null;
 
 	void Start () 
 	{	
-        if (useArduinoPort) 
-		{	
-            if (SystemInfo.operatingSystemFamily.ToString() == "Windows" && !((int)comPort < (int)COM.macPort))
-            { throw new ArgumentException("Wrong OS"); }
-            
-			arduinoPort = new SerialPort(ComPortList.get((int)comPort - 1), 9600);
-			values = new ArduinoValueStorage();
-
-			arduinoPort.Open ();
-        }	
-		arduinoPort.ReadTimeout = (int)arduinoReadTimeout;
-
+		comPort = AutoDetectArduinoPort ();
 	}	
 
-	void Update () {
+	void Update () 
+	{	
         if (useArduinoPort) 
 		{	
-            ArduinoCommandQueueUpdate();
+			ArduinoReadThread();
         }	
         else 
 		{	
             values.speed = (UInt16) (Mathf.Abs(Input.GetAxis("Vertical")) *keyboardSpeed);
             values.rotation = (UInt16) ((keyboardAngle + Input.GetAxis("Horizontal")*keyboardMultiplier));
         }	
-        
+	}		
 
-	}
-
-    private void ArduinoCommandQueueUpdate() 
+    private void ArduinoReadThread() 
 	{	
 		if (activeThread == null || !activeThread.IsAlive)
         {	
-			
-			activeThread = new Thread (()=>{AsynchronousReadFromArduino(OnArduinoInfoReceived,OnArduinoInfoFail);});
+			activeThread = new Thread (()=>{AsynchronousReadFromArduino(OnArduinoInfoReceived);});
 			activeThread.Start ();
         }	
     }	
 
 	private void OnArduinoInfoReceived(string rotation, string speed)
-	{
-		values.rotation = UInt16.Parse (rotation);
-		values.speed = UInt16.Parse (speed);
-	}
+	{values.SetValue (UInt16.Parse(rotation), UInt16.Parse(speed));}
 
-	private void OnArduinoInfoFail()
-	{
-		values.rotation = 1000;
-		values.speed = 1000;
-	}
-
-	private void AsynchronousReadFromArduino(Action<string, string> success , Action fail)
+	private void AsynchronousReadFromArduino(Action<string, string> callback)
 	{			
 		string rotString = null;
 		string speedString = null;
 
 		WriteToArduino ("ALL");
-		try 
-		{
-			rotString = arduinoPort.ReadLine();
-		} 
+
+		try {rotString = arduinoPort.ReadLine();}
 		catch (TimeoutException){}
 
-		try 
-		{
-			speedString = arduinoPort.ReadLine();
-		} 
+		try {speedString = arduinoPort.ReadLine();}
 		catch (TimeoutException){}
 				
 		if (rotString != null && speedString!=null) 
-		{
-			success(rotString,speedString);
-		}
+		{callback(rotString,speedString);}
 		else
-		{
-			fail ();
-		}
+		{callback(null,null);}
 
-	}
+	}	
     
     private void WriteToArduino(string message)
 	{
@@ -117,35 +82,66 @@ public class ArduinoThread : MonoBehaviour
 		{
 			message = message + "\r\n";
 			arduinoPort.Write (message);
-			arduinoPort.BaseStream.Flush ();
 		}
-
-
 	}
+
+
+	private string AutoDetectArduinoPort()
+	{
+		foreach (string ports in SerialPort.GetPortNames ()) 
+		{
+			arduinoPort = new SerialPort(ports, (int)baudRate);
+			arduinoPort.ReadTimeout = arduinoReadTimeout;
+			try{
+				
+				arduinoPort.Open();
+				if ( arduinoPort.IsOpen ) 
+				{	
+					WriteToArduino("READY");
+
+					string result = null;
+					activeThread = new Thread(	()=>{result = arduinoPort.ReadLine();}	);
+					activeThread.Start ();
+
+					while(activeThread.IsAlive){}
+
+					if(result == "READY")
+					{return ports;}
+				}	
+
+			}catch(Exception e){}
+
+		}	
+		return null;
+	}
+
+
+
+
 
 	[Serializable]
 	public class ArduinoValueStorage
 	{	
 		public UInt16 rotation;
 		public UInt16 speed;
-		public ArduinoValueStorage()
-		{
-			rotation = 0;
-			speed = 0;
-		}
 
-		public ArduinoValueStorage(		
-			UInt16 rotation,
-			UInt16 speed)
+		public void SetValue(UInt16 rotation,UInt16 speed)
 		{
 			this.rotation = rotation;
 			this.speed = speed;
 		}
+		
+		public ArduinoValueStorage()
+		{SetValue(0,0);}
+
+		public ArduinoValueStorage(UInt16 rotation,UInt16 speed)
+		{SetValue(rotation,speed);}
 	}	
 
 	void OnDestroy()
 	{
-        if (useArduinoPort){
+        if (useArduinoPort)
+		{
             WriteToArduino("DONE");
             arduinoPort.Close();
         }
