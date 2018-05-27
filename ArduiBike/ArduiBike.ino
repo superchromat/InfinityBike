@@ -1,4 +1,6 @@
+//#include "SoftwareSerial.h"
 #include "SerialCommand.h"
+#include "SoftwareSerial.h"
 
 SerialCommand sCmd;
 bool reset = true;

@@ -27,6 +27,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include "WProgram.h"
 #endif
 
+//#include <SerialCommand.h> //Add to remove this line and change 
+//to the next one for the library to work in the same folder than ArduiBike.ino
+//MxBoud.
 #include "SerialCommand.h"
 
 
