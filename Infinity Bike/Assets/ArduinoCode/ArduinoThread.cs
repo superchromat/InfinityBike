@@ -5,6 +5,7 @@ using UnityEngine;
 using System;
 using System.IO.Ports;
 
+
 using System.Threading;
 
 public class ArduinoThread : MonoBehaviour 
@@ -27,12 +28,13 @@ public class ArduinoThread : MonoBehaviour
 	private SerialPort arduinoPort = null;
 
 	void Start () 
-	{	
+	{
 		comPort = AutoDetectArduinoPort ();
 	}	
 
 	void Update () 
-	{	
+	{
+        Debug.Log(comPort);
         if (useArduinoPort) 
 		{	
 			ArduinoReadThread();
@@ -86,11 +88,25 @@ public class ArduinoThread : MonoBehaviour
 	}
 
 
-	private string AutoDetectArduinoPort()
-	{
-		foreach (string ports in SerialPort.GetPortNames ()) 
+    private string AutoDetectArduinoPort()
+    {
+        //Find ports list in Windows or Mac
+        string[] ports;
+        int p = (int)Environment.OSVersion.Platform;
+
+        if (p == 4 || p == 128 || p == 6)
+        {
+            ports = GetPortNamesOSX();
+        }
+        else {
+            ports = SerialPort.GetPortNames();
+        }
+
+
+		foreach (string port in ports) 
 		{
-			arduinoPort = new SerialPort(ports, (int)baudRate);
+  
+			arduinoPort = new SerialPort(port, (int)baudRate);
 			arduinoPort.ReadTimeout = arduinoReadTimeout;
 			try{
 				
@@ -106,10 +122,11 @@ public class ArduinoThread : MonoBehaviour
 					while(activeThread.IsAlive){}
 
 					if(result == "READY")
-					{return ports;}
+					{return port;}
 				}	
 
-			}catch(Exception e){}
+			}
+            catch(Exception e){}
 
 		}	
 		return null;
@@ -155,5 +172,23 @@ public class ArduinoThread : MonoBehaviour
 		public static string get(int comID)
 		{return COMLIST [comID];}
 	}	
+
+    string[] GetPortNamesOSX() //Function retreived from : 
+    //https://answers.unity.com/questions/643078/serialportsgetportnames-error.html
+    {
+       
+        List<string> serial_ports = new List<string>();
+
+      
+        string[] ttys = System.IO.Directory.GetFiles("/dev/", "tty.*");
+        foreach (string dev in ttys)
+            {
+                //if (dev.StartsWith()
+                serial_ports.Add(dev);
+                //Debug.Log(String.Format(dev));
+            }
+
+        return serial_ports.ToArray();
+    }
 
 }	
