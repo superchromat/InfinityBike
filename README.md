@@ -68,7 +68,10 @@ You can use them as-is but make sure that the dimensions we used match your bike
 
 
 ## How to use?
-We did public a short instructable tutorial that should provide enough information to get started with this project. 
+We did public a short 
+<a href="https://www.instructables.com/id/Infinity-Bike-Indoors-Bike-Training-Video-Game/">instructable</a> 
+tutorial that should provide enough information to get started with this project. 
+
 Building a more in-depth tutorial for potential contributors is on the our To-do list.
 
 ## Credits
