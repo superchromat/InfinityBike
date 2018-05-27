@@ -74,7 +74,7 @@ Building a more in-depth tutorial for potential contributors is on the our To-do
 
 ## Credits
 ### Project contributors
-Alexandre Doucet (_Doucet_)
+Alexandre Doucet (_Doucet_)</br>
 Maxime Boudreau (MxBoud)
 
 ### External ressources
