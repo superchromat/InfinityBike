@@ -1,8 +1,9 @@
 # Infinity Bike
 Last Update: 27 - 05 - 2018
+
+<img src="/Ressources/Images/Logo.png" width="200">
   
 Welcome to the Infinity Bike repository. A simple and inexpensive indoors bike training video game with built-in sensors that allows the player to ride on a virtual track.
-![Logo][InfinityBikeLogo]
 
 ## Why use Infinity Bike? 
 
@@ -17,7 +18,6 @@ Alternatively, you could design and machine your own parts. If you do let us kno
 
 ## Installation
 To participate to this project, start by cloning the repository to a drive on your computer. You should get all the assets for the Unity program in the Infinity Bike folder and the Arduino Code in the ArduiBike folder.
-For the Arduino code to compile, you will have to include the SerialCommand library ( https://github.com/kroimon/Arduino-SerialCommand ).
 Don't have a bike/trainer or access to a 3D printer? You can easily build a small arduino circuit that fits on your desk. Alternatively, the Arduino inputs can be emulated with the keyboard by
 setting a flag in the Unity inspector.
 
@@ -32,8 +32,8 @@ Building a more in-depth tutorial for potential contributors is on the To-do.
 
 ## Credits
 
-This project started after we read the tutorial by Allan Zucconi "how to integrate Arduino with Unity" ( https://www.alanzucconi.com/2015/10/07/how-to-integrate-arduino-with-unity/ ).
+This project started after we read the tutorial by Allan Zucconi "how to integrate Arduino with Unity" ( https://www.alanzucconi.com/2015/10/07/how-to-integrate-arduino-with-unity/ )
 
-The request from the Arduino are handled using the SerialCommand library ( https://github.com/kroimon/Arduino-SerialCommand ).
+The request from the Arduino are handled using the SerialCommand library ( https://github.com/kroimon/Arduino-SerialCommand )
 
-[InfinityBikeLogo]: /Ressources/Infinity Bike._COMPLETE.png
+
