@@ -44,6 +44,9 @@ Sadly, we don't have a ready out of the box version yet but it's on the to-do li
 
 #### 3D Printed parts list
 All the 3D print .stl files are available on [Thingiverse](https://www.thingiverse.com/thing:2933374). The picture below list them all. 
+We mounted the material above with 3D printed parts. 
+The files we used are listed bellow and they're numbered with the same convention as the image above. 
+You can use them as-is but make sure that the dimensions we used match your bike.
 <img src="/Ressources/Images/3DprintedParts/PartsLayout.png" width="900">
 ##### Parts filename
 1. FrameConnection_PotentiometerHolder_U_Holder.stl
