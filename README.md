@@ -28,8 +28,11 @@ Sadly, we don't have a ready out of the box version yet but it's on the to-do li
 #### Non 3D Printed parts list
 
 1 x Arduino nano ($22.00)
+
 1x Mini Breadboard ($1.33/unit)
+
 1 x 10K Potentiometer ($1.80/unit)
+
 1 x Halls sensor ($2.79)
 
 ** Estimated prices
