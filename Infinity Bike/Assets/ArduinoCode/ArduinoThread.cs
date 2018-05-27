@@ -15,7 +15,7 @@ public class ArduinoThread : MonoBehaviour
     public float keyboardMultiplier = 100;
 
 	// Use this for initialization
-	public string comPort = "Code will select manually.";
+	public string comPort = "Code will select automatically.";
 	public enum BaudRate{ _9600 = 9600,_14400= 14400} ;
 	public BaudRate baudRate = BaudRate._9600;
 
