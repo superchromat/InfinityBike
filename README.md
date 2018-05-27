@@ -2,6 +2,7 @@
 Last Update: 27 - 05 - 2018
   
 Welcome to the Infinity Bike repository. A simple and inexpensive indoors bike training video game with built-in sensors that allows the player to ride on a virtual track.
+![Logo][InfinityBikeLogo]
 
 ## Why use Infinity Bike? 
 
@@ -35,3 +36,4 @@ This project started after we read the tutorial by Allan Zucconi "how to integra
 
 The request from the Arduino are handled using the SerialCommand library ( https://github.com/kroimon/Arduino-SerialCommand ).
 
+[InfinityBikeLogo]: /Ressources/Infinity Bike._COMPLETE.png
