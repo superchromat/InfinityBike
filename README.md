@@ -26,6 +26,14 @@ If you make a change you think is worth including in the main project, send us a
 Sadly, we don't have a ready out of the box version yet but it's on the to-do list. For now, you will need to clone the repository and build the current scene for your system.
 ### Hardware
 #### Non 3D Printed parts list
+
+1 x Arduino nano ($22.00)
+1x Mini Breadboard ($1.33/unit)
+1 x 10K Potentiometer ($1.80/unit)
+1 x Halls sensor ($2.79)
+
+** Estimated prices
+
 #### 3D Printed parts list
 #### Circuit 
 
