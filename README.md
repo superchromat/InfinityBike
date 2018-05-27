@@ -38,6 +38,7 @@ Sadly, we don't have a ready out of the box version yet but it's on the to-do li
 1 x <a href="https://www.aliexpress.com/item/KY-003-Standard-Hall-Magnetic-Sensor-Module-Works-with-Arduino-Boards-for-Arduino/32693432353.html?spm=2114.search0104.3.186.599d770dWMU1Zt&ws_ab_test=searchweb0_0,searchweb201602_2_10152_10065_10151_10344_10068_10130_5722815_10342_10547_10343_10340_5722915_10548_10341_5722615_10696_10084_10083_10618_10139_10307_5722715_5711215_10059_308_100031_10103_10624_10623_10622_5711315_5722515_10621_10620,searchweb201603_1,ppcSwitch_5&algo_expid=5d7e9e2e-c6de-4431-8a5b-cecc73fa021c-27&algo_pvid=5d7e9e2e-c6de-4431-8a5b-cecc73fa021c&priceBeautifyAB=0">Hall sensor </a> ($0.96)<br/>
 20 cm x <a href="https://www.aliexpress.com/item/5m-lot-GT2-6mm-open-timing-belt-width-6mm-GT2-belt-Rubbr-Fiberglass-cut-to-length/32811832945.html?spm=2114.search0104.3.50.4ca843e4JrNX47&ws_ab_test=searchweb0_0,searchweb201602_2_10152_10065_10151_10344_10068_10130_5722815_10342_10547_10343_10340_5722915_10548_10341_5722615_10696_10084_10083_10618_10139_10307_5722715_5711215_10059_308_100031_10103_10624_10623_10622_5711315_5722515_10621_10620,searchweb201603_1,ppcSwitch_5&algo_expid=1aae0170-0588-45a1-a4ac-2558d64e76cf-7&algo_pvid=1aae0170-0588-45a1-a4ac-2558d64e76cf&priceBeautifyAB=0"> 6 mm 3D printer timing belt </a> ($3.33)<br>
 1 kit x <a href="https://www.aliexpress.com/item/Hot-Sale-1-Set-300pcs-M3-304-Stainless-Steel-Hex-Socket-Screws-Bolt-With-Hex-Nuts/32808686142.html?spm=2114.search0104.3.1.703b7491nfv8lT&ws_ab_test=searchweb0_0,searchweb201602_2_10152_10065_10151_10344_10068_10130_5722815_10342_10547_10343_10340_5722915_10548_10341_5722615_10696_10084_10083_10618_10139_10307_5722715_5711215_10059_308_100031_10103_10624_10623_10622_5711315_5722515_10621_10620,searchweb201603_1,ppcSwitch_5&algo_expid=671cbcd2-b8c1-400f-b5f3-cc37f87cfeda-0&algo_pvid=671cbcd2-b8c1-400f-b5f3-cc37f87cfeda&priceBeautifyAB=0">Various Lenght M3 screws and bolts</a> ($6.82)<br/>
+1 x <a href= "https://www.aliexpress.com/item/Universal-Magnet-For-Bicycle-Bike-Cycling-Computer-Works-Speedometer-Odometer-Drop-Shipping/32852306956.html?spm=2114.search0104.3.21.32461d8aw5yTQN&ws_ab_test=searchweb0_0,searchweb201602_2_10152_10065_10151_10344_10068_10130_5722815_10342_10547_10343_10340_5722915_10548_10341_5722615_10696_10084_10083_10618_10139_10307_5722715_5711215_10059_308_100031_10103_10624_10623_10622_5711315_5722515_10621_10620,searchweb201603_1,ppcSwitch_5&algo_expid=20a02fd9-cbb1-4fab-92b5-93c50623b4ab-3&algo_pvid=20a02fd9-cbb1-4fab-92b5-93c50623b4ab&priceBeautifyAB=0"> Bicycle speedometer magnet </a> ($0.98) <br/>
 
 ** Estimated prices
 
@@ -53,6 +54,12 @@ We did public a short instructable tutorial that should provide enough informati
 Building a more in-depth tutorial for potential contributors is on the our To-do list.
 
 ## Credits
+### Project contributors
+Alexandre Doucet (_Doucet_)
+Maxime Boudreau (MxBoud)
+
+### External ressources
+[The Unity game engine](https://unity3d.com)
 
 This project started after we read the tutorial by Allan Zucconi "how to integrate Arduino with Unity" ( https://www.alanzucconi.com/2015/10/07/how-to-integrate-arduino-with-unity/ )
 
