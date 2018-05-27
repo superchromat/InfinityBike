@@ -59,7 +59,8 @@ You can use them as-is but make sure that the dimensions we used match your bike
 8. FrameToHallSensorConnector.stl
 9. PotHolder.stl
 10. HallSensorAttach.stl
-
+##### Assembled parts pictures
+<img src="/Ressources/Images/InstalledParts.png" width="900">
 
 #### Circuit
 
