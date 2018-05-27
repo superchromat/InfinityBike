@@ -44,6 +44,7 @@ Sadly, we don't have a ready out of the box version yet but it's on the to-do li
 
 #### 3D Printed parts list
 All the 3D print .stl files are available on [Thingiverse](https://www.thingiverse.com/thing:2933374). The picture below list them all. 
+<img src="/Ressources/Images/3DprintedParts/PartsLayout.png" width="900">
 #### Circuit
 
 <img src="/Ressources/Images/Circuit.png" width="500">
