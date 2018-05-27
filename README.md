@@ -11,6 +11,10 @@ Rainy days and the Winter season can really disrupt a training program. Riders a
 will always make it a bit difficult to keep up the pace. This is why we decided to add a little bit on interactivity to our training program. The Infinity Bike set-up is designed to be a simple as possible
 while still allowing a rider to read the speed and steering from a bike mounted on any trainers and relay the information to the computer. 
 
+See the Youtube video: 
+
+![Youtube video](https://img.youtube.com/vi/j3q3ih8c10g/0.jpg)](https://www.youtube.com/watch?v=j3q3ih8c10g)
+
 ## Where are we in development 
 In it's current form, the code should compile on a Windows or Mac. We have the communication between Arduino and Unity established and we even have a demo track that you can use to test
 your set-up. If you want to take full advantage of this work, you will need to have access to a 3D printer. (Tip : A lot of community libraries are starting to have them available to the public.)
