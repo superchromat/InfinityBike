@@ -56,7 +56,8 @@ All the 3D print .stl files are available on [Thingiverse](https://www.thingiver
 8. FrameToHallSensorConnector.stl
 9. PotHolder.stl
 10. HallSensorAttach.stl
-
+##### Assembled parts pictures
+<img src="/Ressources/Images/InstalledParts.png" width="900">
 
 #### Circuit
 
