@@ -25,6 +25,8 @@ If you make a change you think is worth including in the main project, send us a
 
 Sadly, we don't have a ready out of the box version yet but it's on the to-do list. For now, you will need to clone the repository and build the current scene for your system.
 ### Hardware
+#### Non 3D Printed parts list
+#### 3D Printed parts list
 #### Circuit 
 
 <img src="/Ressources/Images/Circuit.png" width="500">
