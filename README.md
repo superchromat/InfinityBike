@@ -13,7 +13,7 @@ while still allowing a rider to read the speed and steering from a bike mounted 
 
 See the Youtube video: 
 
-[![Youtube video] (https://img.youtube.com/vi/j3q3ih8c10g/0.jpg)](https://www.youtube.com/watch?v=j3q3ih8c10g)
+[![Link to youtube video](https://img.youtube.com/vi/j3q3ih8c10g/0.jpg)](https://www.youtube.com/watch?v=j3q3ih8c10g)
 
 ## Where are we in development 
 In it's current form, the code should compile on a Windows or Mac. We have the communication between Arduino and Unity established and we even have a demo track that you can use to test
