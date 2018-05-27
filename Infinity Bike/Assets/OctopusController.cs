@@ -18,6 +18,7 @@ public class OctopusController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+		isActivated = true;
         initialPosition = transform.position;
         //octopusMesh = GetComponentInChildren<SkinnedMeshRenderer>();
     }

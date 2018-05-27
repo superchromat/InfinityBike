@@ -34,7 +34,6 @@ public class ArduinoThread : MonoBehaviour
 
 	void Update () 
 	{
-        Debug.Log(comPort);
         if (useArduinoPort) 
 		{	
 			ArduinoReadThread();

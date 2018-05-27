@@ -989,7 +989,7 @@ MonoBehaviour:
   keyboardSpeed: 1000
   keyboardAngle: 512
   keyboardMultiplier: 100
-  comPort: Code will select manually.
+  comPort: Code will select automatically.
   baudRate: 9600
   arduinoReadTimeout: 50
   values:
