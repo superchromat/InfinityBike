@@ -31,6 +31,6 @@ Building a more in-depth tutorial for potential contributors is on the To-do.
 
 ## Credits
 
- -> This project started after we read the tutorial by Allan Zucconi "how to integrate Arduino with Unity" ( https://www.alanzucconi.com/2015/10/07/how-to-integrate-arduino-with-unity/ ).
- -> The request from the Arduino are handled using the SerialCommand library ( https://github.com/kroimon/Arduino-SerialCommand ).
+This project started after we read the tutorial by Allan Zucconi "how to integrate Arduino with Unity" ( https://www.alanzucconi.com/2015/10/07/how-to-integrate-arduino-with-unity/ ).
+The request from the Arduino are handled using the SerialCommand library ( https://github.com/kroimon/Arduino-SerialCommand ).
 
