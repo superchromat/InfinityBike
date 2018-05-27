@@ -18,7 +18,6 @@ Alternatively, you could design and machine your own parts. If you do let us kno
 
 ## Installation
 To participate to this project, start by cloning the repository to a drive on your computer. You should get all the assets for the Unity program in the Infinity Bike folder and the Arduino Code in the ArduiBike folder.
-For the Arduino code to compile, you will have to include the SerialCommand library ( https://github.com/kroimon/Arduino-SerialCommand ).
 Don't have a bike/trainer or access to a 3D printer? You can easily build a small arduino circuit that fits on your desk. Alternatively, the Arduino inputs can be emulated with the keyboard by
 setting a flag in the Unity inspector.
 
