@@ -1,6 +1,4 @@
 # Infinity Bike
-Last Update: 27 - 05 - 2018
-
 <img src="/Ressources/Images/Logo.png" width="200">
   
 Welcome to the Infinity Bike repository. A simple and inexpensive indoors bike training video game with built-in sensors that allows the player to ride on a virtual track.
@@ -76,7 +74,7 @@ Building a more in-depth tutorial for potential contributors is on the our To-do
 
 ## Credits
 ### Project contributors
-Alexandre Doucet (_Doucet_)
+Alexandre Doucet (_Doucet_)</br>
 Maxime Boudreau (MxBoud)
 
 ### External ressources
