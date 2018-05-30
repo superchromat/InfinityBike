@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
 
-    public PlayerMovementV2 playerMovement;
+    public PlayerMovement playerMovement;
     public Button startRaceButton; 
 
 

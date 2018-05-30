@@ -125,8 +125,7 @@ public class ArduinoThread : MonoBehaviour
 				}	
 
 			}
-            catch(Exception e){}
-
+            catch{}
 		}	
 		return null;
 	}

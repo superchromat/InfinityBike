@@ -21,7 +21,6 @@ public class LapCounter : MonoBehaviour {
 
 		for (int count = 0; count < tempObjectCrossingList.Count; count++)
 		{objectCrossingList.Remove (tempObjectCrossingList [count]);}
-
 	}
 
 
@@ -31,10 +30,6 @@ public class LapCounter : MonoBehaviour {
 		if (objectCrossingList.IndexOf (other) < 0) {
 			objectCrossingList.Add (other);
 		}
-
-
-
-
 	}
 
-}
+}	

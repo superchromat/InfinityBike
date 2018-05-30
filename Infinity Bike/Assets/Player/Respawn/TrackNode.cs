@@ -5,7 +5,6 @@ using System;
 
 
 [CreateAssetMenu(fileName = "TrackNode", menuName = "TrackNode", order = 1)]
-
 public class TrackNode : ScriptableObject 
 {	
 	public TrackNodeValues nodeValues = new TrackNodeValues();
@@ -16,16 +15,13 @@ public class TrackNode : ScriptableObject
 		Physics.Raycast (toadd, Vector3.down, out hit, 100f);
 
 		nodeValues.objectPosition.Add (hit.point + Vector3.up);
-
-
-
 	}	
-
-	public void SetNode (Vector3 toadd)
+	
+	public void SetNode (Vector3 toadd, int index)
 	{	
-		if(nodeValues.objectPosition.Count!=0)
+		if(nodeValues.objectPosition.Count != 0)
 		{
-			nodeValues.objectPosition [nodeValues.objectPosition.Count-1] = toadd;
+			nodeValues.objectPosition [index] = toadd;
 		}	
 	}
 

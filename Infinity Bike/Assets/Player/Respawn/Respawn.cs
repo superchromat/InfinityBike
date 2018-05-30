@@ -24,7 +24,7 @@ public class Respawn : MonoBehaviour {
 		}
 	}
 
-	void RespawnPlayer()
+	public void RespawnPlayer()
 	{
 
 		if (respawnPoint.GetNodeCount () <= 1) 
