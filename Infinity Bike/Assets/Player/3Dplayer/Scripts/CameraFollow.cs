@@ -4,26 +4,32 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour {
 
-	public Transform objToFollow;
+	public Transform objToFollowBack;
+	public Transform objToFollowFront;
+	public Vector3 cameraOffset = Vector3.zero;
+
+	
 	private Vector3 velocity = Vector3.zero;
 	public float smoothTime = 0.3F;
-	public float cameraOffSet = 1f;
 
 
 	void Start () 
 	{
-		
-		
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-		Vector3 targetPosition = objToFollow.position - objToFollow.forward*cameraOffSet;
-		transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
+		OnUpdate ();
 
-		transform.forward = (objToFollow.position - transform.position).normalized;
-		//Debug.DrawLine (transform.position, objToFollow.position);
+	}
+
+	void OnUpdate()
+	{
+		Vector3 targetPosition = objToFollowBack.position;
+		transform.position = Vector3.SmoothDamp (transform.position, targetPosition, ref velocity, smoothTime) - objToFollowBack.TransformDirection(cameraOffset);
+		transform.LookAt (objToFollowFront);
+		Debug.DrawLine (transform.position, objToFollowBack.position);
 	}
 
 

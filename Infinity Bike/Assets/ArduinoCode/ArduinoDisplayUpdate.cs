@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class ArduinoDisplayUpdate : MonoBehaviour {
 
 
-	public Text rotation;
-	public Text speed;
+	public Text rotation = null;
+	public Text speed = null;
 
 	private ArduinoThread arduinoValue;
 
@@ -21,8 +21,9 @@ public class ArduinoDisplayUpdate : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+		if(rotation != null)
 		rotation.text = arduinoValue.values.rotation.ToString();
+		if(speed != null)
 		speed.text = arduinoValue.values.speed.ToString();
 		
 	}

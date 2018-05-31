@@ -113,6 +113,58 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &30095097
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 45773833}
+    m_Modifications:
+    - target: {fileID: 4177270038565744, guid: b23ccafd270a5b94596a61bc8d825eae, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4177270038565744, guid: b23ccafd270a5b94596a61bc8d825eae, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4177270038565744, guid: b23ccafd270a5b94596a61bc8d825eae, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4177270038565744, guid: b23ccafd270a5b94596a61bc8d825eae, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4177270038565744, guid: b23ccafd270a5b94596a61bc8d825eae, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4177270038565744, guid: b23ccafd270a5b94596a61bc8d825eae, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4177270038565744, guid: b23ccafd270a5b94596a61bc8d825eae, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4177270038565744, guid: b23ccafd270a5b94596a61bc8d825eae, type: 2}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114290693436471110, guid: b23ccafd270a5b94596a61bc8d825eae,
+        type: 2}
+      propertyPath: rotation
+      value: 
+      objectReference: {fileID: 112134674}
+    - target: {fileID: 114290693436471110, guid: b23ccafd270a5b94596a61bc8d825eae,
+        type: 2}
+      propertyPath: speed
+      value: 
+      objectReference: {fileID: 554997768}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: b23ccafd270a5b94596a61bc8d825eae, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1001 &34978465
 Prefab:
   m_ObjectHideFlags: 0
@@ -456,7 +508,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 632194791}
   m_LocalRotation: {x: -0.03134928, y: -0.87196785, z: -0.017187087, w: -0.48825598}
-  m_LocalPosition: {x: -22.78362, y: 18.02917, z: -4.794237}
+  m_LocalPosition: {x: -22.79, y: 18, z: -4.81}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 417296229}
@@ -1077,74 +1129,17 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a182c61500dd9483ba619dc232100e98, type: 3}
   m_IsPrefabParent: 0
---- !u!1 &599651101
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1221792107920012, guid: 6b26fcd637330c84989ead36c43d6644,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 599651102}
-  - component: {fileID: 599651104}
-  - component: {fileID: 599651103}
-  m_Layer: 0
-  m_Name: ArduinoMonitorThreaded
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &599651102
+--- !u!4 &599651102 stripped
 Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4993692769330086, guid: 6b26fcd637330c84989ead36c43d6644,
+  m_PrefabParentObject: {fileID: 4177270038565744, guid: b23ccafd270a5b94596a61bc8d825eae,
     type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 599651101}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 45773833}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &599651103
+  m_PrefabInternal: {fileID: 30095097}
+--- !u!114 &599651103 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114404396798989322, guid: 6b26fcd637330c84989ead36c43d6644,
+  m_PrefabParentObject: {fileID: 114002051875462884, guid: b23ccafd270a5b94596a61bc8d825eae,
     type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 599651101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
+  m_PrefabInternal: {fileID: 30095097}
   m_Script: {fileID: 11500000, guid: b29aa5e87ea9f394ab7711c1ef3564b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  useArduinoPort: 1
-  keyboardSpeed: 1000
-  keyboardAngle: 512
-  keyboardMultiplier: 100
-  comPort: Code will select automatically.
-  baudRate: 9600
-  arduinoReadTimeout: 50
-  values:
-    rotation: 0
-    speed: 0
---- !u!114 &599651104
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114175399400209870, guid: 6b26fcd637330c84989ead36c43d6644,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 599651101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0f9597e5650df14fa342382efa88ec5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rotation: {fileID: 112134674}
-  speed: {fileID: 554997768}
 --- !u!1 &607202260
 GameObject:
   m_ObjectHideFlags: 0
@@ -2221,8 +2216,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2072570751}
-  m_LocalRotation: {x: 0, y: -0.70858, z: 0, w: 0.7056305}
-  m_LocalPosition: {x: 17.86003, y: 16.83668, z: 17.3159}
+  m_LocalRotation: {x: -0.000034992958, y: -0.70858073, z: -0.0000351393, w: 0.70562977}
+  m_LocalPosition: {x: 17.857143, y: 16.79733, z: 17.330536}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
