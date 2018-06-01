@@ -12,12 +12,15 @@ public class PlayerPoints : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{	
+		if (pointText == null)
+			this.enabled = false;
 		points = 0;
 	}	
 	
 	// Update is called once per frame
 	void LateUpdate () 
 	{	
+		
 		pointText.text = points.ToString ();
 	}	
 
