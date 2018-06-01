@@ -72,6 +72,8 @@ tutorial that should provide enough information to get started with this project
 
 Building a more in-depth tutorial for potential contributors is on the our To-do list.
 
+** Because we used blender to generate the 3d models, you must have blender installed before opening the project. Otherwise some assets wont load properly.**
+
 ## Credits
 ### Project contributors
 Alexandre Doucet (_Doucet_)</br>
