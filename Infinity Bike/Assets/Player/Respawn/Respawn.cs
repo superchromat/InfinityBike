@@ -47,7 +47,7 @@ public class Respawn : MonoBehaviour {
 		GetComponent<Rigidbody> ().angularVelocity  = Vector3.zero;
 
 		WheelCollider[] wheel = GetComponentsInChildren<WheelCollider> ();
-		Debug.Log (wheel.Length);
+	//	Debug.Log (wheel.Length);
 		foreach (WheelCollider item in wheel) {
 			item.brakeTorque = 1000f;
 			
