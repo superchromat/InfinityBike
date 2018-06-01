@@ -14,7 +14,7 @@ public class TrackNode : ScriptableObject
 		RaycastHit hit;
 		Physics.Raycast (toadd, Vector3.down, out hit, 100f);
 
-		nodeValues.objectPosition.Add (hit.point + Vector3.up);
+		nodeValues.objectPosition.Add (hit.point + Vector3.up*1.5f);
 	}	
 	
 	public void SetNode (Vector3 toadd, int index)

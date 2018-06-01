@@ -49,6 +49,23 @@ public class EditorRespawnNodeSet : Editor {
 			SetHandle ();
 		}
 
+		if (GUILayout.Button ("ResetAllNodes")) 
+		{
+			cycleNodeIndex = 0;
+
+			for(int node = 0 ; node < trackNodeScript.trackNode.GetNodeCount(); node++)
+			{
+				CycleNode (1);
+				SetHandle ();
+
+				Vector3 pos = CalculatePositionAboveTheTrack(trackNodeScript.GetComponent<Transform> ().position);
+				trackNodeScript.trackNode.SetNode (pos,cycleNodeIndex);
+
+			}
+
+
+		}
+
 		SceneView.RepaintAll ();
 
 	}	
@@ -99,7 +116,7 @@ public class EditorRespawnNodeSet : Editor {
 
 		if (hit.collider != null) 
 		{		
-			return hit.point + Vector3.up;
+			return hit.point + Vector3.up * 1.5f;
 		}
 		return startPos;		
 	}	
