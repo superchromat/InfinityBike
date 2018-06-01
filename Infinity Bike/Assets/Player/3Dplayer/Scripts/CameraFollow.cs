@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
+
+[ExecuteInEditMode]
 public class CameraFollow : MonoBehaviour {
 
 	public Transform objToFollowBack;
-	public Transform objToFollowFront;
 	public Vector3 cameraOffset = Vector3.zero;
 
 	
@@ -26,9 +28,11 @@ public class CameraFollow : MonoBehaviour {
 
 	void OnUpdate()
 	{
-		Vector3 targetPosition = objToFollowBack.position;
-		transform.position = Vector3.SmoothDamp (transform.position, targetPosition, ref velocity, smoothTime) - objToFollowBack.TransformDirection(cameraOffset);
-		transform.LookAt (objToFollowFront);
+		Vector3 targetPosition = objToFollowBack.position + objToFollowBack.rotation * cameraOffset;
+
+		transform.position = Vector3.SmoothDamp (transform.position, targetPosition, ref velocity, smoothTime);
+		transform.LookAt (objToFollowBack, objToFollowBack.up);
+
 		Debug.DrawLine (transform.position, objToFollowBack.position);
 	}
 

@@ -6,7 +6,6 @@ using UnityEngine;
 public class Respawn : MonoBehaviour {
 
 	public TrackNode respawnPoint;
-	public bool respawnPlayer = false;
 	public float verticalRespawnPoint = -50f;
 
 	void Start () 
@@ -17,11 +16,8 @@ public class Respawn : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () 
 	{
-		if (respawnPlayer || transform.position.y < verticalRespawnPoint) 
-		{
-			respawnPlayer = false;
-			RespawnPlayer ();
-		}
+		if (transform.position.y < verticalRespawnPoint) 
+		{RespawnPlayer ();}
 	}
 
 	public void RespawnPlayer()
@@ -50,14 +46,16 @@ public class Respawn : MonoBehaviour {
 		GetComponent<Rigidbody> ().velocity = Vector3.zero;
 		GetComponent<Rigidbody> ().angularVelocity  = Vector3.zero;
 
+		WheelCollider[] wheel = GetComponentsInChildren<WheelCollider> ();
+		Debug.Log (wheel.Length);
+		foreach (WheelCollider item in wheel) {
+			item.brakeTorque = 1000f;
+			
+		}
 
 		transform.position = respawnPoint.GetNode(minDistanceNode);
 		transform.forward = respawnPoint.GetNode(minDistanceNode + 1) - transform.position;
-
-
-
-	}
-
-
-
-}
+		
+	}	
+	
+}	
