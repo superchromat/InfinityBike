@@ -1071,6 +1071,7 @@ GameObject:
   m_Component:
   - component: {fileID: 781582755}
   - component: {fileID: 781582754}
+  - component: {fileID: 781582756}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -1104,6 +1105,20 @@ Transform:
   m_Father: {fileID: 45773833}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &781582756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 781582753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc6162918e9be4d93808592f380a707f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  finalHeight: 0
+  isActivated: 0
+  octopusMesh: {fileID: 1543893394}
 --- !u!1 &801723153
 GameObject:
   m_ObjectHideFlags: 0
@@ -1592,6 +1607,11 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!137 &1543893394 stripped
+SkinnedMeshRenderer:
+  m_PrefabParentObject: {fileID: 13700000, guid: a95b7b2afa0d24ce09373e38e1ef5b7e,
+    type: 3}
+  m_PrefabInternal: {fileID: 1123509521}
 --- !u!1 &1580621638
 GameObject:
   m_ObjectHideFlags: 0
