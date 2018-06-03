@@ -20,16 +20,24 @@ public class EditorRespawnNodeSet : Editor {
 		
 		if (GUILayout.Button ("Add and Set Node")) 
 		{
-			Vector3 pos = CalculatePositionAboveTheTrack(trackNodeScript.GetComponent<Transform> ().position);
-			trackNodeScript.trackNode.AddNode (pos);
-			cycleNodeIndex = trackNodeScript.trackNode.GetNodeCount () - 1;
+
+			TrackNode trackNode = GetTrackNode ();
+			if (trackNode != null) 
+			{
+				Vector3 pos = CalculatePositionAboveTheTrack (trackNodeScript.GetComponent<Transform> ().position);
+				GetTrackNode ().AddNode (pos);
+				cycleNodeIndex = GetTrackNode ().GetNodeCount () - 1;
+			}
 
 		}
 
 		if (GUILayout.Button ("Set selected node")) 
 		{
 			Vector3 pos = CalculatePositionAboveTheTrack(trackNodeScript.GetComponent<Transform> ().position);
-			trackNodeScript.trackNode.SetNode (pos,cycleNodeIndex);
+			TrackNode trackNode = GetTrackNode ();
+
+			if(trackNode!=null)
+			trackNode.SetNode (pos,cycleNodeIndex);
 		}
 
 		if (GUILayout.Button ("Cycle up node")) 
@@ -51,18 +59,21 @@ public class EditorRespawnNodeSet : Editor {
 
 		if (GUILayout.Button ("ResetAllNodes")) 
 		{
-			cycleNodeIndex = 0;
+			TrackNode trackNode = GetTrackNode ();
 
-			for(int node = 0 ; node < trackNodeScript.trackNode.GetNodeCount(); node++)
-			{
-				CycleNode (1);
-				SetHandle ();
+			if (trackNode != null) {
 
-				Vector3 pos = CalculatePositionAboveTheTrack(trackNodeScript.GetComponent<Transform> ().position);
-				trackNodeScript.trackNode.SetNode (pos,cycleNodeIndex);
+				cycleNodeIndex = 0;
 
+				for (int node = 0; node < trackNode.GetNodeCount (); node++) {
+					CycleNode (1);
+					SetHandle ();
+
+					Vector3 pos = CalculatePositionAboveTheTrack (trackNodeScript.GetComponent<Transform>().position);
+					trackNode.SetNode (pos, cycleNodeIndex);
+
+				}
 			}
-
 
 		}
 
@@ -81,32 +92,42 @@ public class EditorRespawnNodeSet : Editor {
 	void CycleNode(int dir)
 	{	
 		TrackNodeTool trackNodeScript = (TrackNodeTool)target;
-		cycleNodeIndex+=dir;
+		TrackNode trackNode = GetTrackNode ();
 
-		if (cycleNodeIndex >= trackNodeScript.trackNode.GetNodeCount ()) 
-		{cycleNodeIndex = 0;}
+		if(trackNode!=null)
+		{
+			cycleNodeIndex+=dir;
+
+			if (cycleNodeIndex >=trackNode.GetNodeCount ()) 
+			{cycleNodeIndex = 0;}
 
 
-		if (cycleNodeIndex < 0) 
-		{cycleNodeIndex = trackNodeScript.trackNode.GetNodeCount () - 1;}
-	}	
+			if (cycleNodeIndex < 0) 
+			{cycleNodeIndex =trackNode.GetNodeCount () - 1;}
+		}	
+	}
 
 
 	void DebugDraw()
 	{
 		TrackNodeTool trackNodeScript = (TrackNodeTool)target;
-		for (int index =0 ; index < trackNodeScript.trackNode.GetNodeCount() ;index++)
-		{
-			Handles.color = Color.red;
-			Handles.DrawLine (trackNodeScript.trackNode.GetNode(index), trackNodeScript.trackNode.GetNode(index-1));
-		}
+		TrackNode trackNode = GetTrackNode ();
 
-		Handles.color = Color.blue;
-		Handles.DrawLine (trackNodeScript.trackNode.GetNode(trackNodeScript.trackNode.GetNodeCount()-1),trackNodeScript.GetComponent<Transform> ().position);
-		Handles.color = Color.yellow;
-		Handles.DrawLine (trackNodeScript.trackNode.GetNode(0),trackNodeScript.GetComponent<Transform> ().position);
-		Handles.color = Color.green;
-		Handles.DrawLine (trackNodeScript.trackNode.GetNode(cycleNodeIndex),trackNodeScript.GetComponent<Transform> ().position);
+		if (trackNode != null) {
+			Transform trackNodeToolTransform = trackNodeScript.GetComponent<Transform> ();;
+
+			for (int index = 0; index < GetTrackNode ().GetNodeCount (); index++) {
+				Handles.color = Color.red;
+				Handles.DrawLine (GetTrackNode ().GetNode (index), GetTrackNode ().GetNode (index - 1));
+			}
+
+			Handles.color = Color.blue;
+			Handles.DrawLine (GetTrackNode ().GetNode (GetTrackNode ().GetNodeCount () - 1),trackNodeToolTransform.position);
+			Handles.color = Color.yellow;
+			Handles.DrawLine (GetTrackNode ().GetNode (0), trackNodeToolTransform.position);
+			Handles.color = Color.green;
+			Handles.DrawLine (GetTrackNode ().GetNode (cycleNodeIndex), trackNodeToolTransform.position);
+		}
 	}	
 
 	Vector3 CalculatePositionAboveTheTrack(Vector3 startPos)
@@ -122,9 +143,24 @@ public class EditorRespawnNodeSet : Editor {
 	}	
 
 	void SetHandle()
+	{	
+		TrackNodeTool trackNodeScript = (TrackNodeTool)target;
+
+		Transform trackNodeToolTransform = trackNodeScript.GetComponent<Transform> ();
+		TrackNode trackNode = GetTrackNode ();
+
+		if (trackNode != null) 
+		{trackNodeToolTransform.position = trackNode.GetNode (cycleNodeIndex);}	
+	}
+
+
+
+
+	TrackNode GetTrackNode()
 	{
 		TrackNodeTool trackNodeScript = (TrackNodeTool)target;
-		trackNodeScript.GetComponent<Transform> ().position = trackNodeScript.trackNode.GetNode (cycleNodeIndex);
+		TrackNode trackNode = trackNodeScript.trackNode;
+		return trackNode;
 	}
 
 
