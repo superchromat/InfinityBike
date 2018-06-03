@@ -33,7 +33,7 @@ public class CameraFollow : MonoBehaviour {
 		transform.position = Vector3.SmoothDamp (transform.position, targetPosition, ref velocity, smoothTime);
 		transform.LookAt (objToFollowBack, objToFollowBack.up);
 
-		Debug.DrawLine (transform.position, objToFollowBack.position);
+//		Debug.DrawLine (transform.position, objToFollowBack.position);
 	}
 
 

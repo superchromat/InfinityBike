@@ -14,8 +14,6 @@ public class AIDriver : MonoBehaviour {
 	public float lifeTimer = 0f;
 	public float lifeTimeLength = 20f;
 
-
-
 	int nearestNode = 0;
 	private MeshRenderer rend = null;
 

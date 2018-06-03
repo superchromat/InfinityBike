@@ -6,7 +6,7 @@ using System;
 
 
 public class PlayerMovement : MonoBehaviour {
-
+    public bool isScriptActivated = true;
 	public float speedMultiplier = 1f;
 	public float angleChangeRange = 180f;
 
@@ -27,31 +27,35 @@ public class PlayerMovement : MonoBehaviour {
 
 	public float breakForce = 1000;
 	private Rigidbody playerRigidBody;
+
+    
 	// Use this for initialization
 	void Start () 
-	{
+	{   
 		backWheel.ConfigureVehicleSubsteps(1, 12, 15);
 		frontWheel.ConfigureVehicleSubsteps(1, 12, 15);
 		playerRigidBody = GetComponent<Rigidbody> ();
-	//	playerRigidBody.freezeRotation = false;
 	}
 
-	// Update is called once per frame
-	void FixedUpdate ()
-	{	
-		ApplyWheelForces ();
-		ApplyVelocityDrag ();
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        ApplyHandleBarRotation();
+        if (isScriptActivated)
+        { 
+          ApplyWheelForces();
+        }
 
 		if (handleBar != null) {
 			handleBar.localRotation = Quaternion.Euler (0, processerdAngle + 90, 90);
 		}
 		transform.rotation = Quaternion.LookRotation (transform.forward, GetPlayerNormal ());
 	}	
+    
 	void ApplyWheelForces()
-	{
-		processerdAngle = (storageValue.values.rotation / ((rotationAnalogRange.maxRawRotation - rotationAnalogRange.minRawRotation)) - 0.5f)*angleChangeRange;
+	{   
 		processerdSpeed = storageValue.values.speed / ((speedAnalogRange.maxRawRotation - speedAnalogRange.minRawRotation)) * speedMultiplier;
-	
+	    
 		if (Input.GetKey (KeyCode.Space)) 
 		{	
 			backWheel.motorTorque = -processerdSpeed;
@@ -64,22 +68,30 @@ public class PlayerMovement : MonoBehaviour {
 			backWheel.motorTorque = processerdSpeed;  
 		}	
 		else
-		{	
-			backWheel.brakeTorque = breakForce;
+		{
+            ApplyVelocityDrag();
+
+            backWheel.brakeTorque = breakForce;
 			frontWheel.brakeTorque = breakForce;
 		}	
 
-		frontWheel.steerAngle = processerdAngle;
-	}	
+	}
+
+    void ApplyHandleBarRotation()
+    {
+        processerdAngle = (storageValue.values.rotation / ((rotationAnalogRange.maxRawRotation - rotationAnalogRange.minRawRotation)) - 0.5f) * angleChangeRange;
+        frontWheel.steerAngle = processerdAngle;
+    }
 
 
-	void ApplyVelocityDrag()
+
+    void ApplyVelocityDrag()
 	{	
 		playerRigidBody.AddForce (-velocityDrag * playerRigidBody.velocity.normalized*Mathf.Abs( Vector3.SqrMagnitude(playerRigidBody.velocity)));
 	}	
 
 
-	Vector3 GetPlayerNormal()
+	private Vector3 GetPlayerNormal()
 	{
 		Vector3 normal = Vector3.zero;
 
@@ -112,4 +124,14 @@ public class PlayerMovement : MonoBehaviour {
 			this.maxRawRotation = 1024;
 		}
 	}
+
+
+    private void OnCollisionEnter(Collision collision)
+    {   
+        GetComponent<Respawn>().RespawnPlayer();
+
+
+    }   
+
+
 }

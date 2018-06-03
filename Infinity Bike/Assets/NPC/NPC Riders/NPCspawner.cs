@@ -13,11 +13,11 @@ public class NPCspawner : MonoBehaviour
 	public float spawnMinDistance = 10f;
 
 	[Range(0,1f)]
-	public float spawnOnFrameProbability = 0f;
-	public float spawnCoolDoneTimer = 1f;
+	public float spawnProb = 0f;
+	public float spawnCooldown= 1f;
 	private float spawnTimer = 1f;
 
-	public float firstSpawnOffset = 5f;
+	public float spawnDelay = 5f;
 
 	// Use this for initialization
 	void Start () 
@@ -33,7 +33,7 @@ public class NPCspawner : MonoBehaviour
 			NPCList [i].SetActive (false);
 			NPCList [i].name = "NPC_Rider_" + i;
 		}	
-		spawnTimer = -firstSpawnOffset;
+		spawnTimer = -spawnDelay;
 		
 	}
 	
@@ -41,11 +41,11 @@ public class NPCspawner : MonoBehaviour
 	void Update () 
 	{
 
-		if (spawnTimer > spawnCoolDoneTimer ) 
+		if (spawnTimer > spawnCooldown ) 
 		{
 			float randomNumber = Random.Range (0, 1f);
 
-			if (randomNumber < spawnOnFrameProbability) 
+			if (randomNumber < spawnProb) 
 			{
 				SpawnNPC ();
 			}
@@ -87,6 +87,10 @@ public class NPCspawner : MonoBehaviour
 				int node = Respawn.FindNearestNode (trackNodes,player.transform);
 
 				NPCList [i].transform.position = player.transform.position - (trackNodes.GetNode(node)- trackNodes.GetNode(node-1)).normalized*spawnDistance;
+
+
+
+
 				NPCList [i].transform.forward = player.transform.forward;
 
 				hasDiabledGameObjectBeenFound = true;

@@ -5,7 +5,7 @@ using UnityEditor;
 
 [CustomEditor(typeof(Respawn))]
 public class Editor_RespawnPlayer : Editor {
-
+    
 
 	public override void OnInspectorGUI()
 	{
@@ -16,8 +16,6 @@ public class Editor_RespawnPlayer : Editor {
 		{
 			respawnScript.RespawnPlayer ();
 		}
-
-
 	}
 
 

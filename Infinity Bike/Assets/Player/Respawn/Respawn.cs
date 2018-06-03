@@ -42,7 +42,6 @@ public class Respawn : MonoBehaviour {
 			rb.angularVelocity = Vector3.zero;
 		}	
 
-
 		WheelCollider[] wheel = GetComponentsInChildren<WheelCollider> ();
 		foreach (WheelCollider item in wheel) 
 		{	

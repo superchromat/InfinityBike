@@ -12,7 +12,7 @@ public class GameController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         //Enable start game button
-        playerMovement.enabled = false;
+        playerMovement.isScriptActivated = false;
 		
 	}
 	
@@ -23,7 +23,7 @@ public class GameController : MonoBehaviour {
 
 	public void StartRace()
 	{
-        playerMovement.enabled = true;
+        playerMovement.isScriptActivated = true;
         startRaceButton.gameObject.SetActive(false);
         //Disable start game buttron
 	}
