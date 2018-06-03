@@ -18,17 +18,16 @@ public class PlayerPoints : MonoBehaviour {
 	}	
 	
 	// Update is called once per frame
-	void LateUpdate () 
-	{	
-		
-		pointText.text = points.ToString ();
-	}	
 
 	public void IncrementPoints()
-	{
+	{	
 		points++;
+		pointText.text = points.ToString ();
 
-	}
+	}	
+
+
+
 
 
 }

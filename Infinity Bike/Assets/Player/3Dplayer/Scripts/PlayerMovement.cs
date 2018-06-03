@@ -33,6 +33,7 @@ public class PlayerMovement : MonoBehaviour {
 		backWheel.ConfigureVehicleSubsteps(1, 12, 15);
 		frontWheel.ConfigureVehicleSubsteps(1, 12, 15);
 		playerRigidBody = GetComponent<Rigidbody> ();
+	//	playerRigidBody.freezeRotation = false;
 	}
 
 	// Update is called once per frame
@@ -44,7 +45,9 @@ public class PlayerMovement : MonoBehaviour {
 		if (handleBar != null) 
 		{handleBar.localRotation = Quaternion.Euler (0, processerdAngle + 90, 90);}
 
-		transform.rotation = Quaternion.Euler (transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, 0);
+
+
+		transform.rotation = Quaternion.LookRotation (transform.forward, GetPlayerNormal ());
 
 	}	
 	
@@ -59,7 +62,6 @@ public class PlayerMovement : MonoBehaviour {
 		}	 
 		else if (processerdSpeed != 0) 
 		{	
-			
 			backWheel.brakeTorque = 0;
 			frontWheel.brakeTorque = 0;
 
@@ -68,7 +70,7 @@ public class PlayerMovement : MonoBehaviour {
 		else
 		{	
 			backWheel.brakeTorque = breakForce;
-			frontWheel.brakeTorque = breakForce;
+			frontWheel.brakeTorque = breakForce/2f;
 		}	
 
 		frontWheel.steerAngle = processerdAngle;
@@ -76,9 +78,25 @@ public class PlayerMovement : MonoBehaviour {
 
 
 	void ApplyVelocityDrag()
-	{
+	{	
 		playerRigidBody.AddForce (-velocityDrag * playerRigidBody.velocity.normalized*Mathf.Abs( Vector3.SqrMagnitude(playerRigidBody.velocity)));
-		}
+	}	
+
+
+	Vector3 GetPlayerNormal()
+	{
+		Vector3 normal = Vector3.zero;
+
+		WheelHit hit;
+		backWheel.GetGroundHit (out hit);
+		normal += hit.normal;
+		frontWheel.GetGroundHit (out hit);
+		normal += hit.normal;
+
+
+		return normal.normalized;
+	}
+
 
 	[Serializable]
 	public class AnalogRange
