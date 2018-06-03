@@ -8,6 +8,7 @@ public class NPCspawner : MonoBehaviour
 	public GameObject toSpawnPrefab = null;
 	private List<GameObject> NPCList = new List<GameObject> ();
 	public int maxNpcOnTrack = 20;
+	public float spawnTimeBehind = 2f;// how far the npc should spawn in seconds.
 
 	[Range(0,1f)]
 	public float spawnOnFrameProbability = 0f;
@@ -62,11 +63,8 @@ public class NPCspawner : MonoBehaviour
 		{	
 			if (NPCList [i].activeSelf == false) 
 			{	
-				NPCList [i].transform.position = player.transform.position - player.transform.rotation*Vector3.forward*20f;
-				NPCList [i].transform.forward = player.transform.forward;
 
 				NPCList [i].SetActive (true);
-				hasDiabledGameObjectBeenFound = true;
 
 				AIDriver aiHolder = NPCList [i].GetComponent<AIDriver> ();
 				if (aiHolder != null) 
@@ -78,6 +76,13 @@ public class NPCspawner : MonoBehaviour
 						aiHolder.velocity = targetVelocity * (1 + Random.Range (-0.5f, 0.5f));
 					}	
 				}
+
+				NPCList [i].transform.position = player.transform.position - player.transform.rotation*Vector3.forward*spawnTimeBehind* aiHolder.velocity;
+				NPCList [i].transform.forward = player.transform.forward;
+
+				hasDiabledGameObjectBeenFound = true;
+
+
 			}	
 
 		}	

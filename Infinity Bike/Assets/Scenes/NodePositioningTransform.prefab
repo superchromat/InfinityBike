@@ -9,31 +9,30 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1690385288647830}
+  m_RootGameObject: {fileID: 1184520914533634}
   m_IsPrefabParent: 1
---- !u!1 &1690385288647830
+--- !u!1 &1184520914533634
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4006619830136158}
-  - component: {fileID: 114087724039118878}
-  - component: {fileID: 114654354636595098}
+  - component: {fileID: 4296209874138802}
+  - component: {fileID: 114901981292346666}
   m_Layer: 0
-  m_Name: ArduinoMonitorThreaded
+  m_Name: NodePositioningTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4006619830136158
+--- !u!4 &4296209874138802
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1690385288647830}
+  m_GameObject: {fileID: 1184520914533634}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -41,37 +40,15 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114087724039118878
+--- !u!114 &114901981292346666
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1690385288647830}
+  m_GameObject: {fileID: 1184520914533634}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0f9597e5650df14fa342382efa88ec5, type: 3}
+  m_Script: {fileID: 11500000, guid: e2f42f34037a2144fa27fe53a24f1d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotation: {fileID: 0}
-  speed: {fileID: 0}
---- !u!114 &114654354636595098
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1690385288647830}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b29aa5e87ea9f394ab7711c1ef3564b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  useArduinoPort: 1
-  keyboardSpeed: 1000
-  keyboardAngle: 512
-  keyboardMultiplier: 100
-  comPort: Code will select automatically.
-  baudRate: 9600
-  arduinoReadTimeout: 50
-  values:
-    rotation: 0
-    speed: 0
+  trackNode: {fileID: 0}
