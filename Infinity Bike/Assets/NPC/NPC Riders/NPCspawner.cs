@@ -7,8 +7,10 @@ public class NPCspawner : MonoBehaviour
 	public Transform player;
 	public GameObject toSpawnPrefab = null;
 	private List<GameObject> NPCList = new List<GameObject> ();
+	public TrackNode trackNodes;
 	public int maxNpcOnTrack = 20;
 	public float spawnTimeBehind = 2f;// how far the npc should spawn in seconds.
+	public float spawnMinDistance = 10f;
 
 	[Range(0,1f)]
 	public float spawnOnFrameProbability = 0f;
@@ -63,7 +65,6 @@ public class NPCspawner : MonoBehaviour
 		{	
 			if (NPCList [i].activeSelf == false) 
 			{	
-
 				NPCList [i].SetActive (true);
 
 				AIDriver aiHolder = NPCList [i].GetComponent<AIDriver> ();
@@ -74,10 +75,18 @@ public class NPCspawner : MonoBehaviour
 					if(targetVelocity < aiHolder.velocity && targetVelocity > 0.1f) 
 					{	
 						aiHolder.velocity = targetVelocity * (1 + Random.Range (-0.5f, 0.5f));
+
 					}	
 				}
 
-				NPCList [i].transform.position = player.transform.position - player.transform.rotation*Vector3.forward*spawnTimeBehind* aiHolder.velocity;
+				float spawnDistance = spawnMinDistance;
+				if (spawnMinDistance > (spawnTimeBehind * aiHolder.velocity) )
+				{
+					spawnDistance = spawnTimeBehind * aiHolder.velocity;
+				}
+				int node = Respawn.FindNearestNode (trackNodes,player.transform);
+
+				NPCList [i].transform.position = player.transform.position - (trackNodes.GetNode(node)- trackNodes.GetNode(node-1)).normalized*spawnDistance;
 				NPCList [i].transform.forward = player.transform.forward;
 
 				hasDiabledGameObjectBeenFound = true;

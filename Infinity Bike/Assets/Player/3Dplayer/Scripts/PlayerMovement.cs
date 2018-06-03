@@ -37,20 +37,16 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void FixedUpdate () 
+	void FixedUpdate ()
 	{	
 		ApplyWheelForces ();
 		ApplyVelocityDrag ();
 
-		if (handleBar != null) 
-		{handleBar.localRotation = Quaternion.Euler (0, processerdAngle + 90, 90);}
-
-
-
+		if (handleBar != null) {
+			handleBar.localRotation = Quaternion.Euler (0, processerdAngle + 90, 90);
+		}
 		transform.rotation = Quaternion.LookRotation (transform.forward, GetPlayerNormal ());
-
 	}	
-	
 	void ApplyWheelForces()
 	{
 		processerdAngle = (storageValue.values.rotation / ((rotationAnalogRange.maxRawRotation - rotationAnalogRange.minRawRotation)) - 0.5f)*angleChangeRange;
@@ -70,7 +66,7 @@ public class PlayerMovement : MonoBehaviour {
 		else
 		{	
 			backWheel.brakeTorque = breakForce;
-			frontWheel.brakeTorque = breakForce/2f;
+			frontWheel.brakeTorque = breakForce;
 		}	
 
 		frontWheel.steerAngle = processerdAngle;

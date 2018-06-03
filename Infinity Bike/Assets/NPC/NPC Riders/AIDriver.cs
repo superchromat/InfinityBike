@@ -24,6 +24,7 @@ public class AIDriver : MonoBehaviour {
 	{	
 		nearestNode = Respawn.FindNearestNode (trackNode, transform);
 		transform.position = trackNode.GetNode(nearestNode);
+
 		initiatingTime = Time.time;
 
 		rend = GetComponent<MeshRenderer> ();
