@@ -1398,9 +1398,9 @@ MonoBehaviour:
   toSpawnPrefab: {fileID: 1314584953860934, guid: babf1039dc84bb74ba32cf9594035dd2,
     type: 2}
   maxNpcOnTrack: 20
-  spawnOnFrameProbability: 1
+  spawnOnFrameProbability: 0
   spawnCoolDoneTimer: 1
-  firstSpawnOffset: 0
+  firstSpawnOffset: 5
 --- !u!1001 &2026589022
 Prefab:
   m_ObjectHideFlags: 0
