@@ -86,12 +86,8 @@ public class NPCspawner : MonoBehaviour
 				}
 				int node = Respawn.FindNearestNode (trackNodes,player.transform);
 
-				NPCList [i].transform.position = player.transform.position - (trackNodes.GetNode(node)- trackNodes.GetNode(node-1)).normalized*spawnDistance;
-
-
-
-
-				NPCList [i].transform.forward = player.transform.forward;
+                NPCList [i].transform.position = player.transform.position - (trackNodes.GetNode(node)- trackNodes.GetNode(node-1)).normalized*spawnDistance;
+                NPCList [i].transform.forward = player.transform.forward;
 
 				hasDiabledGameObjectBeenFound = true;
 

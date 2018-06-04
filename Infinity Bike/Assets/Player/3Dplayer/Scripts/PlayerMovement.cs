@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	public float breakForce = 1000;
 	private Rigidbody playerRigidBody;
+  //  private bool onTriggerDone = false;
 
     
 	// Use this for initialization
@@ -65,11 +66,12 @@ public class PlayerMovement : MonoBehaviour {
 			backWheel.brakeTorque = 0;
 			frontWheel.brakeTorque = 0;
 
-			backWheel.motorTorque = processerdSpeed;  
-		}	
+			backWheel.motorTorque = processerdSpeed;
+            ApplyVelocityDrag(velocityDrag);
+        }	
 		else
 		{
-            ApplyVelocityDrag();
+            ApplyVelocityDrag(1);
 
             backWheel.brakeTorque = breakForce;
 			frontWheel.brakeTorque = breakForce;
@@ -85,9 +87,9 @@ public class PlayerMovement : MonoBehaviour {
 
 
 
-    void ApplyVelocityDrag()
+    void ApplyVelocityDrag(float drag)
 	{	
-		playerRigidBody.AddForce (-velocityDrag * playerRigidBody.velocity.normalized*Mathf.Abs( Vector3.SqrMagnitude(playerRigidBody.velocity)));
+		playerRigidBody.AddForce (-drag * playerRigidBody.velocity.normalized*Mathf.Abs( Vector3.SqrMagnitude(playerRigidBody.velocity)));
 	}	
 
 
@@ -130,8 +132,17 @@ public class PlayerMovement : MonoBehaviour {
     {   
         GetComponent<Respawn>().RespawnPlayer();
 
+        //if (onTriggerDone == false)
+        //{
 
-    }   
+        //    onTriggerDone = true;
+        //    Vector3 normal = collision.contacts[0].normal;
+
+
+        //    transform.rotation = Quaternion.LookRotation(transform.forward, normal);
+        //}
+    }
+
 
 
 }

@@ -44,9 +44,7 @@ public class Respawn : MonoBehaviour {
 
 		WheelCollider[] wheel = GetComponentsInChildren<WheelCollider> ();
 		foreach (WheelCollider item in wheel) 
-		{	
-			item.brakeTorque = 1000f;
-		}	
+		{item.brakeTorque = 1000f;}
 
 		transform.position = respawnPoint.GetNode(minDistanceNode);
 		transform.forward = respawnPoint.GetNode(minDistanceNode + 1) - transform.position;

@@ -23,7 +23,8 @@ GameObject:
   - component: {fileID: 23597391591222978}
   - component: {fileID: 114016625423030776}
   - component: {fileID: 114797412066702862}
-  m_Layer: 0
+  - component: {fileID: 135326062331757464}
+  m_Layer: 9
   m_Name: NPC_Rider_XX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,3 +113,17 @@ MonoBehaviour:
   velocity: 10
   velocityChangeFrequency: 1
   velocityChangeMultiplier: 0.2
+  lifeTimer: 0
+  lifeTimeLength: 20
+--- !u!135 &135326062331757464
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1314584953860934}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.50000006
+  m_Center: {x: 0, y: 0, z: -0.0000019073486}
