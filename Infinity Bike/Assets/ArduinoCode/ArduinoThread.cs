@@ -102,29 +102,34 @@ public class ArduinoThread : MonoBehaviour
         }
 
 
-		foreach (string port in ports) 
+        foreach (string port in ports) 
 		{
-  
+            
 			arduinoPort = new SerialPort(port, (int)baudRate);
 			arduinoPort.ReadTimeout = arduinoReadTimeout;
-			try{
-				
-				arduinoPort.Open();
-				if ( arduinoPort.IsOpen ) 
-				{	
-					WriteToArduino("READY");
+			try
+            {
+                arduinoPort.Open();
+                if ( arduinoPort.IsOpen ) 
+				{
 
-					string result = null;
+                    WriteToArduino("READY");
+
+                    string result = null;
 					activeThread = new Thread(	()=>{result = arduinoPort.ReadLine();}	);
 					activeThread.Start ();
 
-					while(activeThread.IsAlive){}
 
-					if(result == "READY")
-					{return port;}
-				}	
+                    while (activeThread.IsAlive){}
 
-			}
+                    if (result == "READY")
+                    { return port; }
+                    else
+                    { arduinoPort.Close(); }
+
+                }
+
+            }
             catch{}
 		}	
 		return null;

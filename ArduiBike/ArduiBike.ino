@@ -28,6 +28,7 @@ void setup()
 	sCmd.addCommand("DONE", StopCommunication);
 
 	pinMode(LED_BUILTIN, OUTPUT);
+	pinMode(12, INPUT);
 	digitalWrite(LED_BUILTIN, LOW);
 }
 
@@ -43,10 +44,21 @@ void loop()
 
 	unsigned long currMillis = millis();
 	if ((currMillis - zeroSpeedTime) > zeroSpeedThreshold)
-	{
+	{	
 		zeroSpeedTime = currMillis;
 		revolSpeed >>= 1;
+	}	
+
+	if (digitalRead(12) == true)
+	{
+		revolSpeed = 80;
 	}
+	else
+	{
+		revolSpeed = 0;
+	}
+
+
 
 
 }
@@ -57,8 +69,7 @@ void rotHandler()
 }
 void speedHandler()
 {
-	//Serial.println(revolSpeed);
-	Serial.println(analogRead(A1));
+	Serial.println(revolSpeed);
 }
 
 void allHandler()

@@ -68,22 +68,25 @@ public class NPCspawner : MonoBehaviour
 				NPCList [i].SetActive (true);
 
 				AIDriver aiHolder = NPCList [i].GetComponent<AIDriver> ();
-				if (aiHolder != null) 
-				{
-					float targetVelocity = player.GetComponent<Rigidbody> ().velocity.magnitude;
-
+				float targetVelocity = player.GetComponent<Rigidbody> ().velocity.magnitude;
+				if (aiHolder != null)
+                {
 					if(targetVelocity < aiHolder.velocity && targetVelocity > 0.1f) 
 					{	
-						aiHolder.velocity = targetVelocity * (1 + Random.Range (-0.5f, 0.5f));
-
+						aiHolder.velocity = targetVelocity * (1 + Random.Range (0.1f, 0.5f));
 					}	
 				}
-
 				float spawnDistance = spawnMinDistance;
-				if (spawnMinDistance > (spawnTimeBehind * aiHolder.velocity) )
-				{
-					spawnDistance = spawnTimeBehind * aiHolder.velocity;
-				}
+
+                if (aiHolder.velocity > targetVelocity)
+                {
+                    if (spawnMinDistance > (spawnTimeBehind * aiHolder.velocity))
+                    {   
+                        spawnDistance = spawnTimeBehind * aiHolder.velocity;
+                    }   
+                }
+
+
 				int node = Respawn.FindNearestNode (trackNodes,player.transform);
 
                 NPCList [i].transform.position = player.transform.position - (trackNodes.GetNode(node)- trackNodes.GetNode(node-1)).normalized*spawnDistance;

@@ -8,7 +8,7 @@ using System;
 //[ExecuteInEditMode]
 public class CameraFollow : MonoBehaviour {
 
-    private Camera camera;
+    private Camera mainCamera;
 	public Rigidbody objToFollowBack;
 	public Vector3 cameraOffset = Vector3.zero;
 
@@ -22,8 +22,8 @@ public class CameraFollow : MonoBehaviour {
 
     void Start () 
 	{
-        camera = GetComponent<Camera>();
-        startFovSlider = camera.fieldOfView;
+        mainCamera = GetComponent<Camera>();
+        startFovSlider = mainCamera.fieldOfView;
     }   
 
     // Update is called once per frame
@@ -42,7 +42,7 @@ public class CameraFollow : MonoBehaviour {
 		transform.LookAt (objToFollowBack.transform, objToFollowBack.transform.up);
 
 
-        camera.fieldOfView = startFovSlider * (1 + cameraFovAmplitude*(float)Math.Tanh(objToFollowBack.velocity.sqrMagnitude / cameraFovSensitivity));
+        mainCamera.fieldOfView = startFovSlider * (1 + cameraFovAmplitude*(float)Math.Tanh(objToFollowBack.velocity.sqrMagnitude / cameraFovSensitivity));
         
 
     }
