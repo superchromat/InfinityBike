@@ -27,7 +27,7 @@ void setup()
 	sCmd.addCommand("READY", StartCommunication);
 	sCmd.addCommand("DONE", StopCommunication);
 
-	pinMode(LED_BUILTIN, OUTPUT);
+	pinMode(11, OUTPUT);
 	pinMode(12, INPUT);
 	digitalWrite(LED_BUILTIN, LOW);
 }
@@ -39,6 +39,7 @@ void loop()
 	
 	while (Serial.available() > 0)
 	{
+    Serial.flush  ();
 		sCmd.readSerial();
 	}
 
@@ -66,10 +67,12 @@ void loop()
 void rotHandler()
 {
 	Serial.println(analogRead(A0));
+  Serial.flush  ();
 }
 void speedHandler()
 {
 	Serial.println(revolSpeed);
+  Serial.flush  ();
 }
 
 void allHandler()
@@ -80,17 +83,19 @@ void allHandler()
 
 void StartCommunication()
 {	
-	Serial.end();
-	digitalWrite(LED_BUILTIN, HIGH);
 
-	Serial.begin(9600);
 	Serial.println("READY");
+  Serial.flush  ();
+  digitalWrite(11, HIGH);
 }	
 
 void StopCommunication()
-{
-	Serial.println("DONE");
-	digitalWrite(LED_BUILTIN, LOW);
+{ 
+	digitalWrite(11, LOW);
+  // while(Serial.available() > 0) 
+ //  {
+    //char t = Serial.read();
+  //}
 }
 
 

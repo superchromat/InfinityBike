@@ -114,7 +114,7 @@ MonoBehaviour:
   velocityChangeFrequency: 1
   velocityChangeMultiplier: 0.2
   lifeTimer: 0
-  lifeTimeLength: 20
+  lifeTimeLength: 1
 --- !u!135 &135326062331757464
 SphereCollider:
   m_ObjectHideFlags: 1

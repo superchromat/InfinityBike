@@ -52,8 +52,13 @@ public class AIDriver : MonoBehaviour {
 
 
 	Vector3 CalculateNextTarget()
-	{	
-		return Vector3.MoveTowards (transform.position, trackNode.GetNode (nearestNode + 1), UpdateVelocity() * Time.deltaTime);
+	{
+        Vector3 nextNode = trackNode.GetNode(nearestNode + 1);
+        Vector3 lastNode = trackNode.GetNode(nearestNode);
+
+        transform.rotation = Quaternion.RotateTowards(transform.rotation,  Quaternion.LookRotation(nextNode - lastNode, Vector3.up) , 0.5f);
+
+        return Vector3.MoveTowards (transform.position, nextNode + transform.right*Mathf.Sin(Time.time), UpdateVelocity() * Time.deltaTime);
 	}	
 
 	float UpdateVelocity()

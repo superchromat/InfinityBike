@@ -86,7 +86,6 @@ public class ArduinoThread : MonoBehaviour
 		}
 	}
 
-
     private string AutoDetectArduinoPort()
     {
         //Find ports list in Windows or Mac
@@ -107,30 +106,32 @@ public class ArduinoThread : MonoBehaviour
             
 			arduinoPort = new SerialPort(port, (int)baudRate);
 			arduinoPort.ReadTimeout = arduinoReadTimeout;
-			try
+            string result = null;
+            try
             {
                 arduinoPort.Open();
-                if ( arduinoPort.IsOpen ) 
-				{
+                if (arduinoPort.IsOpen)
+                {
 
                     WriteToArduino("READY");
 
-                    string result = null;
-					activeThread = new Thread(	()=>{result = arduinoPort.ReadLine();}	);
-					activeThread.Start ();
-
-
-                    while (activeThread.IsAlive){}
+                    result = arduinoPort.ReadLine();
 
                     if (result == "READY")
-                    { return port; }
-                    else
-                    { arduinoPort.Close(); }
+                    {
+                        return port;
+                    }
 
                 }
 
             }
-            catch{}
+            catch
+            {
+                arduinoPort.DiscardOutBuffer();
+                arduinoPort.DiscardInBuffer();
+                arduinoPort.Dispose();
+            }
+
 		}	
 		return null;
 	}
@@ -161,9 +162,16 @@ public class ArduinoThread : MonoBehaviour
 	void OnDestroy()
 	{
         if (useArduinoPort)
-		{
-            WriteToArduino("DONE");
-            arduinoPort.Close();
+        {
+            try
+            {
+                WriteToArduino("DONE");
+                arduinoPort.Dispose();
+            }
+            catch(Exception e)
+            {
+                Debug.Log(e.Message);
+            }
         }
 		
 	}
