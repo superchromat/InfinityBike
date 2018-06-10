@@ -29,7 +29,10 @@ public class ArduinoThread : MonoBehaviour
 
 	void Start () 
 	{
-		comPort = AutoDetectArduinoPort ();
+        if (useArduinoPort) {
+            comPort = AutoDetectArduinoPort();
+        }
+		
 	}	
 
 	void Update () 
