@@ -12,7 +12,7 @@ public class Respawn : MonoBehaviour {
 	void Start () 
 	{	
 		rb = GetComponent<Rigidbody> ();
-		RespawnPlayer ();
+		RespawnObject ();
 
 	}	
 	
@@ -20,10 +20,10 @@ public class Respawn : MonoBehaviour {
 	void FixedUpdate () 
 	{
 		if (transform.position.y < verticalRespawnPoint) 
-		{RespawnPlayer ();}
+		{RespawnObject ();}
 	}
 
-	public void RespawnPlayer()
+	public void RespawnObject()
 	{
 
 		if (respawnPoint.GetNodeCount () <= 1) 

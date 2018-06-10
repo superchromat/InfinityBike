@@ -50,14 +50,14 @@ void loop()
 		revolSpeed >>= 1;
 	}	
 
-	if (digitalRead(12) == true)
-	{
-		revolSpeed = 80;
-	}
-	else
-	{
-		revolSpeed = 0;
-	}
+	//if (digitalRead(12) == true)
+	//{
+	//	revolSpeed = 80;
+//	}
+//	else
+///	{
+//		revolSpeed = 0;
+//	}
 
 
 
@@ -83,7 +83,7 @@ void allHandler()
 
 void StartCommunication()
 {	
-
+  
 	Serial.println("READY");
   Serial.flush  ();
   digitalWrite(11, HIGH);
@@ -92,10 +92,7 @@ void StartCommunication()
 void StopCommunication()
 { 
 	digitalWrite(11, LOW);
-  // while(Serial.available() > 0) 
- //  {
-    //char t = Serial.read();
-  //}
+
 }
 
 

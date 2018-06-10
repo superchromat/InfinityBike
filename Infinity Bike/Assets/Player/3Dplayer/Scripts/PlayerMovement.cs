@@ -130,7 +130,7 @@ public class PlayerMovement : MonoBehaviour {
 
     private void OnCollisionEnter(Collision collision)
     {   
-        GetComponent<Respawn>().RespawnPlayer();
+        GetComponent<Respawn>().RespawnObject();
 
         //if (onTriggerDone == false)
         //{

@@ -1,11 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 using System;
 
 
-//[ExecuteInEditMode]
 public class CameraFollow : MonoBehaviour {
 
     private Camera mainCamera;
