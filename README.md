@@ -3,6 +3,8 @@
   
 Welcome to the Infinity Bike repository. A simple and inexpensive indoors bike training video game with built-in sensors that allows the player to ride on a virtual track.
 
+Visit our new website! www.infinitybike.net
+
 ## Why use Infinity Bike? 
 
 Rainy days and the Winter season can really disrupt a training program. Riders always have the option to mount their bike on a trainer but the monotony of trainers

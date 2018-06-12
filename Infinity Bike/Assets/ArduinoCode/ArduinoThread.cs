@@ -30,8 +30,16 @@ public class ArduinoThread : MonoBehaviour
 
 	void Start () 
 	{
+<<<<<<< HEAD
         ResetCurrentActiveValueGetter();
     }
+=======
+        if (useArduinoPort) {
+            comPort = AutoDetectArduinoPort();
+        }
+		
+	}	
+>>>>>>> bbbc0fc380e7f73c648fbb9894114a88a65d287f
 
     void Update () 
 	{
