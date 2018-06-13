@@ -11,41 +11,25 @@ using System.Threading;
 public class ArduinoThread : MonoBehaviour 
 {
     public bool useArduinoPort = true;
-    public float keyboardSpeed = 100 ;
-    public float keyboardAngle = 550;
-    public float keyboardMultiplier = 100;
+    public Action CurrentActiveValueGetter = null;
 
-	// Use this for initialization
-	public string comPort = "Code will select automatically.";
-	public enum BaudRate{ _9600 = 9600,_14400= 14400} ;
-	public BaudRate baudRate = BaudRate._9600;
-
-	public int arduinoReadTimeout = 50;
-
-	public ArduinoValueStorage values = new ArduinoValueStorage ();
-    Action CurrentActiveValueGetter = null;
-
-	private Thread activeThread = null;
-	private SerialPort arduinoPort = null;
-
+    public ArduinoAgent arduinoAgent = new ArduinoAgent();
+    public ArduinoValueStorage values = new ArduinoValueStorage ();
+    public KeboardAlternative keboardAlternative = new KeboardAlternative(1,550,100);
+    
+    private Thread activeThread = null;
+    
 	void Start () 
 	{
-<<<<<<< HEAD
+        DontDestroyOnLoad(GetComponent<GameObject>());
+
         ResetCurrentActiveValueGetter();
-    }
-=======
-        if (useArduinoPort) {
-            comPort = AutoDetectArduinoPort();
-        }
-		
-	}	
->>>>>>> bbbc0fc380e7f73c648fbb9894114a88a65d287f
+    }   
 
     void Update () 
 	{
-        
         CurrentActiveValueGetter();
-	}
+	}   
 
     private void ResetCurrentActiveValueGetter()
     {
@@ -75,23 +59,23 @@ public class ArduinoThread : MonoBehaviour
 
             }
         }
-    }   
+    } 
+    
     private void SynchronousReadFromKeyBoard()
     {
-        values.speed = (UInt16)(Mathf.Abs(Input.GetAxis("Vertical")) * keyboardSpeed);
-        values.rotation = (UInt16)((keyboardAngle + Input.GetAxis("Horizontal") * keyboardMultiplier));
+        values.speed = (UInt16)(Mathf.Abs(Input.GetAxis("Vertical")) * keboardAlternative.keyboardSpeed);
+        values.rotation = (UInt16)((keboardAlternative.keyboardAngle + Input.GetAxis("Horizontal") * keboardAlternative.keyboardMultiplier));
     }
-
 	private void AsynchronousReadFromArduino()
 	{   
-        WriteToArduino("ALL");
+        arduinoAgent.WriteToArduino("ALL");
         string rotString = null;
         string speedString = null;
 
         try
         {
-            rotString = arduinoPort.ReadLine();
-            speedString = arduinoPort.ReadLine();
+            rotString = arduinoAgent.arduinoPort.ReadLine();
+            speedString = arduinoAgent.arduinoPort.ReadLine();
             values.SetValue(UInt16.Parse(rotString), UInt16.Parse(speedString));
             activeThread = new Thread(() => { AsynchronousReadFromArduino(); });
         }
@@ -111,28 +95,18 @@ public class ArduinoThread : MonoBehaviour
     }
     private void AsychronousAutoDetectArduino()
     {
-        comPort = AutoDetectArduinoPort();
+        arduinoAgent.comPort = AutoDetectArduinoPort();
     }
     
-    private void WriteToArduino(string message)
-	{
-        if (arduinoPort.IsOpen)
-        {
-            message = message + "\r\n";
-            arduinoPort.Write(message);
-            arduinoPort.BaseStream.Flush();
-        }
-	}
-
     private string AutoDetectArduinoPort()
     {
         Debug.Log("autoDectect");
         try
         {
-            if (arduinoPort.IsOpen)
-            { arduinoPort.Dispose(); }
+            if (arduinoAgent.arduinoPort.IsOpen)
+            { arduinoAgent.arduinoPort.Dispose(); }
         }
-        catch (NullReferenceException) { }
+        catch (NullReferenceException) {}
         
         //Find ports list in Windows or Mac
         string[] ports;
@@ -145,21 +119,19 @@ public class ArduinoThread : MonoBehaviour
         foreach (string port in ports) 
 		{
             string result = null;
-            
-            arduinoPort = new SerialPort(port, (int)baudRate);
-            arduinoPort.ReadTimeout = arduinoReadTimeout;
-            arduinoPort.Open();                   
 
-            if (arduinoPort.IsOpen)
+            arduinoAgent.openArduinoPort(port);
+
+            if (arduinoAgent.arduinoPort.IsOpen)
             {   
                 const int tryCount = 10;
                 for (int i = 0; i < tryCount; i++)
                 {
                     try
                     {   
-                        WriteToArduino("READY");
+                        arduinoAgent.WriteToArduino("READY");
                         Thread.Sleep(50);
-                        result = arduinoPort.ReadLine();
+                        result = arduinoAgent.arduinoPort.ReadLine();
                     }   
                     catch (TimeoutException)
                     {
@@ -177,24 +149,9 @@ public class ArduinoThread : MonoBehaviour
         }
         activeThread = new Thread(() => { AsychronousAutoDetectArduino(); });
         return null;
-    }
+    }   
     
-	void OnDestroy()
-	{
-        if (useArduinoPort)
-        {
-            try
-            {
-                WriteToArduino("DONE");
-                arduinoPort.Dispose();
-            }
-            catch(Exception e)
-            {
-                Debug.Log(e.Message);
-            }
-        }
-		
-	}
+
 
     string[] GetPortNamesOSX() //Function retreived from : 
     //https://answers.unity.com/questions/643078/serialportsgetportnames-error.html
@@ -216,6 +173,23 @@ public class ArduinoThread : MonoBehaviour
 
 
     [Serializable]
+    public struct KeboardAlternative
+    {
+        public float keyboardSpeed;
+        public float keyboardAngle;
+        public float keyboardMultiplier;
+
+        public KeboardAlternative(float KeyboardSpeed, float KeyboardAngle, float KeyboardMultiplier)
+        {
+            keyboardSpeed = KeyboardSpeed;
+            keyboardAngle = KeyboardAngle;
+            keyboardMultiplier = KeyboardMultiplier;
+        }
+
+
+    }
+
+    [Serializable]
     public class ArduinoValueStorage
     {
         public UInt16 rotation;
@@ -233,4 +207,10 @@ public class ArduinoThread : MonoBehaviour
         public ArduinoValueStorage(UInt16 rotation, UInt16 speed)
         { SetValue(rotation, speed); }
     }
-}	
+
+    void OnDestroy()
+    {   
+        if (useArduinoPort)
+        {arduinoAgent.ArduinoAgentCleanup();}
+    }   
+}

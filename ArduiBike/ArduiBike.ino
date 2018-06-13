@@ -8,7 +8,7 @@ bool reset = true;
 
 unsigned long lastRevolTime = 0;
 unsigned long revolSpeed = 0;
-unsigned long zeroSpeedThreshold = 750;
+unsigned long zeroSpeedThreshold = 1000;
 unsigned long zeroSpeedTime = 0;
 
 void rotHandler();
@@ -39,7 +39,6 @@ void loop()
 	
 	while (Serial.available() > 0)
 	{
-    Serial.flush  ();
 		sCmd.readSerial();
 	}
 
@@ -50,10 +49,6 @@ void loop()
 		revolSpeed >>= 1;
 	}	
 
-  if(  digitalRead(12) == true)
-  {
-    revolSpeed = 80;  
-  }
 
 
 }
@@ -79,7 +74,7 @@ void StartCommunication()
 {	
   
 	Serial.println("READY");
- // Serial.flush  ();
+  Serial.flush  ();
   digitalWrite(11, HIGH);
 }	
 

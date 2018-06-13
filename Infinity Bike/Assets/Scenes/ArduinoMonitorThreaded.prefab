@@ -66,12 +66,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useArduinoPort: 1
-  keyboardSpeed: 1000
-  keyboardAngle: 512
-  keyboardMultiplier: 100
-  comPort: Code will select automatically.
-  baudRate: 9600
-  arduinoReadTimeout: 50
+  arduinoAgent:
+    comPort: Code will select automatically.
+    baudRate: 9600
+    arduinoReadTimeout: 50
   values:
     rotation: 0
     speed: 0
+  keboardAlternative:
+    keyboardSpeed: 1
+    keyboardAngle: 550
+    keyboardMultiplier: 100

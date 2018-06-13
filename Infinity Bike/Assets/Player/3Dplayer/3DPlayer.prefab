@@ -23,7 +23,8 @@ GameObject:
   - component: {fileID: 114793156096934804}
   - component: {fileID: 114702221007306516}
   - component: {fileID: 114627130012401834}
-  - component: {fileID: 135093244895933258}
+  - component: {fileID: 136676224690807256}
+  - component: {fileID: 114911874141278318}
   m_Layer: 8
   m_Name: 3DPlayer
   m_TagString: Untagged
@@ -69,8 +70,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1359998424583934}
-  m_LocalRotation: {x: -0.033655453, y: -0.7837942, z: -0.012010595, w: -0.6199918}
-  m_LocalPosition: {x: -83.956696, y: 18.673082, z: 26.44925}
+  m_LocalRotation: {x: -0.031406857, y: -0.8688778, z: -0.017076135, w: -0.49373406}
+  m_LocalPosition: {x: -14.99862, y: 18.2409, z: -9.580671}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4950087253571232}
@@ -131,7 +132,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isScriptActivated: 1
-  speedMultiplier: 80
+  speedMultiplier: 600
   angleChangeRange: 180
   velocityDrag: 2
   backWheel: {fileID: 146941809944544644}
@@ -171,8 +172,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   respawnPoint: {fileID: 11400000, guid: a67413c1147a1ae488549f211d328dee, type: 2}
   verticalRespawnPoint: -50
---- !u!135 &135093244895933258
-SphereCollider:
+--- !u!114 &114911874141278318
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1359998424583934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e68620826c7f7d4ba55229cce1f2ff7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraMain: {fileID: 0}
+  npcManager: {fileID: 0}
+--- !u!136 &136676224690807256
+CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -180,8 +194,9 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.4
+  m_Radius: 0.1
+  m_Height: 1
+  m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!146 &146290239315594020
 WheelCollider:

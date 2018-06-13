@@ -15,19 +15,17 @@ public class PlayerMovement : MonoBehaviour {
 	public WheelCollider backWheel;
 	public WheelCollider frontWheel;
 
-	public ArduinoThread storageValue;
+	public ArduinoThread serialValues;
 	public Transform handleBar;
 
 	//public WheelFrictionCurveSetter wheelFrictionSetter = new WheelFrictionCurveSetter();
 	public AnalogRange rotationAnalogRange = new AnalogRange();
-	public AnalogRange	speedAnalogRange = new AnalogRange();
 
-	private float processerdAngle = 0;
+	private float processedAngle = 0;
 	private float processerdSpeed = 0;
 
 	public float breakForce = 1000;
 	private Rigidbody playerRigidBody;
-  //  private bool onTriggerDone = false;
 
     
 	// Use this for initialization
@@ -48,19 +46,26 @@ public class PlayerMovement : MonoBehaviour {
         }
 
 		if (handleBar != null) {
-			handleBar.localRotation = Quaternion.Euler (0, processerdAngle + 90, 90);
+			handleBar.localRotation = Quaternion.Euler (0, processedAngle + 90, 90);
 		}
-		transform.rotation = Quaternion.LookRotation (transform.forward, GetPlayerNormal ());
-	}	
-    
-	void ApplyWheelForces()
+
+        SetPlayerRotationUp();
+    }   
+
+    void SetPlayerRotationUp()
+    {
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward, GetPlayerNormal()), 0.5f);
+    }
+
+    void ApplyWheelForces()
 	{   
-		processerdSpeed = storageValue.values.speed / ((speedAnalogRange.maxRawRotation - speedAnalogRange.minRawRotation)) * speedMultiplier;
+		processerdSpeed = serialValues.values.speed * speedMultiplier;
 	    
 		if (Input.GetKey (KeyCode.Space)) 
 		{	
 			backWheel.motorTorque = -processerdSpeed;
 		}	 
+
 		else if (processerdSpeed != 0) 
 		{	
 			backWheel.brakeTorque = 0;
@@ -71,7 +76,7 @@ public class PlayerMovement : MonoBehaviour {
         }	
 		else
 		{
-            ApplyVelocityDrag(1);
+            ApplyVelocityDrag(velocityDrag);
 
             backWheel.brakeTorque = breakForce;
 			frontWheel.brakeTorque = breakForce;
@@ -81,12 +86,10 @@ public class PlayerMovement : MonoBehaviour {
 
     void ApplyHandleBarRotation()
     {
-        processerdAngle = (storageValue.values.rotation / ((rotationAnalogRange.maxRawRotation - rotationAnalogRange.minRawRotation)) - 0.5f) * angleChangeRange;
-        frontWheel.steerAngle = processerdAngle;
+        processedAngle = (serialValues.values.rotation / ((rotationAnalogRange.range)) - 0.5f) * angleChangeRange;
+        frontWheel.steerAngle = processedAngle;
     }
-
-
-
+    
     void ApplyVelocityDrag(float drag)
 	{	
 		playerRigidBody.AddForce (-drag * playerRigidBody.velocity.normalized*Mathf.Abs( Vector3.SqrMagnitude(playerRigidBody.velocity)));
@@ -111,19 +114,19 @@ public class PlayerMovement : MonoBehaviour {
 	[Serializable]
 	public class AnalogRange
 	{
-		public float minRawRotation;
-		public float maxRawRotation;
+		public float center;
+		public float range;
 
-		public AnalogRange(float minRawRotation, float maxRawRotation)
+		public AnalogRange(float center, float range)
 		{
-			this.minRawRotation = minRawRotation;
-			this.maxRawRotation = maxRawRotation;
+			this.center = center;
+			this.range = range;
 		}
 
 		public AnalogRange()
 		{
-			this.minRawRotation = 0;
-			this.maxRawRotation = 1024;
+			this.center = 512;
+			this.range = 1024;
 		}
 	}
 
@@ -131,16 +134,6 @@ public class PlayerMovement : MonoBehaviour {
     private void OnCollisionEnter(Collision collision)
     {   
         GetComponent<Respawn>().RespawnObject();
-
-        //if (onTriggerDone == false)
-        //{
-
-        //    onTriggerDone = true;
-        //    Vector3 normal = collision.contacts[0].normal;
-
-
-        //    transform.rotation = Quaternion.LookRotation(transform.forward, normal);
-        //}
     }
 
 
