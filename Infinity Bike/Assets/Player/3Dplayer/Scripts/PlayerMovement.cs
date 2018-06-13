@@ -34,7 +34,9 @@ public class PlayerMovement : MonoBehaviour {
 		backWheel.ConfigureVehicleSubsteps(1, 12, 15);
 		frontWheel.ConfigureVehicleSubsteps(1, 12, 15);
 		playerRigidBody = GetComponent<Rigidbody> ();
-	}
+
+
+    }
 
     // Update is called once per frame
     void FixedUpdate()
@@ -136,6 +138,5 @@ public class PlayerMovement : MonoBehaviour {
         GetComponent<Respawn>().RespawnObject();
     }
 
-
-
+    
 }

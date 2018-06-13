@@ -8,7 +8,8 @@ using System.IO.Ports;
 
 using System.Threading;
 
-public class ArduinoThread : MonoBehaviour 
+[CreateAssetMenu(fileName = "ArduinoThread", menuName = "Generator/ArduinoThread", order = 2)]
+public class ArduinoThread : ScriptableObject 
 {
     public bool useArduinoPort = true;
     public Action CurrentActiveValueGetter = null;
@@ -19,25 +20,13 @@ public class ArduinoThread : MonoBehaviour
     
     private Thread activeThread = null;
     
-	void Start () 
-	{
-        DontDestroyOnLoad(GetComponent<GameObject>());
-
-        ResetCurrentActiveValueGetter();
-    }   
-
-    void Update () 
-	{
-        CurrentActiveValueGetter();
-	}   
-
-    private void ResetCurrentActiveValueGetter()
+    public void InitiateInitialisation()
     {
         if (useArduinoPort)
-        {
+        {   
             activeThread = new Thread(() => { AsychronousAutoDetectArduino(); });
             CurrentActiveValueGetter = ArduinoReadThread;
-        }
+        }   
         else
         {
             CurrentActiveValueGetter = SynchronousReadFromKeyBoard;
@@ -55,7 +44,7 @@ public class ArduinoThread : MonoBehaviour
             catch(ThreadStateException e)
             {
                 Debug.LogError("Handled Error -> " + e.GetType()+ " : "+ e.Message);
-                ResetCurrentActiveValueGetter();
+                InitiateInitialisation();
 
             }
         }
@@ -208,9 +197,5 @@ public class ArduinoThread : MonoBehaviour
         { SetValue(rotation, speed); }
     }
 
-    void OnDestroy()
-    {   
-        if (useArduinoPort)
-        {arduinoAgent.ArduinoAgentCleanup();}
-    }   
+
 }

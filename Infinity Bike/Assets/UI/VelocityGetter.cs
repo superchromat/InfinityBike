@@ -10,7 +10,14 @@ public class VelocityGetter : MonoBehaviour {
 	private Text vel;
 	// Use this for initialization
 	void Start () {
-		vel = GetComponent<Text> ();
+        if (player== null)
+        {
+            this.enabled = false;
+        }
+
+        vel = GetComponent<Text> ();
+
+       
 		
 	}
 	
