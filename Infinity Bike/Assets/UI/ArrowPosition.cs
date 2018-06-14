@@ -50,14 +50,18 @@ public class ArrowPosition : MonoBehaviour {
             if (lastSpinValue < arduinoThread.values.speed)
             {
                 timer += Time.deltaTime;
-                float distance = float.MaxValue;
-                foreach (Button item in onScreenButtonList)
+                if (closestButton == null)
                 {
-                    float temp_distance = Vector3.Distance(item.GetComponent<RectTransform>().position, rectTransform.localPosition);
-                    if (distance > temp_distance)
+                    float distance = float.MaxValue;
+                    foreach (Button item in onScreenButtonList)
                     {
-                        closestButton = item;
-                        distance = temp_distance;
+                        float temp_distance = Vector3.Distance(item.GetComponent<RectTransform>().localPosition, rectTransform.localPosition);
+
+                        if (distance > temp_distance)
+                        {
+                            closestButton = item;
+                            distance = temp_distance;
+                        }
                     }
                 }
             }
@@ -72,6 +76,7 @@ public class ArrowPosition : MonoBehaviour {
         {
             lastSpinValue = arduinoThread.values.speed;
             timer = 0;
+
             if(closestButton!=null)
             closestButton.onClick.Invoke();
         }
