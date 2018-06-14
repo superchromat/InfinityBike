@@ -158,6 +158,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &64685703 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1359998424583934, guid: 3137e0905e6a7be4d863a4ee21461856,
+    type: 2}
+  m_PrefabInternal: {fileID: 1269405053}
+--- !u!114 &64685708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 64685703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 363b006e0d3fd5f409dc88c602b929d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arduinoThread: {fileID: 11400000, guid: ab43422274fb8424da89b606d1b35118, type: 2}
 --- !u!1001 &107748355
 Prefab:
   m_ObjectHideFlags: 0
@@ -523,9 +540,20 @@ Prefab:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 781582754}
+    - target: {fileID: 114641809689010082, guid: a642673f976f9db42b91f68e62a16e96,
+        type: 2}
+      propertyPath: serialData
+      value: 
+      objectReference: {fileID: 11400000, guid: ab43422274fb8424da89b606d1b35118,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a642673f976f9db42b91f68e62a16e96, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &417296228 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1451898710556680, guid: 0794a03c4d2fb00488fa771afd334f9e,
+    type: 2}
+  m_PrefabInternal: {fileID: 459453290}
 --- !u!1001 &459453290
 Prefab:
   m_ObjectHideFlags: 0
@@ -809,6 +837,11 @@ Rigidbody:
   m_PrefabParentObject: {fileID: 54073747038977642, guid: 3137e0905e6a7be4d863a4ee21461856,
     type: 2}
   m_PrefabInternal: {fileID: 1269405053}
+--- !u!20 &722789865 stripped
+Camera:
+  m_PrefabParentObject: {fileID: 20724032191708654, guid: b0aa21b117c738a4497f1f288eb77352,
+    type: 2}
+  m_PrefabInternal: {fileID: 900677095}
 --- !u!114 &781582754 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114002338379231474, guid: 6bb015e4816d64f47af8319a1cc98ace,
@@ -1089,7 +1122,7 @@ Prefab:
         type: 2}
       propertyPath: serialValues
       value: 
-      objectReference: {fileID: 11400000, guid: dac158e79bbbf2e4796801e0cf2cfc3b,
+      objectReference: {fileID: 11400000, guid: ab43422274fb8424da89b606d1b35118,
         type: 2}
     - target: {fileID: 114627130012401834, guid: 3137e0905e6a7be4d863a4ee21461856,
         type: 2}
@@ -1101,6 +1134,16 @@ Prefab:
       propertyPath: speedMultiplier
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 114911874141278318, guid: 3137e0905e6a7be4d863a4ee21461856,
+        type: 2}
+      propertyPath: npcManager
+      value: 
+      objectReference: {fileID: 417296228}
+    - target: {fileID: 114911874141278318, guid: 3137e0905e6a7be4d863a4ee21461856,
+        type: 2}
+      propertyPath: cameraMain
+      value: 
+      objectReference: {fileID: 722789865}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3137e0905e6a7be4d863a4ee21461856, type: 2}
   m_IsPrefabParent: 0

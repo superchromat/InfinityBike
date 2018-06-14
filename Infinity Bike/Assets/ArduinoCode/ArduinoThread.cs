@@ -151,11 +151,9 @@ public class ArduinoThread : ScriptableObject
       
         string[] ttys = System.IO.Directory.GetFiles("/dev/", "tty.*");
         foreach (string dev in ttys)
-            {
-                //if (dev.StartsWith()
-                serial_ports.Add(dev);
-                //Debug.Log(String.Format(dev));
-            }
+        {
+            serial_ports.Add(dev);
+        }
 
         return serial_ports.ToArray();
     }
@@ -196,6 +194,7 @@ public class ArduinoThread : ScriptableObject
         public ArduinoValueStorage(UInt16 rotation, UInt16 speed)
         { SetValue(rotation, speed); }
     }
+
 
 
 }

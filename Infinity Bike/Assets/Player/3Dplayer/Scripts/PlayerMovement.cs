@@ -19,7 +19,6 @@ public class PlayerMovement : MonoBehaviour {
 	public Transform handleBar;
 
 	//public WheelFrictionCurveSetter wheelFrictionSetter = new WheelFrictionCurveSetter();
-	public AnalogRange rotationAnalogRange = new AnalogRange();
 
 	private float processedAngle = 0;
 	private float processerdSpeed = 0;
@@ -88,7 +87,7 @@ public class PlayerMovement : MonoBehaviour {
 
     void ApplyHandleBarRotation()
     {
-        processedAngle = (serialValues.values.rotation / ((rotationAnalogRange.range)) - 0.5f) * angleChangeRange;
+        processedAngle = (serialValues.values.rotation / ((serialValues.arduinoAgent.rotationAnalogRange.range)) - 0.5f) * angleChangeRange;
         frontWheel.steerAngle = processedAngle;
     }
     
@@ -113,24 +112,7 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 
-	[Serializable]
-	public class AnalogRange
-	{
-		public float center;
-		public float range;
 
-		public AnalogRange(float center, float range)
-		{
-			this.center = center;
-			this.range = range;
-		}
-
-		public AnalogRange()
-		{
-			this.center = 512;
-			this.range = 1024;
-		}
-	}
 
 
     private void OnCollisionEnter(Collision collision)
