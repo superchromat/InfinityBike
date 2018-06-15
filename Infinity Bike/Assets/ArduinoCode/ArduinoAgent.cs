@@ -15,6 +15,8 @@ public class ArduinoAgent
     
     public enum BaudRate { _9600 = 9600, _14400 = 14400 };
 
+    public AnalogRange rotationAnalogRange = new AnalogRange();
+
     public void openArduinoPort(string port)
     {   
         arduinoPort = new SerialPort(port, (int)baudRate);
@@ -47,7 +49,25 @@ public class ArduinoAgent
 
 
     }
-    
+
+    [Serializable]
+    public class AnalogRange
+    {
+        public float center;
+        public float range;
+
+        public AnalogRange(float center, float range)
+        {
+            this.center = center;
+            this.range = range;
+        }
+
+        public AnalogRange()
+        {
+            this.center = 512;
+            this.range = 1024;
+        }
+    }
 
 
 
