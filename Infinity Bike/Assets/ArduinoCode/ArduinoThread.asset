@@ -13,11 +13,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useArduinoPort: 1
   arduinoAgent:
-    comPort: Code will select automatically.
+    comPort: COM5
     baudRate: 9600
     arduinoReadTimeout: 50
+    rotationAnalogRange:
+      center: 512
+      range: 1024
   values:
-    rotation: 0
+    rotation: 512
     speed: 0
   keboardAlternative:
     keyboardSpeed: 1

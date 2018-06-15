@@ -124,9 +124,9 @@ GameObject:
   - component: {fileID: 117307140}
   - component: {fileID: 117307139}
   - component: {fileID: 117307138}
-  - component: {fileID: 117307141}
+  - component: {fileID: 117307142}
   m_Layer: 5
-  m_Name: Button
+  m_Name: LevelSelect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -190,7 +190,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1553773220}
+      - m_Target: {fileID: 117307142}
         m_MethodName: LoadScene
         m_Mode: 1
         m_Arguments:
@@ -200,7 +200,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 1
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &117307139
@@ -236,7 +236,7 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 117307136}
---- !u!114 &117307141
+--- !u!114 &117307142
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -244,10 +244,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 117307136}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbfb78d212039a844bf78be17c6d0c50, type: 3}
+  m_Script: {fileID: 11500000, guid: d9d0b9c5284bae440952cef83e5330fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 1
 --- !u!1 &329728315
 GameObject:
   m_ObjectHideFlags: 0
@@ -259,9 +258,9 @@ GameObject:
   - component: {fileID: 329728319}
   - component: {fileID: 329728318}
   - component: {fileID: 329728317}
-  - component: {fileID: 329728320}
+  - component: {fileID: 329728321}
   m_Layer: 5
-  m_Name: Button (2)
+  m_Name: OptionsButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -325,8 +324,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 329728320}
-        m_MethodName: SayWhoYouare
+      - m_Target: {fileID: 329728321}
+        m_MethodName: OpenOptionMenue
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -335,7 +334,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 1
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &329728318
@@ -371,7 +370,7 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 329728315}
---- !u!114 &329728320
+--- !u!114 &329728321
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -379,10 +378,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 329728315}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbfb78d212039a844bf78be17c6d0c50, type: 3}
+  m_Script: {fileID: 11500000, guid: d9d0b9c5284bae440952cef83e5330fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
 --- !u!1 &368349669
 GameObject:
   m_ObjectHideFlags: 0
@@ -430,7 +428,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0.1558859, b: 0.19655174, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -534,10 +532,7 @@ MonoBehaviour:
   height: 0
   width: 0
   arduinoThread: {fileID: 11400000, guid: ab43422274fb8424da89b606d1b35118, type: 2}
-  onScreenButtonList:
-  - {fileID: 117307138}
-  - {fileID: 1830404845}
-  - {fileID: 329728317}
+  onScreenButtonList: []
   delayTimer: 0.5
 --- !u!1 &631274337
 GameObject:
@@ -761,7 +756,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button 2
+  m_Text: Exit
 --- !u!222 &1117241700
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -779,7 +774,6 @@ GameObject:
   - component: {fileID: 1553773223}
   - component: {fileID: 1553773222}
   - component: {fileID: 1553773221}
-  - component: {fileID: 1553773220}
   - component: {fileID: 1553773225}
   m_Layer: 5
   m_Name: Canvas
@@ -788,17 +782,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1553773220
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1553773219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f165d872a855f24fa33a22e26d66d8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1553773221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -902,9 +885,9 @@ GameObject:
   - component: {fileID: 1830404847}
   - component: {fileID: 1830404846}
   - component: {fileID: 1830404845}
-  - component: {fileID: 1830404848}
+  - component: {fileID: 1830404849}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: ExitButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -968,8 +951,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1830404848}
-        m_MethodName: SayWhoYouare
+      - m_Target: {fileID: 1830404849}
+        m_MethodName: ExitGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1014,7 +997,7 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1830404843}
---- !u!114 &1830404848
+--- !u!114 &1830404849
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -1022,10 +1005,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1830404843}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbfb78d212039a844bf78be17c6d0c50, type: 3}
+  m_Script: {fileID: 11500000, guid: d9d0b9c5284bae440952cef83e5330fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 2
 --- !u!1 &1918591841
 GameObject:
   m_ObjectHideFlags: 0
@@ -1220,7 +1202,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button 0
+  m_Text: Options
 --- !u!222 &2010178485
 CanvasRenderer:
   m_ObjectHideFlags: 0

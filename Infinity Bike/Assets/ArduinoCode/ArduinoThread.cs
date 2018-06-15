@@ -193,7 +193,7 @@ public class ArduinoThread : ScriptableObject
 
         public ArduinoValueStorage(UInt16 rotation, UInt16 speed)
         { SetValue(rotation, speed); }
-    }
+    }   
 
 
 

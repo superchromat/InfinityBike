@@ -8,7 +8,7 @@ bool reset = true;
 
 unsigned long lastRevolTime = 0;
 unsigned long revolSpeed = 0;
-unsigned long zeroSpeedThreshold = 1000;
+unsigned long zeroSpeedThreshold = 10;
 unsigned long zeroSpeedTime = 0;
 
 void rotHandler();
@@ -28,7 +28,7 @@ void setup()
 	sCmd.addCommand("DONE", StopCommunication);
 
 	pinMode(11, OUTPUT);
-	pinMode(12, INPUT);
+  pinMode(12, INPUT);
 	digitalWrite(LED_BUILTIN, LOW);
 }
 
@@ -48,7 +48,12 @@ void loop()
 		zeroSpeedTime = currMillis;
 		revolSpeed >>= 1;
 	}	
+if(digitalRead(12) == 1)
+{
+  revolSpeed = 80;
 
+}
+ 
 
 
 }
