@@ -8,13 +8,15 @@ public class Respawn : MonoBehaviour {
 	public TrackNode respawnPoint;
 	public float verticalRespawnPoint = -50f;
 	private Rigidbody rb;
-
+    private int respawnCount = 0;
 	void Start () 
 	{	
 		rb = GetComponent<Rigidbody> ();
 		RespawnObject ();
+        respawnCount = 0;
 
-	}	
+
+    }	
 	
 	// Update is called once per frame
 	void FixedUpdate () 
@@ -25,6 +27,8 @@ public class Respawn : MonoBehaviour {
 
 	public void RespawnObject()
 	{
+        respawnCount++;
+        Debug.Log("Number of Time respawned = " + respawnCount);
 
 		if (respawnPoint.GetNodeCount () <= 1) 
 		{return;}

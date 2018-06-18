@@ -69,20 +69,14 @@ public class NPCspawner : MonoBehaviour
 
 				AIDriver aiHolder = NPCList [i].GetComponent<AIDriver> ();
 				float targetVelocity = player.GetComponent<Rigidbody> ().velocity.magnitude;
-				if (aiHolder != null)
-                {
-					if(targetVelocity < aiHolder.velocity && targetVelocity > 0.1f) 
-					{	
-						aiHolder.velocity = targetVelocity * (1 + Random.Range (0.1f, 0.5f));
-					}	
-				}
 				float spawnDistance = spawnMinDistance;
 
-                if (aiHolder.velocity > targetVelocity)
+                float vel = aiHolder.GetVelocity();
+                if (aiHolder.GetVelocity() > targetVelocity)
                 {
-                    if (spawnMinDistance > (spawnTimeBehind * aiHolder.velocity))
+                    if (spawnMinDistance > (spawnTimeBehind * vel))
                     {   
-                        spawnDistance = spawnTimeBehind * aiHolder.velocity;
+                        spawnDistance = spawnTimeBehind * vel;
                     }   
                 }
 
