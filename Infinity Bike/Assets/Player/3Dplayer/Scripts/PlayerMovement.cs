@@ -33,8 +33,6 @@ public class PlayerMovement : MonoBehaviour {
 		backWheel.ConfigureVehicleSubsteps(1, 12, 15);
 		frontWheel.ConfigureVehicleSubsteps(1, 12, 15);
 		playerRigidBody = GetComponent<Rigidbody> ();
-
-
     }
 
     // Update is called once per frame
@@ -46,9 +44,10 @@ public class PlayerMovement : MonoBehaviour {
           ApplyWheelForces();
         }
 
-		if (handleBar != null) {
+		if (handleBar != null)
+        {   
 			handleBar.localRotation = Quaternion.Euler (0, processedAngle + 90, 90);
-		}
+		}   
 
         SetPlayerRotationUp();
     }   

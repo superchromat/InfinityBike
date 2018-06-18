@@ -19,9 +19,12 @@ public class NPCspawner : MonoBehaviour
 
 	public float spawnDelay = 5f;
 
+    public List<AiSettings> aiList = new List<AiSettings>();
+
 	// Use this for initialization
 	void Start () 
-	{
+	{   
+
 		if (toSpawnPrefab == null) 
 		{
 			enabled = false;
@@ -93,6 +96,5 @@ public class NPCspawner : MonoBehaviour
 
 		}	
 	}
-
-
 }
+

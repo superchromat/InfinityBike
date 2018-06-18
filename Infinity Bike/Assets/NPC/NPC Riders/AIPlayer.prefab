@@ -268,14 +268,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 726f3dbe9c758cc45aaf1b54c292f55c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackNode: {fileID: 11400000, guid: a67413c1147a1ae488549f211d328dee, type: 2}
-  motorTorque: 80
+  aiSettings:
+    maxMotorTorque: 30
+    torqueAcceleration: 1
+    steeringLerpTime: 2
+    velocityDrag: 2
+  maxMotorTorque: 30
+  torqueAcceleration: 1
   steeringLerpTime: 2
-  lifeTimer: 0
-  lifeTimeLength: 20
+  velocityDrag: 2
+  trackNode: {fileID: 11400000, guid: a67413c1147a1ae488549f211d328dee, type: 2}
   backWheel: {fileID: 146141247246734872}
   frontWheel: {fileID: 146736936422582028}
-  velocityDrag: 2
 --- !u!114 &114995508200210644
 MonoBehaviour:
   m_ObjectHideFlags: 1

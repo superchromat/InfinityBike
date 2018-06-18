@@ -54,7 +54,13 @@ MonoBehaviour:
   player: {fileID: 0}
   toSpawnPrefab: {fileID: 1314584953860934, guid: babf1039dc84bb74ba32cf9594035dd2,
     type: 2}
+  trackNodes: {fileID: 0}
   maxNpcOnTrack: 20
-  spawnOnFrameProbability: 0
-  spawnCoolDoneTimer: 1
-  firstSpawnOffset: 5
+  spawnTimeBehind: 2
+  spawnMinDistance: 10
+  spawnProb: 0
+  spawnCooldown: 1
+  spawnDelay: 5
+  aiList:
+  - {fileID: 0}
+  - {fileID: 0}
