@@ -7,21 +7,45 @@ using System;
 [CreateAssetMenu(fileName = "TrackNode", menuName = "TrackNode", order = 1)]
 public class TrackNode : ScriptableObject 
 {	
-	public TrackNodeValues nodeValues = new TrackNodeValues();
+	//public TrackNodeValues nodeValues = new TrackNodeValues();
+    public List<Vector3> objectPosition = new List<Vector3>();
 
-	public void AddNode (Vector3 toadd)
-	{	
-		RaycastHit hit;
-		Physics.Raycast (toadd, Vector3.down, out hit, 100f);
+    public void DeleteNode(int index)
+    {
+        Debug.Log(index);
+        objectPosition.RemoveAt(index);
+    }
 
-		nodeValues.objectPosition.Add (hit.point + Vector3.up*1.5f);
-	}	
+    public void InsertNode(Vector3 toadd, int indexAhead)
+    {
+        if (indexAhead < 0)
+        {
+            indexAhead += objectPosition.Count;
+        }
+        else if (indexAhead > objectPosition.Count)
+        {
+            indexAhead -= objectPosition.Count;
+        }
+
+        objectPosition.Insert(indexAhead, toadd);
+    }
+
+    public void AddNode (Vector3 toadd)
+	{
+        RaycastHit hit;
+        if (Physics.Raycast(toadd, Vector3.down, out hit, 100f))
+        { objectPosition.Add(hit.point + Vector3.up * 1.5f); }
+        else if(Physics.Raycast(toadd, Vector3.up, out hit, 100f))
+        { objectPosition.Add(hit.point + Vector3.up * 1.5f); }
+
+
+    }	
 	
 	public void SetNode (Vector3 toadd, int index)
 	{	
-		if(nodeValues.objectPosition.Count != 0)
+		if(objectPosition.Count != 0)
 		{
-			nodeValues.objectPosition [index] = toadd;
+			objectPosition [index] = toadd;
 		}	
 	}
 
@@ -31,25 +55,20 @@ public class TrackNode : ScriptableObject
 		if (GetNodeCount () == 0) 
 		{return Vector3.zero;}	
 
-		while (index >= nodeValues.objectPosition.Count) 
-		{index -= nodeValues.objectPosition.Count;}	
+		while (index >= objectPosition.Count) 
+		{index -= objectPosition.Count;}	
 
 		while (index < 0) 
-		{index += nodeValues.objectPosition.Count;}	
+		{index += objectPosition.Count;}	
 		
-		return nodeValues.objectPosition [index];
+		return objectPosition [index];
 	}
 
 	public int GetNodeCount()
 	{
-		return nodeValues.objectPosition.Count;
+		return objectPosition.Count;
 	}
 
-	[Serializable]
-	public class TrackNodeValues
-	{	
-		public List<Vector3> objectPosition = new List<Vector3> ();
-	}	
 
 
 

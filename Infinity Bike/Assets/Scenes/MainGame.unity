@@ -221,15 +221,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4296209874138802, guid: e4cbee641ccbe294aba5c81f4e09eefe, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 131.5
+      value: -64.95
       objectReference: {fileID: 0}
     - target: {fileID: 4296209874138802, guid: e4cbee641ccbe294aba5c81f4e09eefe, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 6.3319044
+      value: 12.942987
       objectReference: {fileID: 0}
     - target: {fileID: 4296209874138802, guid: e4cbee641ccbe294aba5c81f4e09eefe, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -49.4
+      value: 5.97
       objectReference: {fileID: 0}
     - target: {fileID: 4296209874138802, guid: e4cbee641ccbe294aba5c81f4e09eefe, type: 2}
       propertyPath: m_LocalRotation.x
@@ -611,12 +611,12 @@ Prefab:
     - target: {fileID: 114099281304009188, guid: 0794a03c4d2fb00488fa771afd334f9e,
         type: 2}
       propertyPath: spawnProb
-      value: 0.1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114099281304009188, guid: 0794a03c4d2fb00488fa771afd334f9e,
         type: 2}
       propertyPath: maxNpcOnTrack
-      value: 5
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 114099281304009188, guid: 0794a03c4d2fb00488fa771afd334f9e,
         type: 2}
@@ -1212,7 +1212,7 @@ Prefab:
     - target: {fileID: 114627130012401834, guid: 3137e0905e6a7be4d863a4ee21461856,
         type: 2}
       propertyPath: speedMultiplier
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4776890171857404, guid: 3137e0905e6a7be4d863a4ee21461856, type: 2}
       propertyPath: m_LocalScale.x
