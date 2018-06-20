@@ -11,10 +11,7 @@ public class RestartGame : MonoBehaviour {
 	void Start ()
     {
         startPosition = transform.position;
-
-
-
-    }
+      }
 	
 	// Update is called once per frame
 	void Update ()
@@ -24,7 +21,7 @@ public class RestartGame : MonoBehaviour {
             if(cameraMain==null)
             cameraMain.transform.position = startPosition;
 
-            GetComponent<Respawn>().RespawnObject();
+            GetComponent<Respawn>().onRespawn();
             transform.position = startPosition;
 
             Transform[] npcTransforms = npcManager.GetComponentsInChildren<Transform>();

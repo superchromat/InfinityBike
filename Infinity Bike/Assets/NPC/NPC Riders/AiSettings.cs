@@ -1,45 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 using System;
 
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
 [Serializable]
-
 public class AiSettings
 {   
-    
     public float maxMotorTorque = 10f;
     public float torqueAcceleration = 1f;
     public float steeringLerpTime = 0.1f;
+    public int numberNodeInPrediction = 4;
+    public float farNodeWeight = 0.5f;
+
     public float velocityDrag = 1f;
-}
 
-public static class SaveLoad
-{
-
-    public static List<AiSettings> savedGames = new List<AiSettings>();
-
-    public static void Save(AiSettings aiSettings)
+    public void SetRandomValues()
     {   
-        savedGames.Add(aiSettings);
-
-        BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Create(Application.persistentDataPath + "/savedGames.gd");
-        bf.Serialize(file, SaveLoad.savedGames);
-        file.Close();
-        Debug.Log("saved at " + Application.persistentDataPath + "/savedGames.gd");
-    }
-
-    public static void Load()
-    {
-        if (File.Exists(Application.persistentDataPath + "/savedGames.gd"))
-        {
-            BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open(Application.persistentDataPath + "/savedGames.gd", FileMode.Open);
-            SaveLoad.savedGames = (List<AiSettings>)bf.Deserialize(file);
-            file.Close();
-        }
-    }
+        maxMotorTorque = UnityEngine.Random.Range(30, 40);
+        torqueAcceleration = UnityEngine.Random.Range(0.5f, 3f);
+        steeringLerpTime = UnityEngine.Random.Range(2f, 3f);
+        numberNodeInPrediction = UnityEngine.Random.Range(4, 7);
+        farNodeWeight = UnityEngine.Random.Range(0.1f, 1f);
+    }   
 }
+

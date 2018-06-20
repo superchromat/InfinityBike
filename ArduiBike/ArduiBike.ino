@@ -50,7 +50,7 @@ void loop()
 	}	
 if(digitalRead(12) == 1)
 {
-  revolSpeed = 80;
+  revolSpeed = 40;
 
 }
  

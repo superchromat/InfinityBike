@@ -57,25 +57,19 @@ public class EditorRespawnNodeSet : Editor {
 			SetHandle ();
 		}
 
-		if (GUILayout.Button ("ResetAllNodes")) 
+		if (GUILayout.Button ("Insert Node")) 
 		{
-			TrackNode trackNode = GetTrackNode ();
+            float distance = float.MaxValue;
+            Transform trackNodeToolTransform = trackNodeScript.GetComponent<Transform>();
+            int nearestNode = 0;
+            for (int index = 0; index < GetTrackNode().GetNodeCount(); index++)
+            {
+                if (    distance > Vector3.SqrMagnitude(trackNodeToolTransform.position-GetTrackNode().GetNode(index))      )
+                {nearestNode = index;}
+            }
+            trackNodeToolTransform.position = GetTrackNode().GetNode(nearestNode);
 
-			if (trackNode != null) {
-
-				cycleNodeIndex = 0;
-
-				for (int node = 0; node < trackNode.GetNodeCount (); node++) {
-					CycleNode (1);
-					SetHandle ();
-
-					Vector3 pos = CalculatePositionAboveTheTrack (trackNodeScript.GetComponent<Transform>().position);
-					trackNode.SetNode (pos, cycleNodeIndex);
-
-				}
-			}
-
-		}
+        }
 
 		SceneView.RepaintAll ();
 
@@ -116,9 +110,17 @@ public class EditorRespawnNodeSet : Editor {
 		if (trackNode != null) {
 			Transform trackNodeToolTransform = trackNodeScript.GetComponent<Transform> ();;
 
-			for (int index = 0; index < GetTrackNode ().GetNodeCount (); index++) {
-				Handles.color = Color.red;
-				Handles.DrawLine (GetTrackNode ().GetNode (index), GetTrackNode ().GetNode (index - 1));
+            for (int index = 0; index < GetTrackNode().GetNodeCount(); index++) {
+                if ((index & 1) == 1)
+                {
+                    Handles.color = Color.red;
+                }
+                else
+                {
+                    Handles.color = Color.yellow;
+
+                }
+                Handles.DrawLine (GetTrackNode ().GetNode (index), GetTrackNode ().GetNode (index - 1));
 			}
 
 			Handles.color = Color.blue;

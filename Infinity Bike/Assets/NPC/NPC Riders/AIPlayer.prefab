@@ -85,8 +85,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4661383207101882}
   - component: {fileID: 54153844383065764}
-  - component: {fileID: 114995508200210644}
   - component: {fileID: 136046587506987188}
+  - component: {fileID: 114995508200210644}
   - component: {fileID: 114765275787244818}
   m_Layer: 8
   m_Name: AIPlayer
@@ -269,14 +269,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aiSettings:
-    maxMotorTorque: 30
+    maxMotorTorque: 33
     torqueAcceleration: 1
     steeringLerpTime: 2
+    numberNodeInPrediction: 4
     velocityDrag: 2
-  maxMotorTorque: 30
-  torqueAcceleration: 1
-  steeringLerpTime: 2
-  velocityDrag: 2
   trackNode: {fileID: 11400000, guid: a67413c1147a1ae488549f211d328dee, type: 2}
   backWheel: {fileID: 146141247246734872}
   frontWheel: {fileID: 146736936422582028}

@@ -5,25 +5,29 @@ using System;
 
 
 
-public class PlayerMovement : MonoBehaviour {
+public class PlayerMovement : MonoBehaviour
+{   
+
     public bool isScriptActivated = true;
+
 	public float speedMultiplier = 1f;
 	public float angleChangeRange = 180f;
 
 	public float velocityDrag = 1f;
+    public float breakForce = 1000;
 
-	public WheelCollider backWheel;
+
+
+    public WheelCollider backWheel;
 	public WheelCollider frontWheel;
 
 	public ArduinoThread serialValues;
 	public Transform handleBar;
 
-	//public WheelFrictionCurveSetter wheelFrictionSetter = new WheelFrictionCurveSetter();
+
 
 	private float processedAngle = 0;
-	private float processerdSpeed = 0;
-
-	public float breakForce = 1000;
+	private float processedSpeed = 0;
 	private Rigidbody playerRigidBody;
 
     
@@ -52,26 +56,22 @@ public class PlayerMovement : MonoBehaviour {
         SetPlayerRotationUp();
     }   
 
-    void SetPlayerRotationUp()
-    {
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward, GetPlayerNormal()), 0.5f);
-    }
 
     void ApplyWheelForces()
 	{   
-		processerdSpeed = serialValues.values.speed * speedMultiplier;
+		processedSpeed = serialValues.values.speed * speedMultiplier;
 	    
 		if (Input.GetKey (KeyCode.Space)) 
 		{	
-			backWheel.motorTorque = -processerdSpeed;
+			backWheel.motorTorque = -processedSpeed;
 		}	 
 
-		else if (processerdSpeed != 0) 
+		else if (processedSpeed != 0) 
 		{	
 			backWheel.brakeTorque = 0;
 			frontWheel.brakeTorque = 0;
 
-			backWheel.motorTorque = processerdSpeed;
+			backWheel.motorTorque = processedSpeed;
             ApplyVelocityDrag(velocityDrag);
         }	
 		else
@@ -89,14 +89,15 @@ public class PlayerMovement : MonoBehaviour {
         processedAngle = (serialValues.values.rotation / ((serialValues.arduinoAgent.rotationAnalogRange.range)) - 0.5f) * angleChangeRange;
         frontWheel.steerAngle = processedAngle;
     }
-    
     void ApplyVelocityDrag(float drag)
 	{	
 		playerRigidBody.AddForce (-drag * playerRigidBody.velocity.normalized*Mathf.Abs( Vector3.SqrMagnitude(playerRigidBody.velocity)));
-	}	
+	}
+    void SetPlayerRotationUp()
+    { transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward, GetNormal()), 100f * Time.deltaTime); }
 
 
-	private Vector3 GetPlayerNormal()
+    private Vector3 GetNormal()
 	{
 		Vector3 normal = Vector3.zero;
 
@@ -116,7 +117,7 @@ public class PlayerMovement : MonoBehaviour {
 
     private void OnCollisionEnter(Collision collision)
     {   
-        GetComponent<Respawn>().RespawnObject();
+        GetComponent<Respawn>().onRespawn();
     }
 
     

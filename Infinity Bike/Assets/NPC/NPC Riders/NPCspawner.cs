@@ -5,96 +5,85 @@ using UnityEngine;
 public class NPCspawner : MonoBehaviour 
 {
 	public Transform player;
+
 	public GameObject toSpawnPrefab = null;
-	private List<GameObject> NPCList = new List<GameObject> ();
+
+    public List<GameObject> NPCList = new List<GameObject> ();
 	public TrackNode trackNodes;
+
 	public int maxNpcOnTrack = 20;
-	public float spawnTimeBehind = 2f;// how far the npc should spawn in seconds.
 	public float spawnMinDistance = 10f;
 
 	[Range(0,1f)]
 	public float spawnProb = 0f;
 	public float spawnCooldown= 1f;
-	private float spawnTimer = 1f;
-
-	public float spawnDelay = 5f;
-
-    public List<AiSettings> aiList = new List<AiSettings>();
+    private bool isReadyForNextSpawn = true;    
 
 	// Use this for initialization
 	void Start () 
-	{   
-
-		if (toSpawnPrefab == null) 
-		{
-			enabled = false;
-		}
-
-		for (int i = 0; i < maxNpcOnTrack; i++)
-		{	
-			NPCList.Add(Instantiate (toSpawnPrefab,transform));
-			NPCList [i].SetActive (false);
-			NPCList [i].name = "NPC_Rider_" + i;
-		}	
-		spawnTimer = -spawnDelay;
-		
-	}
-	
-	// Update is called once per frame
-	void Update () 
 	{
-
-		if (spawnTimer > spawnCooldown ) 
-		{
-			float randomNumber = Random.Range (0, 1f);
-
-			if (randomNumber < spawnProb) 
-			{
-				SpawnNPC ();
-			}
-
-			spawnTimer = 0;
+        try
+        {
+            for (int i = 0; i < maxNpcOnTrack; i++)
+            {
+                NPCList.Add(GenerateNewNPC("NPC_Rider_" + i));
+            }
 		}
+        catch (UnassignedReferenceException e)
+        {
+            Debug.LogWarning(e.Message) ;
+            enabled = false;
+            return;
+        }
 
-
-		spawnTimer += Time.deltaTime;
 	}
+
+    public GameObject GenerateNewNPC(string name)
+    {
+        GameObject obj = Instantiate(toSpawnPrefab, transform);
+        obj.SetActive(false);
+        obj.name = name;
+        return obj;
+    }
+
+
+	// Update is called once per frame
+	void FixedUpdate () 
+	{
+        if(isReadyForNextSpawn)
+        StartCoroutine(SpanwNextNPC());
+	}
+
+    IEnumerator SpanwNextNPC()
+    {   
+        isReadyForNextSpawn = false;
+        float randomNumber = Random.Range(0, 1f);
+        if (randomNumber < spawnProb)
+        {SpawnNPC();}
+
+        yield return new WaitForSeconds(spawnCooldown);
+        isReadyForNextSpawn = true;
+    }   
 
 	[ContextMenu("Spawn NPC")]
 	void SpawnNPC()
-	{
-		bool hasDiabledGameObjectBeenFound = false;
-		for (int i = 0; i < NPCList.Count && !hasDiabledGameObjectBeenFound; i++) 
+	{   
+		for (int i = 0 ; i < NPCList.Count ; i++) 
 		{	
 			if (NPCList [i].activeSelf == false) 
 			{	
 				NPCList [i].SetActive (true);
 
-				AIDriver aiHolder = NPCList [i].GetComponent<AIDriver> ();
-				float targetVelocity = player.GetComponent<Rigidbody> ().velocity.magnitude;
-				float spawnDistance = spawnMinDistance;
+                int node = Respawn.FindNearestNode (trackNodes,player.transform);
 
-                float vel = aiHolder.GetVelocity();
-                if (aiHolder.GetVelocity() > targetVelocity)
-                {
-                    if (spawnMinDistance > (spawnTimeBehind * vel))
-                    {   
-                        spawnDistance = spawnTimeBehind * vel;
-                    }   
-                }
-
-
-				int node = Respawn.FindNearestNode (trackNodes,player.transform);
-
-                NPCList [i].transform.position = player.transform.position - (trackNodes.GetNode(node)- trackNodes.GetNode(node-1)).normalized*spawnDistance;
+                NPCList [i].transform.position = player.transform.position - (trackNodes.GetNode(node)- trackNodes.GetNode(node-1)).normalized* spawnMinDistance;
                 NPCList [i].transform.forward = player.transform.forward;
 
-				hasDiabledGameObjectBeenFound = true;
-
-
+                return;
 			}	
-
 		}	
-	}
-}
+	}   
+
+
+}   
 
