@@ -87,7 +87,16 @@ public class AIDriver : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         backWheel.motorTorque = 0;
-        GetComponent<Respawn>().onRespawn();
+        try
+        {
+            GetComponent<Respawn>().onRespawn();
+        }
+        catch(NullReferenceException)
+        {
+            Debug.LogError(GetComponent<Respawn>().name);
+        }
+
+
         SetWheelBrakeTorque();
     }
 

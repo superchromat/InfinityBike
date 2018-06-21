@@ -19,7 +19,7 @@ public class AiSettings
         maxMotorTorque = UnityEngine.Random.Range(30, 40);
         torqueAcceleration = UnityEngine.Random.Range(0.5f, 3f);
         steeringLerpTime = UnityEngine.Random.Range(2f, 3f);
-        numberNodeInPrediction = UnityEngine.Random.Range(4, 7);
+        numberNodeInPrediction = UnityEngine.Random.Range(4, 6);
         farNodeWeight = UnityEngine.Random.Range(0.1f, 1f);
     }   
 }

@@ -11,7 +11,6 @@ using System.Threading;
 [CreateAssetMenu(fileName = "ArduinoThread", menuName = "Generator/ArduinoThread", order = 2)]
 public class ArduinoThread : ScriptableObject 
 {
-    public bool useArduinoPort = true;
     public Action CurrentActiveValueGetter = null;
 
     public ArduinoAgent arduinoAgent = new ArduinoAgent();
@@ -20,17 +19,10 @@ public class ArduinoThread : ScriptableObject
     
     private Thread activeThread = null;
     
-    public void InitiateInitialisation()
+    public void Initialisation()
     {
-        if (useArduinoPort)
-        {   
-            activeThread = new Thread(() => { AsychronousAutoDetectArduino(); });
-            CurrentActiveValueGetter = ArduinoReadThread;
-        }   
-        else
-        {
-            CurrentActiveValueGetter = SynchronousReadFromKeyBoard;
-        }
+        activeThread = new Thread(() => { AsychronousAutoDetectArduino(); });
+        CurrentActiveValueGetter = ArduinoReadThread;
     }
 
     private void ArduinoReadThread() 
@@ -44,17 +36,28 @@ public class ArduinoThread : ScriptableObject
             catch(ThreadStateException e)
             {
                 Debug.LogError("Handled Error -> " + e.GetType()+ " : "+ e.Message);
-                InitiateInitialisation();
+                Initialisation();
 
             }
         }
-    } 
-    
+    }
+
+    public void SetKeyBoardAsInput(bool doSet)
+    {
+        if (doSet)
+            CurrentActiveValueGetter = SynchronousReadFromKeyBoard;
+        else
+        {
+            Initialisation();
+        }
+    }
+
     private void SynchronousReadFromKeyBoard()
     {
         values.speed = (UInt16)(Mathf.Abs(Input.GetAxis("Vertical")) * keboardAlternative.keyboardSpeed);
         values.rotation = (UInt16)((keboardAlternative.keyboardAngle + Input.GetAxis("Horizontal") * keboardAlternative.keyboardMultiplier));
     }
+
 	private void AsynchronousReadFromArduino()
 	{   
         arduinoAgent.WriteToArduino("ALL");

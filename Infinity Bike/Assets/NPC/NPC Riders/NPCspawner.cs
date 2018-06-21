@@ -12,7 +12,6 @@ public class NPCspawner : MonoBehaviour
 	public TrackNode trackNodes;
 
 	public int maxNpcOnTrack = 20;
-	public float spawnMinDistance = 10f;
 
 	[Range(0,1f)]
 	public float spawnProb = 0f;
@@ -67,17 +66,21 @@ public class NPCspawner : MonoBehaviour
 
 	[ContextMenu("Spawn NPC")]
 	void SpawnNPC()
-	{   
-		for (int i = 0 ; i < NPCList.Count ; i++) 
+	{
+
+
+
+        for (int i = 0 ; i < NPCList.Count ; i++) 
 		{	
 			if (NPCList [i].activeSelf == false) 
 			{	
 				NPCList [i].SetActive (true);
 
-                int node = Respawn.FindNearestNode (trackNodes,player.transform);
+                int node = Random.Range(0, trackNodes.GetNodeCount() - 1);
 
-                NPCList [i].transform.position = player.transform.position - (trackNodes.GetNode(node)- trackNodes.GetNode(node-1)).normalized* spawnMinDistance;
-                NPCList [i].transform.forward = player.transform.forward;
+
+                NPCList[i].transform.position = trackNodes.GetNode(node);
+                NPCList [i].transform.forward = trackNodes.GetNode(node+1) - trackNodes.GetNode(node);
 
                 return;
 			}	

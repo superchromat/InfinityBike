@@ -115,7 +115,25 @@ public class EditorRespawnNodeSet : Editor {
 
         }
 
-            SceneView.RepaintAll ();
+        if (GUILayout.Button("Cycle Set"))
+        {
+            TrackNode trackNode = GetTrackNode();
+            for (int index = 0; index < GetTrackNode().GetNodeCount(); index++)
+            {
+                CycleNode(1);
+                SetHandle();
+
+                Vector3 pos = CalculatePositionAboveTheTrack(trackNodeScript.GetComponent<Transform>().position);
+
+                if (trackNode != null)
+                    trackNode.SetNode(pos, cycleNodeIndex);
+
+
+            }
+        }
+
+
+        SceneView.RepaintAll ();
 
 	}	
 	
