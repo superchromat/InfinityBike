@@ -16,7 +16,7 @@ public class AiSettings
 
     public void SetRandomValues()
     {   
-        maxMotorTorque = UnityEngine.Random.Range(30, 40);
+        maxMotorTorque = UnityEngine.Random.Range(35, 45);
         torqueAcceleration = UnityEngine.Random.Range(0.5f, 3f);
         steeringLerpTime = UnityEngine.Random.Range(2f, 3f);
         numberNodeInPrediction = UnityEngine.Random.Range(4, 6);
