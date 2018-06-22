@@ -1,29 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 
 public class Respawn : MonoBehaviour {
 
 	public TrackNode respawnPoint;
 	public float verticalRespawnPoint = -50f;
 	private Rigidbody rb;
+    public Action onRespawn;
 
 	void Start () 
 	{	
 		rb = GetComponent<Rigidbody> ();
-		RespawnObject ();
-
-	}	
-	
-	// Update is called once per frame
-	void FixedUpdate () 
+        onRespawn = RespawnObject;
+        onRespawn();
+    }
+    
+    void LateUpdate () 
 	{
 		if (transform.position.y < verticalRespawnPoint) 
-		{RespawnObject ();}
+		{ onRespawn();}
 	}
 
-	public void RespawnObject()
+	private void RespawnObject()
 	{
 
 		if (respawnPoint.GetNodeCount () <= 1) 
@@ -44,12 +44,21 @@ public class Respawn : MonoBehaviour {
 
 		WheelCollider[] wheel = GetComponentsInChildren<WheelCollider> ();
 		foreach (WheelCollider item in wheel) 
-		{item.brakeTorque = 1000f;}
+		{   
+            item.brakeTorque = 1000f;
+            item.motorTorque = 0;
+            item.steerAngle = 0;
+
+        }   
 
 		transform.position = respawnPoint.GetNode(minDistanceNode);
 		transform.forward = respawnPoint.GetNode(minDistanceNode + 1) - transform.position;
 
 	}	
+
+
+
+
 
 	static public int FindNearestNode(TrackNode respawnPoint, Transform objToRespawn)
 	{

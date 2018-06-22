@@ -9,7 +9,7 @@ public class RunArduinoThread : MonoBehaviour {
     void Start () {
         if (arduinoThread.arduinoAgent.arduinoPort == null || !arduinoThread.arduinoAgent.arduinoPort.IsOpen)
         {
-            arduinoThread.InitiateInitialisation();
+            arduinoThread.Initialisation();
             arduinoThread.CurrentActiveValueGetter();
         }
     }
