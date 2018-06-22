@@ -2,12 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 
 [CreateAssetMenu(fileName = "TrackNode", menuName = "TrackNode", order = 1)]
 public class TrackNode : ScriptableObject 
-{	
-	public TrackNodeValues nodeValues = new TrackNodeValues();
+{
+    public TrackNodeValues nodeValues;
+
+
+
+
+
+
 
     public void DeleteNode(int index)
     {
@@ -77,4 +85,80 @@ public class TrackNode : ScriptableObject
 public class TrackNodeValues
 {   
     public List<Vector3> nodeList = new List<Vector3>();
+
+    [Serializable]
+    private class Vector3Serialisable
+    {
+        public List<float> x;
+        public List<float> y;
+        public List<float> z;
+
+        public Vector3Serialisable(List<Vector3> vec)
+        {
+            x = new List<float>();
+            y = new List<float>();
+            z = new List<float>();
+
+            foreach (Vector3 item in vec)
+            {
+                x.Add(item.x);
+                y.Add(item.y);
+                z.Add(item.z);
+            }
+
+        }
+        public Vector3Serialisable()
+        {
+            x = new List<float>();
+            y = new List<float>();
+            z = new List<float>();
+        }
+
+        public void SetValuesToNodeList(out List<Vector3> nodeList )
+        {   
+            nodeList = new List<Vector3>();
+            for (int i = 0; i < x.Count; i++)
+            {nodeList.Add(new Vector3(x[i],y[i], z[i]));}
+        }   
+
+    }
+
+    public void Save()
+    {
+        Vector3Serialisable nodeListSerialisable = new Vector3Serialisable(nodeList);
+
+        string destination = Application.persistentDataPath + "/save.dat";
+        FileStream file;
+
+        if (File.Exists(destination)) file = File.OpenWrite(destination);
+        else file = File.Create(destination);
+        BinaryFormatter bf = new BinaryFormatter();
+
+        bf.Serialize(file, nodeListSerialisable);
+        file.Close();
+    }
+
+    public void LoadFile()
+    {
+        string destination = Application.persistentDataPath + "/save.dat";
+        FileStream file;
+
+        if (File.Exists(destination)) file = File.OpenRead(destination);
+        else
+        {
+            Debug.LogError("File not found");
+            return;
+        }
+
+        BinaryFormatter bf = new BinaryFormatter();
+        Vector3Serialisable data = new Vector3Serialisable();
+        data = (Vector3Serialisable)bf.Deserialize(file);
+
+        nodeList.Clear();
+        data.SetValuesToNodeList(out nodeList);
+
+        file.Close();
+
+
+    }
 }   

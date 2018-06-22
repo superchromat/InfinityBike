@@ -45,10 +45,13 @@ public class EditorRespawnNodeSet : Editor {
         }
     }
 
+
     public override void OnInspectorGUI()
 	{
 		TrackNodeTool trackNodeScript = (TrackNodeTool)target;
 		DrawDefaultInspector ();
+
+
 
 
         if (GUILayout.Button ("Draw track curve")) 
