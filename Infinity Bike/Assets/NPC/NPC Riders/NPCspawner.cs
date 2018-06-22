@@ -81,7 +81,7 @@ public class NPCspawner : MonoBehaviour
 
                 NPCList[i].transform.position = trackNodes.GetNode(node);
                 NPCList [i].transform.forward = trackNodes.GetNode(node+1) - trackNodes.GetNode(node);
-
+                
                 return;
 			}	
 		}	

@@ -6,19 +6,60 @@ using UnityEditor;
 public class EditorRespawnNodeSet : Editor {
 	private bool doDrawTrajectory = false;
 	private int cycleNodeIndex = 0;
+    public bool enableOnScreenPlacement = false;
 
-	public override void OnInspectorGUI()
+
+    private bool isReady = true;
+
+
+
+    void OnSceneGUI()
+    {
+        TrackNodeTool trackNodeScript = (TrackNodeTool)target;
+
+        if (EventType.KeyDown == Event.current.type && Event.current.keyCode == KeyCode.Space)
+        {
+            if (isReady == true)
+            {
+
+                TrackNode trackNode = GetTrackNode();
+                if (trackNode != null)
+                {
+
+                    Vector3 pos = CalculatePositionAboveTheTrack(trackNodeScript.GetComponent<Transform>().position);
+
+                    GetTrackNode().AddNode(pos);
+                    cycleNodeIndex = GetTrackNode().GetNodeCount() - 1;
+                }
+
+
+            }
+            isReady = !isReady;
+        }
+
+
+
+        if (doDrawTrajectory)
+        {
+            DebugDraw();
+        }
+    }
+
+    public override void OnInspectorGUI()
 	{
 		TrackNodeTool trackNodeScript = (TrackNodeTool)target;
 		DrawDefaultInspector ();
 
-		if (GUILayout.Button ("Draw track curve")) 
+
+        if (GUILayout.Button ("Draw track curve")) 
 		{
 			doDrawTrajectory = !doDrawTrajectory;
 			DebugDraw ();
 		}
-		
-		if (GUILayout.Button ("Add and Set Node")) 
+
+
+
+		if (GUILayout.Button ("Add and Set Node") )
 		{
 
 			TrackNode trackNode = GetTrackNode ();
@@ -128,6 +169,9 @@ public class EditorRespawnNodeSet : Editor {
                 if (trackNode != null)
                     trackNode.SetNode(pos, cycleNodeIndex);
 
+                if (trackNode.GetNode(cycleNodeIndex) == trackNode.GetNode(cycleNodeIndex - 1))
+                {trackNode.DeleteNode(cycleNodeIndex);}
+
 
             }
         }
@@ -137,12 +181,6 @@ public class EditorRespawnNodeSet : Editor {
 
 	}	
 	
-	public void OnSceneGUI()
-	{
-		if (doDrawTrajectory) {
-			DebugDraw ();
-		}
-	}
 
 
 	void CycleNode(int dir)
