@@ -11,12 +11,6 @@ public class TrackNode : ScriptableObject
 {
     public TrackNodeValues nodeValues;
 
-
-
-
-
-
-
     public void DeleteNode(int index)
     {
         Debug.Log(index);
@@ -39,6 +33,7 @@ public class TrackNode : ScriptableObject
 
     public void AddNode (Vector3 toadd)
 	{
+
         RaycastHit hit;
         if (Physics.Raycast(toadd, Vector3.down, out hit, 100f))
         { nodeValues.nodeList.Add(hit.point + Vector3.up * 1.5f); }
@@ -126,6 +121,11 @@ public class TrackNodeValues
     public void Save()
     {
         Vector3Serialisable nodeListSerialisable = new Vector3Serialisable(nodeList);
+        SaveLoad<Vector3Serialisable>.Save(nodeListSerialisable);
+
+
+        /*
+        Vector3Serialisable nodeListSerialisable = new Vector3Serialisable(nodeList);
 
         string destination = Application.persistentDataPath + "/save.dat";
         FileStream file;
@@ -136,11 +136,23 @@ public class TrackNodeValues
 
         bf.Serialize(file, nodeListSerialisable);
         file.Close();
+        */
     }
 
     public void LoadFile()
     {
+        
+        Vector3Serialisable nodeListSerialisable = new Vector3Serialisable();
+        SaveLoad<Vector3Serialisable>.Load(out nodeListSerialisable);
+        nodeListSerialisable.SetValuesToNodeList(out nodeList);
+        
+        
+        /*
+          
+        Vector3Serialisable data = new Vector3Serialisable();
+
         string destination = Application.persistentDataPath + "/save.dat";
+
         FileStream file;
 
         if (File.Exists(destination)) file = File.OpenRead(destination);
@@ -151,14 +163,13 @@ public class TrackNodeValues
         }
 
         BinaryFormatter bf = new BinaryFormatter();
-        Vector3Serialisable data = new Vector3Serialisable();
         data = (Vector3Serialisable)bf.Deserialize(file);
 
         nodeList.Clear();
         data.SetValuesToNodeList(out nodeList);
 
         file.Close();
-
+        */
 
     }
 }   

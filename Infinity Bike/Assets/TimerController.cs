@@ -19,13 +19,13 @@ public class TimerController : MonoBehaviour {
         }
 		
 	}
-    public void ToggleTimer() {
-        timerOn = !timerOn; 
-        if (timerOn){
+    public void StartTimer()
+    {
+        if (!timerOn)
+        {
+            timerOn = true;
             startTime = Time.time;
         }
-
-        //timerOn = true; 
     }
     void UpdateTimer(){
         float currentTime = Time.time - startTime;

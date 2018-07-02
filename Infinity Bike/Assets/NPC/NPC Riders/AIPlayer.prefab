@@ -275,7 +275,7 @@ MonoBehaviour:
     numberNodeInPrediction: 4
     farNodeWeight: 0.5
     velocityDrag: 2.5
-  trackNode: {fileID: 11400000, guid: a67413c1147a1ae488549f211d328dee, type: 2}
+  trackNode: {fileID: 11400000, guid: 7d5b0d579628f5642b9e1a7c3b57d7ee, type: 2}
   backWheel: {fileID: 146141247246734872}
   frontWheel: {fileID: 146736936422582028}
 --- !u!114 &114995508200210644
@@ -289,8 +289,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00589f8b8f4e18046a9c34cd45e41e67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  respawnPoint: {fileID: 11400000, guid: a67413c1147a1ae488549f211d328dee, type: 2}
-  verticalRespawnPoint: -50
+  respawnPoint: {fileID: 11400000, guid: 7d5b0d579628f5642b9e1a7c3b57d7ee, type: 2}
+  verticalRespawnPoint: -30
 --- !u!136 &136046587506987188
 CapsuleCollider:
   m_ObjectHideFlags: 1

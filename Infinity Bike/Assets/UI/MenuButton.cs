@@ -8,18 +8,27 @@ public class MenuButton : MonoBehaviour
 {
     public enum Menu
     {
-        STARTSCREEN = 0, OPTIONSCEEN = 1
+        STARTSCREEN = 0, OPTIONSCEEN = 1 , GAMESCREEN = 2
     }
-    public List<MenueObjects> optionButtons = new List<MenueObjects>();
+    public Transform[] onScreenButtonGroup;
+    public int activeGroup = -1;
 
-    public void ToggleMenuButtons(int id)
+    public void ActivateMenuButtons(int id)
     {
-        foreach (GameObject item in optionButtons[id].menuObject)
-        {
-            item.SetActive(!item.activeSelf);
-        }   
+        foreach (Transform item in onScreenButtonGroup)
+        {item.gameObject.SetActive(false);}
+        
+        onScreenButtonGroup[id].gameObject.SetActive(true);
+        activeGroup = id;
+    }   
+
+    public void DeactivateMenuButtons(int id)
+    {
+        foreach (Transform item in onScreenButtonGroup)
+        { item.gameObject.SetActive(false); }
+        activeGroup = -1;
     }
-    
+
     public void ExitGame()
     {   
         #if UNITY_EDITOR
@@ -33,14 +42,6 @@ public class MenuButton : MonoBehaviour
     {
 
         SceneManager.LoadScene(scene);
-    }
-
-    [Serializable]
-    public class MenueObjects
-    {
-        public string menuName;
-        public List<GameObject> menuObject = new List<GameObject>();   
-
     }
 
 }

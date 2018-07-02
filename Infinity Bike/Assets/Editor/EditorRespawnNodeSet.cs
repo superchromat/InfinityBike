@@ -4,65 +4,56 @@ using UnityEditor;
 
 [CustomEditor(typeof(TrackNodeTool))]
 public class EditorRespawnNodeSet : Editor {
-	private bool doDrawTrajectory = false;
+	private static bool doDrawTrajectory = false;
+    private bool useSpaceBarToSet = false;
+
 	private int cycleNodeIndex = 0;
     public bool enableOnScreenPlacement = false;
 
 
-    private bool isReady = true;
-
-
+   // private bool isReady = false;
 
     void OnSceneGUI()
     {
         TrackNodeTool trackNodeScript = (TrackNodeTool)target;
-
-        if (EventType.KeyDown == Event.current.type && Event.current.keyCode == KeyCode.Space)
+        if (useSpaceBarToSet && EventType.KeyDown == Event.current.type && Event.current.keyCode == KeyCode.Space)
         {
-            if (isReady == true)
+            TrackNode trackNode = GetTrackNode();
+            if (trackNode != null)
             {
+                Vector3 pos = CalculatePositionAboveTheTrack(trackNodeScript.GetComponent<Transform>().position);
 
-                TrackNode trackNode = GetTrackNode();
-                if (trackNode != null)
-                {
-
-                    Vector3 pos = CalculatePositionAboveTheTrack(trackNodeScript.GetComponent<Transform>().position);
-
-                    GetTrackNode().AddNode(pos);
-                    cycleNodeIndex = GetTrackNode().GetNodeCount() - 1;
-                }
-
-
+                GetTrackNode().AddNode(pos);
+                cycleNodeIndex = GetTrackNode().GetNodeCount() - 1;
             }
-            isReady = !isReady;
         }
+        
 
-
-
-        if (doDrawTrajectory)
-        {
-            DebugDraw();
-        }
     }
 
 
     public override void OnInspectorGUI()
 	{
-		TrackNodeTool trackNodeScript = (TrackNodeTool)target;
+        TrackNodeTool trackNodeScript = (TrackNodeTool)target;
 		DrawDefaultInspector ();
 
+        if ( GUILayout.Toggle(doDrawTrajectory, "Draw track curve"))
+        {
+            if(doDrawTrajectory==false)
+            SceneView.onSceneGUIDelegate += DebugDraw;
+            doDrawTrajectory = true;
+        }
+        else
+        {
+            if (doDrawTrajectory == true)
+            SceneView.onSceneGUIDelegate -= DebugDraw;
+            doDrawTrajectory = false;
+        }
+
+        useSpaceBarToSet = GUILayout.Toggle(useSpaceBarToSet, "Use Space Bar To Add");
 
 
-
-        if (GUILayout.Button ("Draw track curve")) 
-		{
-			doDrawTrajectory = !doDrawTrajectory;
-			DebugDraw ();
-		}
-
-
-
-		if (GUILayout.Button ("Add and Set Node") )
+        if (GUILayout.Button ("Add and Set Node") )
 		{
 
 			TrackNode trackNode = GetTrackNode ();
@@ -159,7 +150,7 @@ public class EditorRespawnNodeSet : Editor {
 
         }
 
-        if (GUILayout.Button("Cycle Set"))
+        if (GUILayout.Button("Cycle & Set"))
         {
             TrackNode trackNode = GetTrackNode();
             for (int index = 0; index < GetTrackNode().GetNodeCount(); index++)
@@ -174,14 +165,10 @@ public class EditorRespawnNodeSet : Editor {
 
                 if (trackNode.GetNode(cycleNodeIndex) == trackNode.GetNode(cycleNodeIndex - 1))
                 {trackNode.DeleteNode(cycleNodeIndex);}
-
-
-            }
+            }   
         }
 
-
         SceneView.RepaintAll ();
-
 	}	
 	
 
@@ -205,17 +192,20 @@ public class EditorRespawnNodeSet : Editor {
 	}
 
 
-	void DebugDraw()
+	void DebugDraw(SceneView sceneView)
 	{
-		TrackNodeTool trackNodeScript = (TrackNodeTool)target;
+        TrackNodeTool trackNodeScript = (TrackNodeTool)target;
 		TrackNode trackNode = GetTrackNode ();
 
-		if (trackNode != null) {
-			Transform trackNodeToolTransform = trackNodeScript.GetComponent<Transform> ();;
-
+		if (trackNode != null)
+        {
+			Transform trackNodeToolTransform = trackNodeScript.GetComponent<Transform> ();
+            
             for (int index = 0; index < GetTrackNode().GetNodeCount(); index++) {
+
                 if ((index & 1) == 1)
                 {
+
                     Handles.color = Color.red;
                 }
                 else
@@ -257,10 +247,7 @@ public class EditorRespawnNodeSet : Editor {
 		if (trackNode != null) 
 		{trackNodeToolTransform.position = trackNode.GetNode (cycleNodeIndex);}	
 	}
-
-
-
-
+    
 	TrackNode GetTrackNode()
 	{
 		TrackNodeTool trackNodeScript = (TrackNodeTool)target;

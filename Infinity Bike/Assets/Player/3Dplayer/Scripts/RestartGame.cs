@@ -16,6 +16,7 @@ public class RestartGame : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        
         if (Input.GetKeyDown(KeyCode.R))
         {
             if(cameraMain==null)
@@ -31,10 +32,7 @@ public class RestartGame : MonoBehaviour {
 
 
             }
-
-
-
-        }
+        }   
 
 
 

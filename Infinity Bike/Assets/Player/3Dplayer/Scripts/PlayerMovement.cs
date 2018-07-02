@@ -8,28 +8,23 @@ using System;
 public class PlayerMovement : MonoBehaviour
 {   
 
-    public bool isScriptActivated = true;
+    public bool isScriptActivated = false;
 
 	public float speedMultiplier = 1f;
 	public float angleChangeRange = 180f;
 
 	public float velocityDrag = 1f;
     public float breakForce = 1000;
-
-
-
+    
     public WheelCollider backWheel;
 	public WheelCollider frontWheel;
 
 	public ArduinoThread serialValues;
 	public Transform handleBar;
 
-
-
 	private float processedAngle = 0;
 	private float processedSpeed = 0;
 	private Rigidbody playerRigidBody;
-
     
 	// Use this for initialization
 	void Start () 
@@ -60,26 +55,24 @@ public class PlayerMovement : MonoBehaviour
     void ApplyWheelForces()
 	{   
 		processedSpeed = serialValues.arduinoInfo.arduinoValueStorage.rawSpeed * speedMultiplier;
-	    
-		if (Input.GetKey (KeyCode.Space)) 
-		{	
-			backWheel.motorTorque = -processedSpeed;
-		}	 
 
-		else if (processedSpeed != 0) 
+		if (processedSpeed != 0) 
 		{	
 			backWheel.brakeTorque = 0;
 			frontWheel.brakeTorque = 0;
 
-			backWheel.motorTorque = processedSpeed;
+            frontWheel.motorTorque = 0;
+            backWheel.motorTorque = processedSpeed;
             ApplyVelocityDrag(velocityDrag);
         }	
 		else
-		{
+		{   
             ApplyVelocityDrag(velocityDrag);
 
+			backWheel.motorTorque = 0;
+            frontWheel.motorTorque = 0;
             backWheel.brakeTorque = breakForce;
-			frontWheel.brakeTorque = breakForce;
+            frontWheel.brakeTorque = breakForce;
 		}	
 
 	}
@@ -120,5 +113,9 @@ public class PlayerMovement : MonoBehaviour
         GetComponent<Respawn>().onRespawn();
     }
 
-    
+    public void ChangeScriptActiveState(bool toSet)
+    {
+        isScriptActivated = toSet;
+    }
+
 }

@@ -12,10 +12,7 @@ public class ArduinoInfo
     public string comPort = "Code will select automatically.";
     public BaudRate baudRate = BaudRate._9600;
     public int arduinoReadTimeout = 50;
-
-
     
-
     public SerialPort arduinoPort = null;
     public AnalogRange rotationAnalogRange = new AnalogRange();
     public ArduinoValueStorage arduinoValueStorage = new ArduinoValueStorage();

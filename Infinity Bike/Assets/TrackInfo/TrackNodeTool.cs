@@ -6,7 +6,14 @@ public class TrackNodeTool : MonoBehaviour {
 
 	public TrackNode trackNode = null;
 
-
+    private void Start()
+    {
+        if (trackNode.GetNodeCount() == 0)
+        {
+            Load();
+        }
+        
+    }
 
 
     [ContextMenu("Save")]

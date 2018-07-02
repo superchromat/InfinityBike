@@ -10,28 +10,28 @@ public class ArrowPosition : MonoBehaviour {
     public float width;
     public ArduinoThread arduinoThread;
 
-    public RectTransform[] onScreenButtonParent;
-    public List<Button> onScreenButton;
-    private Button closestButton = null;
+   // public RectTransform[] onScreenButtonParent;
+  //  public List<Button> onScreenButton;
+  //  private Button closestButton = null;
 
-    public float delayTimer = 0.2f;
-    private bool isCheckDone = true;
+   // public float delayTimer = 0.2f;
+   // private bool isCheckDone = true;
 
-    void Start () {
+    void Start ()
+    {   
         rectTransform = GetComponent<RectTransform>();
         height = (float)Screen.height/2f;
         width = (float)Screen.width/2f;
 
-        if(onScreenButtonParent.Length > 0)
-        foreach (RectTransform item in onScreenButtonParent)
-        {
-            Button[] butList = item.GetComponentsInChildren<Button>(true);
+        //if(onScreenButtonParent.Length > 0)
+        //foreach (RectTransform item in onScreenButtonParent)
+        //{
+        //    Button[] butList = item.GetComponentsInChildren<Button>(true);
             
-            foreach (Button button in butList)
-            {onScreenButton.Add(button);} 
-        }
-
-    }
+        //    foreach (Button button in butList)
+        //    {onScreenButton.Add(button);} 
+        //}
+    }   
     
     void Update()
     {   
@@ -41,19 +41,19 @@ public class ArrowPosition : MonoBehaviour {
         rectTransform.localPosition = position;
         rectTransform.rotation = Quaternion.Euler(0, 0, 270f - val * 180f / Mathf.PI);
 
-        FindClosestActiveButton();
+      //  FindClosestActiveButton();
 
-        if (isCheckDone)
-        {   
-            StartCoroutine(ActivateClosestButton());
-        }
+        //if (isCheckDone)
+        //{   
+        //    StartCoroutine(ActivateClosestButton());
+        //}
 
 
-        if (closestButton != null)
-        { closestButton.Select(); }
+        //if (closestButton != null)
+        //{ closestButton.Select(); }
 
     }   
-
+    /*
     Button FindClosestActiveButton()
     {
         float distance = float.MaxValue;
@@ -92,6 +92,6 @@ public class ArrowPosition : MonoBehaviour {
         }
 
         isCheckDone = true;
-    }
+    }*/
 
 }
