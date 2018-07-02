@@ -11,8 +11,6 @@ public class DisplaySerialData : MonoBehaviour {
 
     public ArduinoThread serialData;
 
-
-
 	void Start ()
     {   
 		
@@ -21,8 +19,8 @@ public class DisplaySerialData : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        speedText.text = serialData.values.speed.ToString();
-        rotationText.text = serialData.values.rotation.ToString();
+        speedText.text = serialData.arduinoInfo.arduinoValueStorage.rawSpeed.ToString();
+        rotationText.text = serialData.arduinoInfo.arduinoValueStorage.rawRotation.ToString();
 
     }   
 }

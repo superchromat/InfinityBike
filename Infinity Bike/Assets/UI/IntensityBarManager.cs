@@ -22,16 +22,12 @@ public  Color[] colors;
         {
             Image bar = bars[i];
             colors[i] = bar.color;
-
-            //Debug.Log(bar.color);
-            //bar.color = new Color(colors[barIndex].r, colors[barIndex].g, colors[barIndex].b, 0.1f);
-           
         }
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        speed = storageValue.values.speed;
+        speed = storageValue.arduinoInfo.arduinoValueStorage.rawSpeed;
 
 
 
@@ -39,8 +35,7 @@ public  Color[] colors;
         {
             Image bar = bars[i];
             float alpha = 0.1f;
-            //float ratio = (float)speed / (float)maxSpeed;
-            //Debug.Log(ratio);   
+
             if ((float) speed /(float) maxSpeed > (float)(i + 1) /(float) numBar){
                 alpha = 1f; 
             }

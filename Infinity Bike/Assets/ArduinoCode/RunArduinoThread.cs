@@ -6,21 +6,16 @@ public class RunArduinoThread : MonoBehaviour {
     public ArduinoThread arduinoThread;
 
     // Use this for initialization
-    void Start () {
-        if (arduinoThread.arduinoAgent.arduinoPort == null || !arduinoThread.arduinoAgent.arduinoPort.IsOpen)
+    void Start ()
+    {   
+        if (arduinoThread.arduinoInfo.arduinoPort == null || !arduinoThread.arduinoInfo.arduinoPort.IsOpen)
         {
             arduinoThread.Initialisation();
-            arduinoThread.CurrentActiveValueGetter();
         }
-    }
-
-    private void FixedUpdate()
-    {
-        arduinoThread.CurrentActiveValueGetter();
-    }
-
+    }   
+    
     void OnApplicationQuit()
     {
-        arduinoThread.arduinoAgent.ArduinoAgentCleanup();
+        arduinoThread.arduinoInfo.ArduinoAgentCleanup();
     }
 }

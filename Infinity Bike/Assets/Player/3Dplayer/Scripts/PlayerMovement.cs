@@ -59,7 +59,7 @@ public class PlayerMovement : MonoBehaviour
 
     void ApplyWheelForces()
 	{   
-		processedSpeed = serialValues.values.speed * speedMultiplier;
+		processedSpeed = serialValues.arduinoInfo.arduinoValueStorage.rawSpeed * speedMultiplier;
 	    
 		if (Input.GetKey (KeyCode.Space)) 
 		{	
@@ -86,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
 
     void ApplyHandleBarRotation()
     {
-        processedAngle = (serialValues.values.rotation / ((serialValues.arduinoAgent.rotationAnalogRange.range)) - 0.5f) * angleChangeRange;
+        processedAngle = (serialValues.arduinoInfo.arduinoValueStorage.rawRotation / ((serialValues.arduinoInfo.rotationAnalogRange.range)) - 0.5f) * angleChangeRange;
         frontWheel.steerAngle = processedAngle;
     }
     void ApplyVelocityDrag(float drag)

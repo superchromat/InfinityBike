@@ -10,84 +10,88 @@ public class ArrowPosition : MonoBehaviour {
     public float width;
     public ArduinoThread arduinoThread;
 
-    public Button[] onScreenButtonList;
-
-    private float lastSpinValue = 0f;
-    Button closestButton = null;
-
+    public RectTransform[] onScreenButtonParent;
+    public List<Button> onScreenButton;
+    private Button closestButton = null;
 
     public float delayTimer = 0.2f;
-    private float timer = 0f;
-    // Use this for initialization
+    private bool isCheckDone = true;
+
     void Start () {
         rectTransform = GetComponent<RectTransform>();
         height = (float)Screen.height/2f;
         width = (float)Screen.width/2f;
-        lastSpinValue = float.MaxValue;
 
-        onScreenButtonList =  (GetComponentInParent<Canvas>()).GetComponentsInChildren<Button>();
+        if(onScreenButtonParent.Length > 0)
+        foreach (RectTransform item in onScreenButtonParent)
+        {
+            Button[] butList = item.GetComponentsInChildren<Button>(true);
+            
+            foreach (Button button in butList)
+            {onScreenButton.Add(button);} 
+        }
+
+    }
     
-    }   
-
-    // Update is called once per frame
     void Update()
-    {
-
-        float val = arduinoThread.values.rotation / arduinoThread.arduinoAgent.rotationAnalogRange.range * Mathf.PI;// - Mathf.PI/2f;
+    {   
+        float val = arduinoThread.arduinoInfo.arduinoValueStorage.rawRotation / arduinoThread.arduinoInfo.rotationAnalogRange.range * Mathf.PI;
 
         Vector3 position = (new Vector3(-width * Mathf.Cos(val), -height * (1 - Mathf.Sin(val)), 0));
         rectTransform.localPosition = position;
         rectTransform.rotation = Quaternion.Euler(0, 0, 270f - val * 180f / Mathf.PI);
-        
-        ActivateClosestButton();
 
-    }
+        FindClosestActiveButton();
+
+        if (isCheckDone)
+        {   
+            StartCoroutine(ActivateClosestButton());
+        }
 
 
-    void ActivateClosestButton()
+        if (closestButton != null)
+        { closestButton.Select(); }
+
+    }   
+
+    Button FindClosestActiveButton()
     {
-        if (timer < delayTimer)
+        float distance = float.MaxValue;
+        foreach (Button item in onScreenButton)
         {
-            if (lastSpinValue < arduinoThread.values.speed)
+
+            if (item.IsActive() == true)
             {
-                timer += Time.deltaTime;
-                if (closestButton == null)
+
+                float distanceContender = Vector3.Distance(item.GetComponent<RectTransform>().localPosition, rectTransform.localPosition);
+
+                if (distanceContender < distance)
                 {
-                    float distance = float.MaxValue;
-                    foreach (Button item in onScreenButtonList)
-                    {
-                        if (item.IsActive())
-                        {
-                            float temp_distance = Vector3.Distance(item.GetComponent<RectTransform>().localPosition, rectTransform.localPosition);
+                    distance = distanceContender;
+                    closestButton = item;
 
-                            if (distance > temp_distance)
-                            {
-                                closestButton = item;
-                                distance = temp_distance;
-                            }
-
-
-                        }
-                    }
                 }
-            }
-            else
-            {   
-                timer = 0;
-                lastSpinValue = arduinoThread.values.speed;
-                closestButton = null;
             }   
         }
-        else
-        {
-            lastSpinValue = arduinoThread.values.speed;
-            timer = 0;
 
-            if(closestButton!=null)
-            closestButton.onClick.Invoke();
+        return closestButton;
+    }   
+    
+    IEnumerator ActivateClosestButton()
+    {
+        isCheckDone = false;
+
+        float lastSpinValue = arduinoThread.arduinoInfo.arduinoValueStorage.rawSpeed;
+
+        yield return new WaitForSeconds(delayTimer);
+
+        if (arduinoThread.arduinoInfo.arduinoValueStorage.rawSpeed > lastSpinValue)
+        {   
+            if (closestButton != null)
+            {closestButton.onClick.Invoke();}
         }
 
-
+        isCheckDone = true;
     }
-    
+
 }

@@ -19,22 +19,15 @@ public class MenuButton : MonoBehaviour
             item.SetActive(!item.activeSelf);
         }   
     }
-
     
     public void ExitGame()
-    {
-
-        Debug.Log(GameObject.FindObjectsOfType(typeof(ArduinoThread)).Length);
-
-        try
-        {
-            Application.Quit();
-        }
-        catch
-        {
-            System.Diagnostics.Process.GetCurrentProcess().Kill();
-        }
-    }
+    {   
+        #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+        #else
+                Application.Quit();
+        #endif
+    }   
 
     public void LoadScene(int scene)
     {

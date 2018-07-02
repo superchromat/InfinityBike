@@ -4,72 +4,36 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.IO.Ports;
-
-
 using System.Threading;
+
+
 
 [CreateAssetMenu(fileName = "ArduinoThread", menuName = "Generator/ArduinoThread", order = 2)]
 public class ArduinoThread : ScriptableObject 
-{
+{   
     public Action CurrentActiveValueGetter = null;
+    public ArduinoInfo arduinoInfo = new ArduinoInfo();
+    
 
-    public ArduinoAgent arduinoAgent = new ArduinoAgent();
-    public ArduinoValueStorage values = new ArduinoValueStorage ();
-    public KeboardAlternative keboardAlternative = new KeboardAlternative(1,550,100);
-    
-    private Thread activeThread = null;
-    
+
     public void Initialisation()
-    {
-        activeThread = new Thread(() => { AsychronousAutoDetectArduino(); });
-        CurrentActiveValueGetter = ArduinoReadThread;
-    }
-
-    private void ArduinoReadThread() 
-	{	
-        if (!activeThread.IsAlive)
-        {
-            try
-            {
-                activeThread.Start();
-            }
-            catch(ThreadStateException e)
-            {
-                Debug.LogError("Handled Error -> " + e.GetType()+ " : "+ e.Message);
-                Initialisation();
-
-            }
-        }
-    }
-
-    public void SetKeyBoardAsInput(bool doSet)
-    {
-        if (doSet)
-            CurrentActiveValueGetter = SynchronousReadFromKeyBoard;
-        else
-        {
-            Initialisation();
-        }
-    }
-
-    private void SynchronousReadFromKeyBoard()
-    {
-        values.speed = (UInt16)(Mathf.Abs(Input.GetAxis("Vertical")) * keboardAlternative.keyboardSpeed);
-        values.rotation = (UInt16)((keboardAlternative.keyboardAngle + Input.GetAxis("Horizontal") * keboardAlternative.keyboardMultiplier));
-    }
-
-	private void AsynchronousReadFromArduino()
+    {   
+        ThreadPool.QueueUserWorkItem(AsychronousAutoDetectArduino);
+    }   
+   
+	private void AsynchronousReadFromArduino(object data)
 	{   
-        arduinoAgent.WriteToArduino("ALL");
+        arduinoInfo.WriteToArduino("ALL");
         string rotString = null;
         string speedString = null;
 
         try
         {
-            rotString = arduinoAgent.arduinoPort.ReadLine();
-            speedString = arduinoAgent.arduinoPort.ReadLine();
-            values.SetValue(UInt16.Parse(rotString), UInt16.Parse(speedString));
-            activeThread = new Thread(() => { AsynchronousReadFromArduino(); });
+            rotString = arduinoInfo.arduinoPort.ReadLine();
+            speedString = arduinoInfo.arduinoPort.ReadLine();
+            arduinoInfo.arduinoValueStorage.SetValue(UInt16.Parse(rotString), UInt16.Parse(speedString));
+
+            ThreadPool.QueueUserWorkItem(new WaitCallback(AsynchronousReadFromArduino));
         }
         catch (TimeoutException e)
         {
@@ -80,23 +44,23 @@ public class ArduinoThread : ScriptableObject
         catch (InvalidOperationException e)
         {
             Debug.LogError("Handled Error -> " + e.GetType() + " : " + e.Message);
-            activeThread = new Thread(() => { AsychronousAutoDetectArduino(); });
+
+            ThreadPool.QueueUserWorkItem(new WaitCallback(AsychronousAutoDetectArduino));
         }
+    }   
 
-
-    }
-    private void AsychronousAutoDetectArduino()
-    {
-        arduinoAgent.comPort = AutoDetectArduinoPort();
-    }
+    private void AsychronousAutoDetectArduino(object data)
+    {   
+        arduinoInfo.comPort = AutoDetectArduinoPort();
+    }   
     
     private string AutoDetectArduinoPort()
     {
-        Debug.Log("autoDectect");
+        Debug.Log("started auto Dectect");
         try
         {
-            if (arduinoAgent.arduinoPort.IsOpen)
-            { arduinoAgent.arduinoPort.Dispose(); }
+            if (arduinoInfo.arduinoPort.IsOpen)
+            { arduinoInfo.arduinoPort.Dispose(); }
         }
         catch (NullReferenceException) {}
         
@@ -109,21 +73,22 @@ public class ArduinoThread : ScriptableObject
         {ports = SerialPort.GetPortNames();}
 
         foreach (string port in ports) 
-		{
+		{   
+            
             string result = null;
 
-            arduinoAgent.openArduinoPort(port);
+            arduinoInfo.OpenArduinoPort(port);
 
-            if (arduinoAgent.arduinoPort.IsOpen)
+            if (arduinoInfo.arduinoPort.IsOpen)
             {   
                 const int tryCount = 10;
                 for (int i = 0; i < tryCount; i++)
                 {
                     try
                     {   
-                        arduinoAgent.WriteToArduino("READY");
+                        arduinoInfo.WriteToArduino("READY");
                         Thread.Sleep(50);
-                        result = arduinoAgent.arduinoPort.ReadLine();
+                        result = arduinoInfo.arduinoPort.ReadLine();
                     }   
                     catch (TimeoutException)
                     {
@@ -133,20 +98,18 @@ public class ArduinoThread : ScriptableObject
                     if (result == "READY")
                     {
                         Debug.Log(port + " " + result);
-                        activeThread = new Thread(() => { AsynchronousReadFromArduino(); });
+                        ThreadPool.QueueUserWorkItem(new WaitCallback(AsynchronousReadFromArduino));
+
                         return port;
                     }
                 }
             }   
         }
-        activeThread = new Thread(() => { AsychronousAutoDetectArduino(); });
+        ThreadPool.QueueUserWorkItem(new WaitCallback(AsychronousAutoDetectArduino));
         return null;
     }   
     
-
-
-    string[] GetPortNamesOSX() //Function retreived from : 
-    //https://answers.unity.com/questions/643078/serialportsgetportnames-error.html
+    string[] GetPortNamesOSX() //Function retreived from : https://answers.unity.com/questions/643078/serialportsgetportnames-error.html
     {
        
         List<string> serial_ports = new List<string>();
@@ -154,50 +117,11 @@ public class ArduinoThread : ScriptableObject
       
         string[] ttys = System.IO.Directory.GetFiles("/dev/", "tty.*");
         foreach (string dev in ttys)
-        {
+        {   
             serial_ports.Add(dev);
-        }
+        }   
 
         return serial_ports.ToArray();
     }
 
-
-    [Serializable]
-    public struct KeboardAlternative
-    {
-        public float keyboardSpeed;
-        public float keyboardAngle;
-        public float keyboardMultiplier;
-
-        public KeboardAlternative(float KeyboardSpeed, float KeyboardAngle, float KeyboardMultiplier)
-        {
-            keyboardSpeed = KeyboardSpeed;
-            keyboardAngle = KeyboardAngle;
-            keyboardMultiplier = KeyboardMultiplier;
-        }
-
-
-    }
-
-    [Serializable]
-    public class ArduinoValueStorage
-    {
-        public UInt16 rotation;
-        public UInt16 speed;
-
-        public void SetValue(UInt16 rotation, UInt16 speed)
-        {
-            this.rotation = rotation;
-            this.speed = speed;
-        }
-
-        public ArduinoValueStorage()
-        { SetValue(0, 0); }
-
-        public ArduinoValueStorage(UInt16 rotation, UInt16 speed)
-        { SetValue(rotation, speed); }
-    }   
-
-
-
-}
+}   
