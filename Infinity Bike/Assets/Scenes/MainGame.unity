@@ -1402,6 +1402,11 @@ Prefab:
       propertyPath: isScriptActivated
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114251524655597424, guid: 3137e0905e6a7be4d863a4ee21461856,
+        type: 2}
+      propertyPath: useKeyBoard
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3137e0905e6a7be4d863a4ee21461856, type: 2}
   m_IsPrefabParent: 0

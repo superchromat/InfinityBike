@@ -13,14 +13,13 @@ public class ArduinoThread : ScriptableObject
 {   
     public Action CurrentActiveValueGetter = null;
     public ArduinoInfo arduinoInfo = new ArduinoInfo();
-    
 
 
     public void Initialisation()
-    {   
+    {
         ThreadPool.QueueUserWorkItem(AsychronousAutoDetectArduino);
     }   
-   
+
 	private void AsynchronousReadFromArduino(object data)
 	{   
         arduinoInfo.WriteToArduino("ALL");
