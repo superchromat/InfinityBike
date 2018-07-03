@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class SaveLoad<T>
 {   
-    public static void Save(T serializableClass)
+    public static void Save(T serializableClass ,string fileName)
     {
 
-        string destination = Application.persistentDataPath + "/save.dat";
+        string destination = Application.persistentDataPath + "/"+ fileName +".dat";
         Debug.Log(destination);
         FileStream file;
 
@@ -20,9 +20,9 @@ public class SaveLoad<T>
         file.Close();
     }
 
-    public static void Load(out T serializableClass)
+    public static void Load(out T serializableClass, string fileName)
     {   
-        string destination = Application.persistentDataPath + "/save.dat";
+        string destination = Application.persistentDataPath + "/"+ fileName +".dat";
         FileStream file;
 
         if (File.Exists(destination))

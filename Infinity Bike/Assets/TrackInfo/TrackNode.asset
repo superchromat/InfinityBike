@@ -12,6 +12,4 @@ MonoBehaviour:
   m_Name: TrackNode
   m_EditorClassIdentifier: 
   nodeValues:
-    nodeList:
-    - {x: 151.5, y: -14.997978, z: 267.60007}
-    - {x: 207.10004, y: -23.044825, z: 291.10007}
+    nodeList: []

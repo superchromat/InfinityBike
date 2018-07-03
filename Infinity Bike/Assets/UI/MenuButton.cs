@@ -16,8 +16,8 @@ public class MenuButton : MonoBehaviour
     public void ActivateMenuButtons(int id)
     {
         foreach (Transform item in onScreenButtonGroup)
-        {item.gameObject.SetActive(false);}
-        
+        { item.gameObject.SetActive(false); }
+
         onScreenButtonGroup[id].gameObject.SetActive(true);
         activeGroup = id;
     }   

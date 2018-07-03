@@ -28,10 +28,13 @@ public class PlayerMovement : MonoBehaviour
     
 	// Use this for initialization
 	void Start () 
-	{   
-		backWheel.ConfigureVehicleSubsteps(1, 12, 15);
-		frontWheel.ConfigureVehicleSubsteps(1, 12, 15);
-		playerRigidBody = GetComponent<Rigidbody> ();
+	{
+        backWheel.ConfigureVehicleSubsteps(1, 12, 15);
+        frontWheel.ConfigureVehicleSubsteps(1, 12, 15);
+
+
+
+        playerRigidBody = GetComponent<Rigidbody> ();
     }
 
     // Update is called once per frame

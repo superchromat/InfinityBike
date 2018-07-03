@@ -13,8 +13,9 @@ public class TrackNode : ScriptableObject
 
     public void DeleteNode(int index)
     {
-        Debug.Log(index);
-        nodeValues.nodeList.RemoveAt(index);
+        if (GetNodeCount() > 0)
+        {nodeValues.nodeList.RemoveAt(index);}
+
     }
 
     public void InsertNode(Vector3 toadd, int indexAhead)
@@ -118,10 +119,10 @@ public class TrackNodeValues
 
     }
 
-    public void Save()
+    public void Save(string fileName)
     {
         Vector3Serialisable nodeListSerialisable = new Vector3Serialisable(nodeList);
-        SaveLoad<Vector3Serialisable>.Save(nodeListSerialisable);
+        SaveLoad<Vector3Serialisable>.Save(nodeListSerialisable, fileName);
 
 
         /*
@@ -139,11 +140,11 @@ public class TrackNodeValues
         */
     }
 
-    public void LoadFile()
+    public void LoadFile(string fileName)
     {
         
         Vector3Serialisable nodeListSerialisable = new Vector3Serialisable();
-        SaveLoad<Vector3Serialisable>.Load(out nodeListSerialisable);
+        SaveLoad<Vector3Serialisable>.Load(out nodeListSerialisable, fileName);
         nodeListSerialisable.SetValuesToNodeList(out nodeList);
         
         

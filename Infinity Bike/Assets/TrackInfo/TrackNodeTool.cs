@@ -5,6 +5,7 @@ using UnityEngine;
 public class TrackNodeTool : MonoBehaviour {
 
 	public TrackNode trackNode = null;
+    public string fileName = "track_1";
 
     private void Start()
     {
@@ -19,12 +20,12 @@ public class TrackNodeTool : MonoBehaviour {
     [ContextMenu("Save")]
     public void Save()
     {
-        trackNode.nodeValues.Save();
+        trackNode.nodeValues.Save(fileName);
     }
     [ContextMenu("Load")]
     public void Load()
     {
 
-        trackNode.nodeValues.LoadFile();
+        trackNode.nodeValues.LoadFile(fileName);
     }
 }

@@ -13,7 +13,7 @@ public class ArduinoButtonPress : MonoBehaviour {
     private bool isCheckDone = true;
     public Color startColour = new Color(1, 0, 0, 1);
     public Color finalColor = new Color(0, 1, 0, 1);
-    ColorBlock colorBlock;
+    ColorBlock colorBlock = new ColorBlock();
 
     void Start () {
         colorBlock.highlightedColor = finalColor;

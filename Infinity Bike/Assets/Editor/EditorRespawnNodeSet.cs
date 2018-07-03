@@ -8,16 +8,18 @@ public class EditorRespawnNodeSet : Editor {
     private bool useSpaceBarToSet = false;
 
 	private int cycleNodeIndex = 0;
-    public bool enableOnScreenPlacement = false;
-
-
-   // private bool isReady = false;
+    private bool enableOnScreenPlacement = false;
+    
 
     void OnSceneGUI()
     {
+        //if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Space && useSpaceBarToSet)
+        //    Debug.Log("Hit");
+
         TrackNodeTool trackNodeScript = (TrackNodeTool)target;
-        if (useSpaceBarToSet && EventType.KeyDown == Event.current.type && Event.current.keyCode == KeyCode.Space)
+        if (enableOnScreenPlacement && useSpaceBarToSet && EventType.KeyDown == Event.current.type && Event.current.keyCode == KeyCode.Space)
         {
+            enableOnScreenPlacement = false;
             TrackNode trackNode = GetTrackNode();
             if (trackNode != null)
             {
@@ -27,8 +29,10 @@ public class EditorRespawnNodeSet : Editor {
                 cycleNodeIndex = GetTrackNode().GetNodeCount() - 1;
             }
         }
-        
-
+        else if (EventType.KeyUp == Event.current.type && Event.current.keyCode == KeyCode.Space)
+        {
+            enableOnScreenPlacement = true;
+        }
     }
 
 
@@ -52,6 +56,9 @@ public class EditorRespawnNodeSet : Editor {
 
         useSpaceBarToSet = GUILayout.Toggle(useSpaceBarToSet, "Use Space Bar To Add");
 
+
+        //GUILayout.Toggle(useSpaceBarToSet, "Use Space Bar To Add");
+        //enableOnScreenPlacement = useSpaceBarToSet;
 
         if (GUILayout.Button ("Add and Set Node") )
 		{
@@ -194,6 +201,8 @@ public class EditorRespawnNodeSet : Editor {
 
 	void DebugDraw(SceneView sceneView)
 	{
+        if (GetTrackNode().GetNodeCount() <= 0)
+        {return;}
         TrackNodeTool trackNodeScript = (TrackNodeTool)target;
 		TrackNode trackNode = GetTrackNode ();
 
@@ -201,17 +210,15 @@ public class EditorRespawnNodeSet : Editor {
         {
 			Transform trackNodeToolTransform = trackNodeScript.GetComponent<Transform> ();
             
-            for (int index = 0; index < GetTrackNode().GetNodeCount(); index++) {
-
+            for (int index = 0; index < GetTrackNode().GetNodeCount(); index++)
+            {
                 if ((index & 1) == 1)
                 {
-
                     Handles.color = Color.red;
                 }
                 else
                 {
                     Handles.color = Color.cyan;
-
                 }
                 Handles.DrawLine (GetTrackNode ().GetNode (index), GetTrackNode ().GetNode (index - 1));
 			}
