@@ -38,9 +38,12 @@ public class ArduinoInfo
     {
         try
         {
-            WriteToArduino("DONE");
-            arduinoPort.BaseStream.Flush();
-            arduinoPort.Dispose();
+            if (arduinoPort.IsOpen)
+            {
+                WriteToArduino("DONE");
+                arduinoPort.BaseStream.Flush();
+                arduinoPort.Dispose();
+            }
         }
         catch (Exception e)
         {

@@ -9,27 +9,30 @@ using System.IO;
 [CreateAssetMenu(fileName = "TrackNode", menuName = "TrackNode", order = 1)]
 public class TrackNode : ScriptableObject 
 {
-    public TrackNodeValues nodeValues;
+    public bool isLoopOpen;
+    public List<Vector3> nodeList = new List<Vector3>();
 
     public void DeleteNode(int index)
     {
         if (GetNodeCount() > 0)
-        {nodeValues.nodeList.RemoveAt(index);}
-
+        {nodeList.RemoveAt(index);}
     }
 
     public void InsertNode(Vector3 toadd, int indexAhead)
     {
+        /*
         if (indexAhead < 0)
         {
-            indexAhead += nodeValues.nodeList.Count;
+            indexAhead += nodeList.Count;
         }
-        else if (indexAhead > nodeValues.nodeList.Count)
+        else if (indexAhead > nodeList.Count)
         {
-            indexAhead -= nodeValues.nodeList.Count;
+            indexAhead -= nodeList.Count;
         }
+        */
 
-        nodeValues.nodeList.Insert(indexAhead, toadd);
+        ClampIndex(ref indexAhead);
+        nodeList.Insert(indexAhead, toadd);
     }
 
     public void AddNode (Vector3 toadd)
@@ -37,140 +40,126 @@ public class TrackNode : ScriptableObject
 
         RaycastHit hit;
         if (Physics.Raycast(toadd, Vector3.down, out hit, 100f))
-        { nodeValues.nodeList.Add(hit.point + Vector3.up * 1.5f); }
+        { nodeList.Add(hit.point + Vector3.up * 1.5f); }
         else if(Physics.Raycast(toadd, Vector3.up, out hit, 100f))
-        { nodeValues.nodeList.Add(hit.point + Vector3.up * 1.5f); }
+        { nodeList.Add(hit.point + Vector3.up * 1.5f); }
 
 
     }	
 	
 	public void SetNode (Vector3 toadd, int index)
 	{	
-		if(nodeValues.nodeList.Count != 0)
+		if(nodeList.Count != 0)
 		{
-            nodeValues.nodeList[index] = toadd;
+            nodeList[index] = toadd;
 		}	
 	}
-
 
 	public Vector3 GetNode (int index)
 	{
 
 		if (GetNodeCount () == 0) 
-		{
-            return Vector3.zero;
-        }	
+		{return Vector3.zero;}
 
-		while (index >= nodeValues.nodeList.Count) 
-		{index -= nodeValues.nodeList.Count;}	
-
-		while (index < 0) 
-		{index += nodeValues.nodeList.Count;}
-
-        return nodeValues.nodeList[index];
-	}
+        ClampIndex(ref index);
+        return nodeList[index];
+	}   
 
 	public int GetNodeCount()
-	{
-		return nodeValues.nodeList.Count;
-	}
+	{return nodeList.Count;}
+
+    public void Save(string fileName)
+    {
+        Vector3Serialisable nodeListSerialisable = new Vector3Serialisable(nodeList, isLoopOpen);
+        SaveLoad<Vector3Serialisable>.Save(nodeListSerialisable, fileName);
+    }
+
+    public void LoadFile(string fileName)
+    {   
+        Vector3Serialisable nodeListSerialisable = new Vector3Serialisable();
+        SaveLoad<Vector3Serialisable>.Load(out nodeListSerialisable, fileName);
+        nodeListSerialisable.SetValuesToNodeList(out nodeList, out isLoopOpen);
+    }
+
+    public void ClampIndex( ref int index)
+    {
+        if (isLoopOpen)
+        {
+            if (index >= nodeList.Count)
+            { index = nodeList.Count - 1; }
+
+            if (index < 0)
+            { index = 0; }
+        }
+        else
+        {
+            while (index >= nodeList.Count)
+            { index -= nodeList.Count; }
+            while (index < 0)
+            { index += nodeList.Count; }
+        }
+    }   
+
+}
+
+[Serializable]
+public class Vector3Serialisable
+{
+    bool isLoopOpen;
+    public List<float> x;
+    public List<float> y;
+    public List<float> z;
     
+    public Vector3Serialisable(List<Vector3> vec, bool isLoopOpen)
+    {
+        x = new List<float>();
+        y = new List<float>();
+        z = new List<float>();
+
+        foreach (Vector3 item in vec)
+        {
+            x.Add(item.x);
+            y.Add(item.y);
+            z.Add(item.z);
+        }
+        this.isLoopOpen = isLoopOpen;
+
+    }
+    public Vector3Serialisable()
+    {
+        x = new List<float>();
+        y = new List<float>();
+        z = new List<float>();
+        this.isLoopOpen = false;
+    }
+
+    public void SetValuesToNodeList(out List<Vector3> nodeList, out bool isLoopOpen)
+    {
+        nodeList = new List<Vector3>();
+        for (int i = 0; i < x.Count; i++)
+        { nodeList.Add(new Vector3(x[i], y[i], z[i])); }
+        isLoopOpen = this.isLoopOpen;
+    }
+
 }
 
 [Serializable]
 public class TrackNodeValues
-{   
+{
+    public bool isLoopOpen;
     public List<Vector3> nodeList = new List<Vector3>();
-
-    [Serializable]
-    private class Vector3Serialisable
-    {
-        public List<float> x;
-        public List<float> y;
-        public List<float> z;
-
-        public Vector3Serialisable(List<Vector3> vec)
-        {
-            x = new List<float>();
-            y = new List<float>();
-            z = new List<float>();
-
-            foreach (Vector3 item in vec)
-            {
-                x.Add(item.x);
-                y.Add(item.y);
-                z.Add(item.z);
-            }
-
-        }
-        public Vector3Serialisable()
-        {
-            x = new List<float>();
-            y = new List<float>();
-            z = new List<float>();
-        }
-
-        public void SetValuesToNodeList(out List<Vector3> nodeList )
-        {   
-            nodeList = new List<Vector3>();
-            for (int i = 0; i < x.Count; i++)
-            {nodeList.Add(new Vector3(x[i],y[i], z[i]));}
-        }   
-
-    }
 
     public void Save(string fileName)
     {
-        Vector3Serialisable nodeListSerialisable = new Vector3Serialisable(nodeList);
+        Vector3Serialisable nodeListSerialisable = new Vector3Serialisable(nodeList, isLoopOpen);
         SaveLoad<Vector3Serialisable>.Save(nodeListSerialisable, fileName);
-
-
-        /*
-        Vector3Serialisable nodeListSerialisable = new Vector3Serialisable(nodeList);
-
-        string destination = Application.persistentDataPath + "/save.dat";
-        FileStream file;
-
-        if (File.Exists(destination)) file = File.OpenWrite(destination);
-        else file = File.Create(destination);
-        BinaryFormatter bf = new BinaryFormatter();
-
-        bf.Serialize(file, nodeListSerialisable);
-        file.Close();
-        */
     }
 
     public void LoadFile(string fileName)
     {
-        
         Vector3Serialisable nodeListSerialisable = new Vector3Serialisable();
         SaveLoad<Vector3Serialisable>.Load(out nodeListSerialisable, fileName);
-        nodeListSerialisable.SetValuesToNodeList(out nodeList);
-        
-        
-        /*
-          
-        Vector3Serialisable data = new Vector3Serialisable();
-
-        string destination = Application.persistentDataPath + "/save.dat";
-
-        FileStream file;
-
-        if (File.Exists(destination)) file = File.OpenRead(destination);
-        else
-        {
-            Debug.LogError("File not found");
-            return;
-        }
-
-        BinaryFormatter bf = new BinaryFormatter();
-        data = (Vector3Serialisable)bf.Deserialize(file);
-
-        nodeList.Clear();
-        data.SetValuesToNodeList(out nodeList);
-
-        file.Close();
-        */
-
+        nodeListSerialisable.SetValuesToNodeList(out nodeList, out isLoopOpen);
     }
+
 }   

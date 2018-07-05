@@ -56,9 +56,11 @@ public class NPCspawner : MonoBehaviour
     IEnumerator SpanwNextNPC()
     {   
         isReadyForNextSpawn = false;
+
         float randomNumber = Random.Range(0, 1f);
         if (randomNumber < spawnProb)
-        {SpawnNPC();}
+        { SpawnNPC(); }
+
 
         yield return new WaitForSeconds(spawnCooldown);
         isReadyForNextSpawn = true;
@@ -75,8 +77,10 @@ public class NPCspawner : MonoBehaviour
 			if (NPCList [i].activeSelf == false) 
 			{	
 				NPCList [i].SetActive (true);
+                int node = 0;
 
-                int node = Random.Range(0, trackNodes.GetNodeCount() - 1);
+                if (!trackNodes.isLoopOpen)
+                node = Random.Range(0, trackNodes.GetNodeCount() - 1);
 
 
                 NPCList[i].transform.position = trackNodes.GetNode(node);

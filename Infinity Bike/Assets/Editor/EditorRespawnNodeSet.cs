@@ -5,70 +5,102 @@ using UnityEditor;
 [CustomEditor(typeof(TrackNodeTool))]
 public class EditorRespawnNodeSet : Editor {
 	private static bool doDrawTrajectory = false;
+    private static int subscribeCount = 0; 
+
     private bool useSpaceBarToSet = false;
+    
 
 	private int cycleNodeIndex = 0;
     private bool enableOnScreenPlacement = false;
-    
 
     void OnSceneGUI()
-    {
-        //if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Space && useSpaceBarToSet)
-        //    Debug.Log("Hit");
-
-        TrackNodeTool trackNodeScript = (TrackNodeTool)target;
+    {   
+        TrackNodeTool trackNodeToolScript = (TrackNodeTool)target;
         if (enableOnScreenPlacement && useSpaceBarToSet && EventType.KeyDown == Event.current.type && Event.current.keyCode == KeyCode.Space)
         {
             enableOnScreenPlacement = false;
             TrackNode trackNode = GetTrackNode();
             if (trackNode != null)
             {
-                Vector3 pos = CalculatePositionAboveTheTrack(trackNodeScript.GetComponent<Transform>().position);
+                Vector3 pos = CalculatePositionAboveTheTrack(trackNodeToolScript.GetComponent<Transform>().position);
 
                 GetTrackNode().AddNode(pos);
                 cycleNodeIndex = GetTrackNode().GetNodeCount() - 1;
             }
         }
         else if (EventType.KeyUp == Event.current.type && Event.current.keyCode == KeyCode.Space)
-        {
+        {   
             enableOnScreenPlacement = true;
-        }
-    }
-
-
+        }   
+    }   
+    
     public override void OnInspectorGUI()
 	{
-        TrackNodeTool trackNodeScript = (TrackNodeTool)target;
+        TrackNodeTool trackNodeToolScript = (TrackNodeTool)target;
 		DrawDefaultInspector ();
 
-        if ( GUILayout.Toggle(doDrawTrajectory, "Draw track curve"))
+        if (GUILayout.Toggle(doDrawTrajectory, "Draw track curve"))
         {
-            if(doDrawTrajectory==false)
-            SceneView.onSceneGUIDelegate += DebugDraw;
+            if (subscribeCount == 0)
+            {   
+                SceneView.onSceneGUIDelegate += DebugDraw;
+                subscribeCount++;
+            }   
+
             doDrawTrajectory = true;
         }
         else
         {
-            if (doDrawTrajectory == true)
-            SceneView.onSceneGUIDelegate -= DebugDraw;
+            while (subscribeCount > 0)
+            {
+                SceneView.onSceneGUIDelegate -= DebugDraw;
+                subscribeCount--;
+            }
+
             doDrawTrajectory = false;
         }
 
         useSpaceBarToSet = GUILayout.Toggle(useSpaceBarToSet, "Use Space Bar To Add");
 
+        trackNodeToolScript.trackNode.isLoopOpen = GUILayout.Toggle(trackNodeToolScript.trackNode.isLoopOpen, "Is Loop Open");
 
-        //GUILayout.Toggle(useSpaceBarToSet, "Use Space Bar To Add");
-        //enableOnScreenPlacement = useSpaceBarToSet;
 
-        if (GUILayout.Button ("Add and Set Node") )
+
+        {
+            GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Cycle up selected node"))
+                {
+                    CycleNode(1);
+                }
+
+                if (GUILayout.Button("Cycle down selected node"))
+                {
+                    CycleNode(-1);
+                }
+            GUILayout.EndHorizontal();
+
+            if (GUILayout.Button("Select nearest node"))
+            {
+                int nearestIndex = FindNearestNode();
+
+                cycleNodeIndex = nearestIndex;
+            }
+            
+            if (GUILayout.Button("Set handle at selected node"))
+            {
+                SetHandleAtIndex(cycleNodeIndex);
+            }
+        }
+
+        GUILayout.BeginVertical();
+        if (GUILayout.Button ("Add Node") )
 		{
 
 			TrackNode trackNode = GetTrackNode ();
 			if (trackNode != null) 
 			{
 
-				Vector3 pos = CalculatePositionAboveTheTrack (trackNodeScript.GetComponent<Transform> ().position);
-                
+				Vector3 pos = CalculatePositionAboveTheTrack (trackNodeToolScript.GetComponent<Transform> ().position);
 				GetTrackNode ().AddNode (pos);
 				cycleNodeIndex = GetTrackNode ().GetNodeCount () - 1;
 			}
@@ -77,36 +109,19 @@ public class EditorRespawnNodeSet : Editor {
 
 		if (GUILayout.Button ("Set selected node")) 
 		{
-			Vector3 pos = CalculatePositionAboveTheTrack(trackNodeScript.GetComponent<Transform> ().position);
+			Vector3 pos = CalculatePositionAboveTheTrack(trackNodeToolScript.GetComponent<Transform> ().position);
 			TrackNode trackNode = GetTrackNode ();
 
 			if(trackNode!=null)
 			trackNode.SetNode (pos,cycleNodeIndex);
 		}
-
-		if (GUILayout.Button ("Cycle up node")) 
-		{
-			CycleNode (1);
-			SetHandle ();
-		}
-		
-		if (GUILayout.Button ("Cycle down node")) 
-		{
-			CycleNode (-1);
-			SetHandle ();
-		}
-
-		if (GUILayout.Button ("Set handle at selected node")) 
-		{
-			SetHandle ();
-		}
-
-		if (GUILayout.Button ("Insert Node")) 
+    
+        if (GUILayout.Button ("Insert Node")) 
 		{
             float distance = float.MaxValue;
             int nearestNode = 0;
 
-            Transform trackNodeToolTransform = trackNodeScript.GetComponent<Transform>();
+            Transform trackNodeToolTransform = trackNodeToolScript.GetComponent<Transform>();
             TrackNode trackNode = GetTrackNode();
 
             for (int index = 0; index < trackNode.GetNodeCount(); index++)
@@ -126,14 +141,15 @@ public class EditorRespawnNodeSet : Editor {
 
 
 
+            Vector3 pos = CalculatePositionAboveTheTrack(trackNodeToolTransform.position);
 
             if (Vector3.Dot(directionForward , trackNodeToolTransform.position- trackNode.GetNode(cycleNodeIndex))> Vector3.Dot(directionBackward, trackNodeToolTransform.position - trackNode.GetNode(cycleNodeIndex)))
             {
-                trackNode.InsertNode(trackNodeToolTransform.position, cycleNodeIndex+1);
+                trackNode.InsertNode(pos, cycleNodeIndex+1);
             }
             else
             {
-                trackNode.InsertNode(trackNodeToolTransform.position, cycleNodeIndex);
+                trackNode.InsertNode(pos, cycleNodeIndex);
             }
 
 
@@ -153,65 +169,64 @@ public class EditorRespawnNodeSet : Editor {
             {
                 cycleNodeIndex = 0;
             }
-
-
         }
+        GUILayout.EndVertical();
 
-        if (GUILayout.Button("Cycle & Set"))
-        {
-            TrackNode trackNode = GetTrackNode();
-            for (int index = 0; index < GetTrackNode().GetNodeCount(); index++)
-            {
-                CycleNode(1);
-                SetHandle();
+        GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Save track node to file"))
+            {trackNodeToolScript.trackNode.Save(trackNodeToolScript.fileName);}
+            if (GUILayout.Button("Load track node from file"))
+            {trackNodeToolScript.trackNode.LoadFile(trackNodeToolScript.fileName);}
+        GUILayout.EndHorizontal();
 
-                Vector3 pos = CalculatePositionAboveTheTrack(trackNodeScript.GetComponent<Transform>().position);
+        if (doDrawTrajectory)
+        {GUILayout.TextField("Debug Draw color legend\n\tMain Track : RED and CYAN\n\tSelected node : GREEN\n\tFirst Node : YELLOW\n\tLast Node : BLUE");}
 
-                if (trackNode != null)
-                    trackNode.SetNode(pos, cycleNodeIndex);
-
-                if (trackNode.GetNode(cycleNodeIndex) == trackNode.GetNode(cycleNodeIndex - 1))
-                {trackNode.DeleteNode(cycleNodeIndex);}
-            }   
-        }
-
+        if (useSpaceBarToSet)
+        {GUILayout.TextField("Use Space Bar To Add\n\tDrag the tool around the scene and press spacebar to add a new node.\n\tTip : Place the scene in isometric view with a top view.");}
+        
         SceneView.RepaintAll ();
 	}	
-	
+
 
 
 	void CycleNode(int dir)
 	{	
-		TrackNodeTool trackNodeScript = (TrackNodeTool)target;
+		TrackNodeTool trackNodeToolScript = (TrackNodeTool)target;
 		TrackNode trackNode = GetTrackNode ();
 
 		if(trackNode!=null)
-		{
-			cycleNodeIndex+=dir;
+		{   
+			cycleNodeIndex += dir;
+            trackNode.ClampIndex(ref cycleNodeIndex);
 
+            /*
 			if (cycleNodeIndex >=trackNode.GetNodeCount ()) 
 			{cycleNodeIndex = 0;}
-
-
 			if (cycleNodeIndex < 0) 
 			{cycleNodeIndex =trackNode.GetNodeCount () - 1;}
+            */
 		}	
 	}
-
-
+    
 	void DebugDraw(SceneView sceneView)
 	{
-        if (GetTrackNode().GetNodeCount() <= 0)
-        {return;}
-        TrackNodeTool trackNodeScript = (TrackNodeTool)target;
+
+        TrackNodeTool trackNodeToolScript = (TrackNodeTool)target;
 		TrackNode trackNode = GetTrackNode ();
 
-		if (trackNode != null)
+        if (trackNode.GetNodeCount() <= 0)
+        { return; }
+
+        if (trackNode != null)
         {
-			Transform trackNodeToolTransform = trackNodeScript.GetComponent<Transform> ();
+			Transform trackNodeToolTransform = trackNodeToolScript.GetComponent<Transform> ();
             
-            for (int index = 0; index < GetTrackNode().GetNodeCount(); index++)
+            for (int index = 0; index < trackNode.GetNodeCount(); index++)
             {
+                if (trackNode.isLoopOpen && index == 0)
+                { continue; }
+                
                 if ((index & 1) == 1)
                 {
                     Handles.color = Color.red;
@@ -220,15 +235,16 @@ public class EditorRespawnNodeSet : Editor {
                 {
                     Handles.color = Color.cyan;
                 }
-                Handles.DrawLine (GetTrackNode ().GetNode (index), GetTrackNode ().GetNode (index - 1));
+                Handles.DrawLine (trackNode.GetNode (index), trackNode.GetNode (index - 1));
 			}
 
 			Handles.color = Color.blue;
-			Handles.DrawLine (GetTrackNode ().GetNode (GetTrackNode ().GetNodeCount () - 1),trackNodeToolTransform.position);
+			Handles.DrawLine (trackNode.GetNode (trackNode.GetNodeCount () - 1),trackNodeToolTransform.position);
+
 			Handles.color = Color.yellow;
-			Handles.DrawLine (GetTrackNode ().GetNode (0), trackNodeToolTransform.position);
+			Handles.DrawLine (trackNode.GetNode (0), trackNodeToolTransform.position);
 			Handles.color = Color.green;
-			Handles.DrawLine (GetTrackNode ().GetNode (cycleNodeIndex), trackNodeToolTransform.position);
+			Handles.DrawLine (trackNode.GetNode (cycleNodeIndex), trackNodeToolTransform.position);
 		}
 	}	
 
@@ -244,26 +260,53 @@ public class EditorRespawnNodeSet : Editor {
 		return startPos;		
 	}	
 
-	void SetHandle()
+	void SetHandleAtIndex(int index)
 	{	
 		TrackNodeTool trackNodeScript = (TrackNodeTool)target;
 
-		Transform trackNodeToolTransform = trackNodeScript.GetComponent<Transform> ();
-		TrackNode trackNode = GetTrackNode ();
+		TrackNode trackNode = trackNodeScript.trackNode;
 
 		if (trackNode != null) 
-		{trackNodeToolTransform.position = trackNode.GetNode (cycleNodeIndex);}	
+		{
+            trackNodeScript.GetComponent<Transform>().position = trackNode.GetNode (index);
+        }	
 	}
-    
-	TrackNode GetTrackNode()
+
+
+    TrackNode GetTrackNode()
 	{
-		TrackNodeTool trackNodeScript = (TrackNodeTool)target;
-		TrackNode trackNode = trackNodeScript.trackNode;
+		TrackNodeTool trackNodeToolScript = (TrackNodeTool)target;
+		TrackNode trackNode = trackNodeToolScript.trackNode;
 		return trackNode;
 	}
 
+    int FindNearestNode()
+    {
+        TrackNodeTool trackNodeToolScript = (TrackNodeTool)target;
+        TrackNode trackNode = trackNodeToolScript.trackNode;
+        Vector3 result = Vector3.zero;
+        int ind = -1;
+        if (trackNode != null)
+        {
+            Transform trackNodeToolTransform = trackNodeToolScript.GetComponent<Transform>();
 
+            float distance = float.MaxValue;
+            for (int index = 0; index < trackNode.GetNodeCount(); index++)
+            {
+                float possibleDistance = Vector3.Distance(trackNodeToolTransform.position, trackNode.GetNode(index));
+                if (possibleDistance < distance)
+                {
+                    distance = possibleDistance;
+                    result = trackNodeToolTransform.position;
+                    ind = index;
+                }
+            }
+        }
 
+        return ind;
+    }   
+
+    
 }
 
 

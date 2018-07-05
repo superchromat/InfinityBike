@@ -5,12 +5,13 @@ using System;
 
 public class Respawn : MonoBehaviour {
 
-	public TrackNode respawnPoint;
-	public float verticalRespawnPoint = -50f;
+	public TrackNode trackNode;
+	public float verticalRespawnPoint = 50f;
 	private Rigidbody rb;
     public Action onRespawn;
+    int minDistanceNode;
 
-	void Start () 
+    void Start () 
 	{	
 		rb = GetComponent<Rigidbody> ();
         onRespawn = RespawnObject;
@@ -19,22 +20,20 @@ public class Respawn : MonoBehaviour {
     
     void LateUpdate () 
 	{
-		if (transform.position.y < verticalRespawnPoint) 
-		{ onRespawn();}
+        minDistanceNode = FindNearestNode(trackNode, transform);
+        if (  Vector3.Distance( trackNode.GetNode(minDistanceNode),transform.position) > verticalRespawnPoint)
+		{
+            onRespawn();
+        }
 	}
 
 	private void RespawnObject()
-	{
-
-		if (respawnPoint.GetNodeCount () <= 1) 
+	{   
+		if (trackNode.GetNodeCount () <= 1) 
 		{return;}
 
-		int minDistanceNode = FindNearestNode(respawnPoint,transform);
-
-
-		if (minDistanceNode >= respawnPoint.GetNodeCount()) 
+		if (minDistanceNode >= trackNode.GetNodeCount()) 
 		{minDistanceNode = 0;}
-
 
 		if (rb != null) 
 		{	
@@ -51,8 +50,8 @@ public class Respawn : MonoBehaviour {
 
         }   
 
-		transform.position = respawnPoint.GetNode(minDistanceNode);
-		transform.forward = respawnPoint.GetNode(minDistanceNode + 1) - transform.position;
+		transform.position = trackNode.GetNode(minDistanceNode);
+		transform.forward = trackNode.GetNode(minDistanceNode + 1) - transform.position;
 
 	}	
 

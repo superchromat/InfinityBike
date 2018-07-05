@@ -24,6 +24,7 @@ public class SaveLoad<T>
     {   
         string destination = Application.persistentDataPath + "/"+ fileName +".dat";
         FileStream file;
+        Debug.Log(destination);
 
         if (File.Exists(destination))
         {
