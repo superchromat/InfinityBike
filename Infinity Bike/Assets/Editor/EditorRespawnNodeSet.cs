@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 
 [CustomEditor(typeof(TrackNodeTool))]
@@ -12,6 +13,7 @@ public class EditorRespawnNodeSet : Editor {
 
 	private int cycleNodeIndex = 0;
     private bool enableOnScreenPlacement = false;
+
 
     void OnSceneGUI()
     {   
@@ -36,8 +38,11 @@ public class EditorRespawnNodeSet : Editor {
     
     public override void OnInspectorGUI()
 	{
+
         TrackNodeTool trackNodeToolScript = (TrackNodeTool)target;
 		DrawDefaultInspector ();
+
+        trackNodeToolScript.FindTrackFiles();
 
         if (GUILayout.Toggle(doDrawTrajectory, "Draw track curve"))
         {
@@ -174,9 +179,9 @@ public class EditorRespawnNodeSet : Editor {
 
         GUILayout.BeginHorizontal();
             if (GUILayout.Button("Save track node to file"))
-            {trackNodeToolScript.trackNode.Save(trackNodeToolScript.fileName);}
+            {trackNodeToolScript.trackNode.Save(trackNodeToolScript.GetFileName());}
             if (GUILayout.Button("Load track node from file"))
-            {trackNodeToolScript.trackNode.LoadFile(trackNodeToolScript.fileName);}
+            {trackNodeToolScript.trackNode.LoadFile(trackNodeToolScript.GetFileName());}
         GUILayout.EndHorizontal();
 
         if (doDrawTrajectory)
@@ -213,15 +218,31 @@ public class EditorRespawnNodeSet : Editor {
 	{
 
         TrackNodeTool trackNodeToolScript = (TrackNodeTool)target;
-		TrackNode trackNode = GetTrackNode ();
+        TrackNode trackNode = trackNodeToolScript.trackNode;
 
         if (trackNode.GetNodeCount() <= 0)
         { return; }
 
         if (trackNode != null)
         {
-			Transform trackNodeToolTransform = trackNodeToolScript.GetComponent<Transform> ();
-            
+            Transform trackNodeToolTransform = null ;
+            try
+            {trackNodeToolTransform = trackNodeToolScript.GetComponent<Transform>();}
+            catch
+            {
+                doDrawTrajectory = false;
+
+                while (subscribeCount > 0)
+                {
+                    SceneView.onSceneGUIDelegate -= DebugDraw;
+                    subscribeCount--;
+                }
+                return;
+            }
+
+
+
+
             for (int index = 0; index < trackNode.GetNodeCount(); index++)
             {
                 if (trackNode.isLoopOpen && index == 0)
@@ -304,9 +325,10 @@ public class EditorRespawnNodeSet : Editor {
         }
 
         return ind;
-    }   
+    }
 
-    
+
+
 }
 
 

@@ -214,7 +214,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1764943666027998}
   serializedVersion: 2
-  m_Mass: 60
+  m_Mass: 100
   m_Drag: 0.1
   m_AngularDrag: 10
   m_UseGravity: 1
@@ -274,7 +274,7 @@ MonoBehaviour:
   proportionValue: 0
   integralValue: 0
   diffentialValue: 0
-  kProportion: 0.5
+  kProportion: 0.1
   kIntegral: 1
   kDifferential: 0
 --- !u!114 &114765275787244818
@@ -289,7 +289,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aiSettings:
-    torqueAcceleration: 10
     maxMotorTorque: 0
     targetSqrSpeed: 49
     steeringLerpTime: 2

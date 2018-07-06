@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-
-
 public class PlayerMovement : MonoBehaviour
 {   
 
@@ -14,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
 	public float angleChangeRange = 180f;
 
 	public float velocityDrag = 1f;
-    public float breakForce = 1000;
+    public float breakForce = 10000;
     
     public WheelCollider backWheel;
 	public WheelCollider frontWheel;
@@ -61,21 +59,18 @@ public class PlayerMovement : MonoBehaviour
 	{   
 		processedSpeed = serialValues.arduinoInfo.arduinoValueStorage.rawSpeed * speedMultiplier;
 
-		if (processedSpeed != 0) 
-		{	
-			backWheel.brakeTorque = 0;
-			frontWheel.brakeTorque = 0;
+        if (processedSpeed != 0) 
+		{
+            backWheel.motorTorque = 0;
+            backWheel.brakeTorque = 0;
+            frontWheel.brakeTorque = 0;
 
-            frontWheel.motorTorque = 0;
             backWheel.motorTorque = processedSpeed;
             ApplyVelocityDrag(velocityDrag);
         }	
 		else
 		{   
             ApplyVelocityDrag(velocityDrag);
-
-			backWheel.motorTorque = 0;
-            frontWheel.motorTorque = 0;
             backWheel.brakeTorque = breakForce;
             frontWheel.brakeTorque = breakForce;
 		}	
@@ -92,26 +87,35 @@ public class PlayerMovement : MonoBehaviour
 		playerRigidBody.AddForce (-drag * playerRigidBody.velocity.normalized*Mathf.Abs( Vector3.SqrMagnitude(playerRigidBody.velocity)));
 	}
     void SetPlayerRotationUp()
-    { transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward, GetNormal()), 100f * Time.deltaTime); }
+    {
+        Vector3 normal = Vector3.zero;
+
+        if(GetNormal(out normal))
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward,normal), 50f * Time.deltaTime);
+
+    }
 
 
-    private Vector3 GetNormal()
+    private bool GetNormal(out Vector3 normal)
 	{
-		Vector3 normal = Vector3.zero;
-
 		WheelHit hit;
-		backWheel.GetGroundHit (out hit);
-		normal += hit.normal;
-		frontWheel.GetGroundHit (out hit);
-		normal += hit.normal;
+        Vector3 vect = Vector3.zero;
+        bool isGrounded = false;
+        if (backWheel.GetGroundHit(out hit))
+        {
+            vect += hit.normal;
+            isGrounded = true;
+        }
 
+        if (frontWheel.GetGroundHit(out hit))
+        {
+            vect += hit.normal;
+            isGrounded = true;
+        }
 
-		return normal.normalized;
+        normal = vect;
+        return isGrounded;
 	}
-
-
-
-
 
     private void OnCollisionEnter(Collision collision)
     {   

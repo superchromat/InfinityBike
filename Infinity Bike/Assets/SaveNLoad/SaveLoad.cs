@@ -7,22 +7,22 @@ public class SaveLoad<T>
 {   
     public static void Save(T serializableClass ,string fileName)
     {
-
-        string destination = Application.persistentDataPath + "/"+ fileName +".dat";
-        Debug.Log(destination);
+        string destination = Application.persistentDataPath + "/"+ fileName /*+".dat"*/;
         FileStream file;
 
-        if (File.Exists(destination)) file = File.OpenWrite(destination);
+        if (File.Exists(destination)) file = File.OpenWrite(destination)/*+".dat"*/;
         else file = File.Create(destination);
         BinaryFormatter bf = new BinaryFormatter();
 
         bf.Serialize(file, serializableClass);
         file.Close();
+        Debug.Log("Saved to : " + destination);
+
     }
 
     public static void Load(out T serializableClass, string fileName)
     {   
-        string destination = Application.persistentDataPath + "/"+ fileName +".dat";
+        string destination = Application.persistentDataPath + "/"+ fileName;
         FileStream file;
         Debug.Log(destination);
 

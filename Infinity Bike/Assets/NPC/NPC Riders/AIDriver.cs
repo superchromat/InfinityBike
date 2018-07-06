@@ -27,7 +27,7 @@ public class AIDriver : MonoBehaviour
 
         GetComponent<Respawn>().onRespawn += aiSettings.SetRandomValues;
         GetComponent<Respawn>().onRespawn += pid.ResetValues;
-        GetComponent<Respawn>().onRespawn += ()=>{aiSettings.maxMotorTorque = 0;frontWheel.brakeTorque = 0;backWheel.brakeTorque = 0;};
+        GetComponent<Respawn>().onRespawn += ()=>{StartCoroutine(RestartHelper()); };
         
         backWheel.ConfigureVehicleSubsteps(1, 12, 15);
         frontWheel.ConfigureVehicleSubsteps(1, 12, 15);
@@ -40,10 +40,7 @@ public class AIDriver : MonoBehaviour
     }   
 
     void FixedUpdate () 
-	{
-        frontWheel.brakeTorque = 0;
-        backWheel.brakeTorque = 0;
-
+	{   
         SetRotationUp();
         frontWheel.steerAngle = SetSteeringAngle();
         rigidbody.AddForce(-aiSettings.velocityDrag * rigidbody.velocity.normalized * Mathf.Abs(Vector3.SqrMagnitude(rigidbody.velocity)));
@@ -69,24 +66,19 @@ public class AIDriver : MonoBehaviour
             Vector3 nextDirection = (nextNode - frontWheel.transform.position).normalized;
             nextDirection -= Vector3.Dot(nextDirection, frontWheel.transform.up) * frontWheel.transform.up;
 
-            if (j == 0)
+            if (Vector3.Dot(nextDirection, frontWheel.transform.forward) > 0.25)
             {
-                if (Vector3.Dot(nextDirection, frontWheel.transform.forward) > 0.5)
-                {
-                    targetDirection += nextDirection;
+                targetDirection += nextDirection* farNodeWeightHolder;
+                if(j==0)
                     Debug.DrawRay(frontWheel.transform.position, nextDirection, Color.red);
-                }
                 else
-                {
-                    numberOfNodes++;
-                }
-            }   
+                    Debug.DrawRay(frontWheel.transform.position, nextDirection);
+            }
             else
             {
-                targetDirection += nextDirection * farNodeWeightHolder;
-                Debug.DrawRay(frontWheel.transform.position, nextDirection);
-
+                numberOfNodes++;
             }
+
             farNodeWeightHolder *= aiSettings.farNodeWeight;
         }
 
@@ -108,8 +100,8 @@ public class AIDriver : MonoBehaviour
     }   
 
     private void SetWheelMotorTorque()
-    {   
-        backWheel.motorTorque = Mathf.Lerp(backWheel.motorTorque, aiSettings.maxMotorTorque, aiSettings.torqueAcceleration*Time.deltaTime);
+    {
+        backWheel.motorTorque = aiSettings.maxMotorTorque;
     }   
 
     private void OnCollisionEnter(Collision collision)
@@ -118,9 +110,6 @@ public class AIDriver : MonoBehaviour
         {GetComponent<Respawn>().onRespawn();}
         catch(NullReferenceException)
         {Debug.LogError(GetComponent<Respawn>().name);}
-
-        frontWheel.brakeTorque = 0;
-        backWheel.brakeTorque = 0;
     }   
 
     void SetRotationUp()
@@ -155,11 +144,9 @@ public class AIDriver : MonoBehaviour
 
 
     void PIDerrorCalc()
-    {
+    {   
         pid.errorVariable = (aiSettings.targetSqrSpeed - rigidbody.velocity.sqrMagnitude);
-        //Debug.Log(rigidbody.velocity.sqrMagnitude);
-        Debug.Log(backWheel.motorTorque);
-    }
+    }   
 
     void PIDActiveControl()
     {
@@ -172,6 +159,15 @@ public class AIDriver : MonoBehaviour
             aiSettings.maxMotorTorque = 0;
             backWheel.brakeTorque = pid.controlVariable;
         }   
+    }
+    IEnumerator RestartHelper()
+    {
+        aiSettings.maxMotorTorque = 0;
+        frontWheel.brakeTorque = 100000;
+        backWheel.brakeTorque = 100000;
+        yield return null;
+        frontWheel.brakeTorque = 0;
+        backWheel.brakeTorque = 0;
 
     }
 

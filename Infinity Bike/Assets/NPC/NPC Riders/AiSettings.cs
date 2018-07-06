@@ -6,7 +6,6 @@ using System;
 [Serializable]
 public class AiSettings
 {
-    public float torqueAcceleration = 0.1f;
     public float maxMotorTorque = 10f;
     public float targetSqrSpeed = 49f;
     public float steeringLerpTime = 0.1f;
