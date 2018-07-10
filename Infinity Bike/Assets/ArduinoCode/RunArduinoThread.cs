@@ -33,8 +33,7 @@ public class RunArduinoThread : MonoBehaviour {
         //if (!(Input.GetKey(KeyCode.A) ^ Input.GetKey(KeyCode.D)))
         //{ arduinoThread.arduinoInfo.arduinoValueStorage.rawRotation = 512; }
 
-
-
+        arduinoThread.RunThread();
     }
 
     void OnApplicationQuit()

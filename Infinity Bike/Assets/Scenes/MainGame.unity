@@ -550,7 +550,7 @@ Prefab:
     - target: {fileID: 114901981292346666, guid: e4cbee641ccbe294aba5c81f4e09eefe,
         type: 2}
       propertyPath: availableTrackFiles.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4296209874138802, guid: e4cbee641ccbe294aba5c81f4e09eefe, type: 2}
       propertyPath: m_LocalPosition.x
@@ -30868,7 +30868,7 @@ Prefab:
     - target: {fileID: 218140915663392050, guid: 34208caa33da2454e859b463f538fabc,
         type: 2}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 154780116672255964, guid: 34208caa33da2454e859b463f538fabc,
         type: 2}

@@ -18,9 +18,12 @@ public class ArduinoInfo
     public ArduinoValueStorage arduinoValueStorage = new ArduinoValueStorage();
 
     public void OpenArduinoPort(string port)
-    {   
+    {
+        try { ArduinoAgentCleanup(); } catch (Exception) { }
+
         arduinoPort = new SerialPort(port, (int)baudRate);
         arduinoPort.ReadTimeout = arduinoReadTimeout;
+        arduinoPort.WriteTimeout = arduinoReadTimeout;
         arduinoPort.Open();
     }   
 
@@ -45,9 +48,9 @@ public class ArduinoInfo
                 arduinoPort.Dispose();
             }
         }
-        catch (Exception e)
+        catch (System.NullReferenceException e)
         {
-            Debug.LogError("Unhandled Error -> " + e.GetType() + " : " + e.Message);
+            Debug.LogWarning("Handled Error -> " + e.GetType() + " : " + e.Message);
         }
 
 
