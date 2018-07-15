@@ -9,9 +9,9 @@ public class CameraFollow : MonoBehaviour {
     private Camera mainCamera;
 	public Rigidbody objToFollowBack;
 	public Vector3 cameraOffset = Vector3.zero;
+    public float cameraDistance = 0f;
 
 	
-	private Vector3 velocity = Vector3.zero;
 	public float smoothTime = 0.05F;
 
     public float startFovSlider = 60;
@@ -22,6 +22,7 @@ public class CameraFollow : MonoBehaviour {
 	{
         mainCamera = GetComponent<Camera>();
         startFovSlider = mainCamera.fieldOfView;
+
     }   
 
     // Update is called once per frame
@@ -32,18 +33,24 @@ public class CameraFollow : MonoBehaviour {
 
     void OnUpdate()
 	{
+        Vector3 tempCamOff = cameraOffset.normalized* cameraDistance;
+        Vector3 targetPosition = objToFollowBack.position + objToFollowBack.rotation * tempCamOff;
 
+        float dist = Vector3.Dot(objToFollowBack.transform.forward, targetPosition - transform.position);
+        Vector3 tempVect = (targetPosition - transform.position) - dist * objToFollowBack.transform.forward;
+        transform.position += dist * objToFollowBack.transform.forward;
+        transform.position = Vector3.Lerp(transform.position, targetPosition, smoothTime * Time.deltaTime);
 
-        Vector3 targetPosition = objToFollowBack.position + objToFollowBack.rotation * cameraOffset;
+        //   transform.position += (targetPosition - transform.position) * (Vector3.Distance(targetPosition, transform.position)- cameraDistance);
 
-		transform.position = Vector3.SmoothDamp (transform.position, targetPosition, ref velocity, smoothTime);
-		transform.LookAt (objToFollowBack.transform, objToFollowBack.transform.up);
+        transform.position = Vector3.Lerp(transform.position, targetPosition, smoothTime * Time.deltaTime);
+        Debug.DrawLine(transform.position, targetPosition);
 
+        Quaternion lookDirection = Quaternion.LookRotation(objToFollowBack.transform.forward, objToFollowBack.transform.up); 
+
+        transform.rotation = Quaternion.Lerp(transform.rotation, lookDirection, smoothTime * Time.deltaTime);
 
         mainCamera.fieldOfView = startFovSlider * (1 + cameraFovAmplitude*(float)Math.Tanh(objToFollowBack.velocity.sqrMagnitude / cameraFovSensitivity));
-        
-
     }
-
 
 }

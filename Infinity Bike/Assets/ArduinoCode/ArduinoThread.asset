@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Name: ArduinoThread
   m_EditorClassIdentifier: 
   arduinoInfo:
-    comPort: COM9
+    comPort: COM5
     baudRate: 9600
     arduinoReadTimeout: 50
     rotationAnalogRange:
-      center: 710
-      range: 717
+      center: 512
+      range: 1024
     arduinoValueStorage:
-      rawRotation: 356
+      rawRotation: 1023
       rawSpeed: 0
