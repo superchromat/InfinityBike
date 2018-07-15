@@ -11,6 +11,7 @@ using System.Threading;
 [CreateAssetMenu(fileName = "ArduinoThread", menuName = "Generator/ArduinoThread", order = 2)]
 public class ArduinoThread : ScriptableObject 
 {   
+    
     public Action CurrentActiveValueGetter = null;
     public ArduinoInfo arduinoInfo = new ArduinoInfo();
     private ArduinoInfo threadSafeArduinoInfo = new ArduinoInfo();
@@ -19,13 +20,20 @@ public class ArduinoThread : ScriptableObject
     public void Initialisation()
     {
        arduinoThread = (new Thread(AsychronousAutoDetectArduino));
-        CurrentActiveValueGetter = () => {if(!arduinoThread.IsAlive) arduinoThread.Start(); };
+       CurrentActiveValueGetter = () => {if(!arduinoThread.IsAlive) arduinoThread.Start(); };
     }
-    public void RunThread()
-    {   
+
+    void SetArduinoInfo()
+    {
         arduinoInfo.arduinoValueStorage.rawRotation = threadSafeArduinoInfo.arduinoValueStorage.rawRotation;
         arduinoInfo.arduinoValueStorage.rawSpeed = threadSafeArduinoInfo.arduinoValueStorage.rawSpeed;
+    }
 
+
+    public void RunThread()
+    {
+        SetArduinoInfo();
+        if (CurrentActiveValueGetter !=null)
         CurrentActiveValueGetter();
     }   
 

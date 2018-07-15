@@ -8,7 +8,7 @@ bool reset = true;
 
 unsigned long lastRevolTime = 0;
 unsigned long revolSpeed = 0;
-unsigned long zeroSpeedThreshold = 1000;
+unsigned long zeroSpeedThreshold = 500;
 unsigned long zeroSpeedTime = 0;
 
 void rotHandler();
