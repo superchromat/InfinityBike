@@ -61,10 +61,7 @@ public class BezierSpline : MonoBehaviour
 
 
 
-	//Functions 
-	void Awake() {
-		Debug.Log ("Awake called");
-	}
+
 
     public Vector3 GetControlPoint (int index) {
         return points[index];
@@ -189,10 +186,10 @@ public class BezierSpline : MonoBehaviour
 	public void Reset()
 	{
 		points = new Vector3[] {
-			new Vector3(1f, 0f, 0f),
-			new Vector3(2f, 0f, 0f),
-			new Vector3(3f, 0f, 0f),
-			new Vector3(4f, 0f, 0f)
+			new Vector3(0f, 0f, 0f),
+			new Vector3(0f, 0f, 1f),
+			new Vector3(0f, 0f, 2f),
+			new Vector3(0f, 0f, 3f)
 		};
         modes = new BezierControlPointMode[] {
             BezierControlPointMode.Free,
@@ -250,14 +247,18 @@ public class BezierSpline : MonoBehaviour
         return sign*GetVelocity(t).normalized;
     }
 
+	public Quaternion GetOrientation(float t) {
+		return Quaternion.LookRotation (GetDirection (t), Vector3.up); 
+	}
+
 	public void AddCurve() {
 		Vector3 point = points [points.Length - 1];
 		Array.Resize (ref points, points.Length + 3);
-		point.x += 1f; 
+		point.z += 1f; 
 		points [points.Length - 3] = point;
-		point.x += 1f; 
+		point.z += 1f; 
 		points [points.Length - 2] = point;
-		point.x += 1f; 
+		point.z += 1f; 
 		points [points.Length - 1] = point;
 
         Array.Resize(ref modes, modes.Length + 1);
@@ -339,6 +340,12 @@ public class BezierSpline : MonoBehaviour
 	public Vector3 GetPointFromParametricValue(float p) {
 		return GetPoint(GetTFromParametricValue(p)); 
 		}
+
+
+
+	public Quaternion GetOrientationFromParametricValue(float p) {
+		return GetOrientation (GetTFromParametricValue (p)); 
+	}
 
 
 	/// <summary>
