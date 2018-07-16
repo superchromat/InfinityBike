@@ -71,15 +71,15 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1359998424583934}
-  m_LocalRotation: {x: -0.031406857, y: -0.8688778, z: -0.017076135, w: -0.49373406}
-  m_LocalPosition: {x: -14.99862, y: 18.2409, z: -9.580671}
+  m_LocalRotation: {x: 0.0000061941164, y: 0.024710182, z: -0.00014929367, w: 0.9996947}
+  m_LocalPosition: {x: 58.755, y: -31.98, z: 132.31}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4950087253571232}
   - {fileID: 4989485577218460}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0.07700001, y: -239.211, z: 87.25}
+  m_LocalEulerAnglesHint: {x: 0.001, y: 2.832, z: -0.017}
 --- !u!4 &4950087253571232
 Transform:
   m_ObjectHideFlags: 1
@@ -118,9 +118,9 @@ Rigidbody:
   m_AngularDrag: 10
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 64
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!114 &114251524655597424
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -133,6 +133,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arduinoThread: {fileID: 11400000, guid: ab43422274fb8424da89b606d1b35118, type: 2}
+  useKeyBoard: 0
+  speed: 80
+  rotation: 200
 --- !u!114 &114627130012401834
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -144,15 +147,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9533cb4c1e6d3664dace1d21509013ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isScriptActivated: 1
-  speedMultiplier: 0.5
+  isScriptActivated: 0
+  speedMultiplier: 1
   angleChangeRange: 180
-  velocityDrag: 2
+  velocityDrag: 4
+  breakForce: 20
   backWheel: {fileID: 146941809944544644}
   frontWheel: {fileID: 146290239315594020}
   serialValues: {fileID: 11400000, guid: ab43422274fb8424da89b606d1b35118, type: 2}
   handleBar: {fileID: 0}
-  breakForce: 50
+  centerOfMass: {x: 0, y: -1, z: 0.1}
 --- !u!114 &114702221007306516
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -177,8 +181,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00589f8b8f4e18046a9c34cd45e41e67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  respawnPoint: {fileID: 11400000, guid: a67413c1147a1ae488549f211d328dee, type: 2}
-  verticalRespawnPoint: -50
+  trackNode: {fileID: 11400000, guid: 7d5b0d579628f5642b9e1a7c3b57d7ee, type: 2}
+  verticalRespawnPoint: 50
 --- !u!114 &114911874141278318
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -217,8 +221,8 @@ WheelCollider:
     spring: 10000
     damper: 300
     targetPosition: 0.5
-  m_SuspensionDistance: 0.07051913
-  m_ForceAppPointDistance: 0.059000015
+  m_SuspensionDistance: 0.1
+  m_ForceAppPointDistance: 0
   m_Mass: 10
   m_WheelDampingRate: 0.1
   m_ForwardFriction:
@@ -246,8 +250,8 @@ WheelCollider:
     spring: 10000
     damper: 300
     targetPosition: 0.5
-  m_SuspensionDistance: 0.07051913
-  m_ForceAppPointDistance: 0.059000015
+  m_SuspensionDistance: 0.1
+  m_ForceAppPointDistance: 0
   m_Mass: 10
   m_WheelDampingRate: 0.1
   m_ForwardFriction:
