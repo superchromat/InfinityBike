@@ -14,7 +14,7 @@ public class Editor_RespawnPlayer : Editor {
 		Respawn respawnScript = (Respawn)target;
 		if (GUILayout.Button ("Respawn player")) 
 		{
-			respawnScript.onRespawn ();
+            respawnScript.CallOnRespawn();
 		}
 	}
 

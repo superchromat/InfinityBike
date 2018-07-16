@@ -23,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
 	private float processedAngle = 0;
 	private float processedSpeed = 0;
 	private Rigidbody playerRigidBody;
+    public Vector3 centerOfMass = Vector3.down;
     
 	// Use this for initialization
 	void Start () 
@@ -31,8 +32,9 @@ public class PlayerMovement : MonoBehaviour
         frontWheel.ConfigureVehicleSubsteps(1, 12, 15);
 
 
-
         playerRigidBody = GetComponent<Rigidbody> ();
+        playerRigidBody.centerOfMass = centerOfMass;
+
     }
 
     // Update is called once per frame
@@ -40,6 +42,9 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+
+        Debug.DrawLine(transform.TransformPoint( playerRigidBody.centerOfMass), transform.position);
+
         ApplyHandleBarRotation();
         if (isScriptActivated)
         { 

@@ -7,7 +7,6 @@ public class RunArduinoThread : MonoBehaviour {
     public bool useKeyBoard = false;
     public ushort speed = 80;
     public ushort rotation = 200;
-
     // Use this for initialization
     void Start ()
     {   
@@ -19,21 +18,30 @@ public class RunArduinoThread : MonoBehaviour {
 
     private void Update()
     {
-        //if (Input.GetKey(KeyCode.Space))
-        //    arduinoThread.arduinoInfo.arduinoValueStorage.rawSpeed = speed;
-        //else
-        //    arduinoThread.arduinoInfo.arduinoValueStorage.rawSpeed = 0;
+        if (useKeyBoard)
+        {
+            Debug.Log(Input.GetKey(KeyCode.Space));
+            arduinoThread.CurrentActiveValueGetter = null;
+            if (Input.GetKey(KeyCode.Space))
+                arduinoThread.arduinoInfo.arduinoValueStorage.rawSpeed = speed;
+            else
+                arduinoThread.arduinoInfo.arduinoValueStorage.rawSpeed = 0;
+            float val = 0;
+            if (Input.GetKey(KeyCode.A))
+                val = (ushort)(512 - (int)rotation);
 
-        //if (Input.GetKey(KeyCode.A))
-        //    arduinoThread.arduinoInfo.arduinoValueStorage.rawRotation =(ushort)(512 - (int)rotation);
+            if (Input.GetKey(KeyCode.D))
+                val = (ushort)(512 + (int)rotation);
 
-        //if (Input.GetKey(KeyCode.D))
-        //    arduinoThread.arduinoInfo.arduinoValueStorage.rawRotation = (ushort)(512 + (int)rotation);
+            if (!(Input.GetKey(KeyCode.A) ^ Input.GetKey(KeyCode.D)))
+            { val = 512; }
+            arduinoThread.arduinoInfo.arduinoValueStorage.rawRotation = (ushort)Mathf.Lerp((float)(arduinoThread.arduinoInfo.arduinoValueStorage.rawRotation), val, 5.0faaa * Time.deltaTime);
 
-        //if (!(Input.GetKey(KeyCode.A) ^ Input.GetKey(KeyCode.D)))
-        //{ arduinoThread.arduinoInfo.arduinoValueStorage.rawRotation = 512; }
-
-
+        }
+        else
+        {
+            arduinoThread.RunThread();
+        }   
 
     }
 

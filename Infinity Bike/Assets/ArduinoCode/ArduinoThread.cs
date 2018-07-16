@@ -11,45 +11,80 @@ using System.Threading;
 [CreateAssetMenu(fileName = "ArduinoThread", menuName = "Generator/ArduinoThread", order = 2)]
 public class ArduinoThread : ScriptableObject 
 {   
+    
     public Action CurrentActiveValueGetter = null;
     public ArduinoInfo arduinoInfo = new ArduinoInfo();
-
+    private ArduinoInfo threadSafeArduinoInfo = new ArduinoInfo();
+    Thread arduinoThread;
 
     public void Initialisation()
     {
-        ThreadPool.QueueUserWorkItem(AsychronousAutoDetectArduino);
+       arduinoThread = (new Thread(AsychronousAutoDetectArduino));
+       CurrentActiveValueGetter = () => {if(!arduinoThread.IsAlive) arduinoThread.Start(); };
+    }
+
+    void SetArduinoInfo()
+    {
+        arduinoInfo.arduinoValueStorage.rawRotation = threadSafeArduinoInfo.arduinoValueStorage.rawRotation;
+        arduinoInfo.arduinoValueStorage.rawSpeed = threadSafeArduinoInfo.arduinoValueStorage.rawSpeed;
+    }
+
+
+    public void RunThread()
+    {
+        SetArduinoInfo();
+        if (CurrentActiveValueGetter !=null)
+        CurrentActiveValueGetter();
     }   
 
-	private void AsynchronousReadFromArduino(object data)
-	{   
-        arduinoInfo.WriteToArduino("ALL");
+	private void AsynchronousReadFromArduino()
+	{
+        try
+        {
+            arduinoInfo.WriteToArduino("ALL");
+        }
+        catch (System.IO.IOException e)
+        {
+            Debug.LogWarning("Handled Error -> " + e.GetType() + " : " + e.Message);
+            arduinoThread = (new Thread(AsychronousAutoDetectArduino));
+            return;
+        }
+
         string rotString = null;
         string speedString = null;
+        if (!arduinoInfo.arduinoPort.IsOpen)
+        {
+            arduinoThread = (new Thread(AsychronousAutoDetectArduino));
+            return;
+        }
 
         try
         {
             rotString = arduinoInfo.arduinoPort.ReadLine();
             speedString = arduinoInfo.arduinoPort.ReadLine();
-            arduinoInfo.arduinoValueStorage.SetValue(UInt16.Parse(rotString), UInt16.Parse(speedString));
 
-            ThreadPool.QueueUserWorkItem(new WaitCallback(AsynchronousReadFromArduino));
+            threadSafeArduinoInfo.arduinoValueStorage.SetValue(UInt16.Parse(rotString), UInt16.Parse(speedString));
+
+                arduinoThread = (new Thread(AsynchronousReadFromArduino));
         }
         catch (TimeoutException e)
         {
-            Debug.LogError("Handled Error -> " + e.GetType() + " : " + e.Message);
+            Debug.LogWarning("Handled Error -> " + e.GetType() + " : " + e.Message);
             rotString = null;
             speedString = null;
+               arduinoThread = (new Thread(AsychronousAutoDetectArduino));
         }
-        catch (InvalidOperationException e)
+        catch (System.IO.IOException e)
         {
-            Debug.LogError("Handled Error -> " + e.GetType() + " : " + e.Message);
+            Debug.LogWarning("Handled Error -> " + e.GetType() + " : " + e.Message);
 
-            ThreadPool.QueueUserWorkItem(new WaitCallback(AsychronousAutoDetectArduino));
+              arduinoThread = (new Thread(AsychronousAutoDetectArduino));
         }
     }   
 
-    private void AsychronousAutoDetectArduino(object data)
-    {   
+    private void AsychronousAutoDetectArduino()
+    {
+        arduinoInfo.comPort = "";
         arduinoInfo.comPort = AutoDetectArduinoPort();
     }   
     
@@ -61,7 +96,7 @@ public class ArduinoThread : ScriptableObject
             if (arduinoInfo.arduinoPort.IsOpen)
             { arduinoInfo.arduinoPort.Dispose(); }
         }
-        catch (NullReferenceException) {}
+        catch (NullReferenceException) { }
         
         //Find ports list in Windows or Mac
         string[] ports;
@@ -97,14 +132,14 @@ public class ArduinoThread : ScriptableObject
                     if (result == "READY")
                     {
                         Debug.Log(port + " " + result);
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(AsynchronousReadFromArduino));
+                        arduinoThread = (new Thread(AsynchronousReadFromArduino));
 
                         return port;
                     }
                 }
             }   
         }
-        ThreadPool.QueueUserWorkItem(new WaitCallback(AsychronousAutoDetectArduino));
+        arduinoThread = (new Thread(AsychronousAutoDetectArduino));
         return null;
     }   
     
