@@ -35,7 +35,7 @@ public class RunArduinoThread : MonoBehaviour {
 
             if (!(Input.GetKey(KeyCode.A) ^ Input.GetKey(KeyCode.D)))
             { val = 512; }
-            arduinoThread.arduinoInfo.arduinoValueStorage.rawRotation = (ushort)Mathf.Lerp((float)(arduinoThread.arduinoInfo.arduinoValueStorage.rawRotation), val, 5.0faaa * Time.deltaTime);
+            arduinoThread.arduinoInfo.arduinoValueStorage.rawRotation = (ushort)Mathf.Lerp((float)(arduinoThread.arduinoInfo.arduinoValueStorage.rawRotation), val, 5.0f * Time.deltaTime);
 
         }
         else

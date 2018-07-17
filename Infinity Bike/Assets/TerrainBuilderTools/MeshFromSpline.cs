@@ -106,7 +106,7 @@ public class MeshFromSpline : MonoBehaviour {
 				int id = offset + j; 
 				vertices [id] = path[i].LocalToWorld (shape.verts [j]);
 				normals [id] = path [i].LocalToWorldDirection (shape.normals [j]);
-				uvs[id] = new Vector2(shape.us[j], i/((float)edgeLoops));
+				uvs [id] = new Vector2 (shape.us [j], path [i].cumulDistance);//i/((float)edgeLoops));
 			}
 		}
 
@@ -150,7 +150,8 @@ public class MeshFromSpline : MonoBehaviour {
 
 		for (int i = 0; i < numPoints; i++) {
 			path [i].position = bezierSpline.GetPointFromParametricValue (i * realIncrementSize); 
-			path [i].rotation = bezierSpline.GetOrientationFromParametricValue (i * realIncrementSize); 
+			path [i].rotation = bezierSpline.GetOrientationFromParametricValue (i * realIncrementSize);
+			path [i].cumulDistance = i * realIncrementSize; 
 		}
 
 		return path; 
@@ -226,11 +227,13 @@ public class Shape2D {
 [System.Serializable]
 public struct OrientedPoint {
 	public Vector3 position;
-	public Quaternion rotation; 
+	public Quaternion rotation;
+	public float cumulDistance; 
 
-	public OrientedPoint( Vector3 position, Quaternion rotation) {
+	public OrientedPoint( Vector3 position, Quaternion rotation,float cumulDistance) {
 		this.position = position; 
 		this.rotation = rotation;
+		this.cumulDistance = cumulDistance; 
 	}
 
 	public  Vector3 LocalToWorld( Vector3 point) {
