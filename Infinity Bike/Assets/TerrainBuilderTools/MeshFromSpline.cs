@@ -9,6 +9,9 @@ public class MeshFromSpline : MonoBehaviour {
 	public Shape2D shape2D; 
 	private OrientedPoint[] path; 
 	public float pathIncrementSize; 
+	public TerrainCustomEditor tCE; 
+	public bool adaptHeightToTerrain = true;
+	public float verticalHeightOffset; 
 
 	// Use this for initialization
 	//void Start () {
@@ -34,56 +37,7 @@ public class MeshFromSpline : MonoBehaviour {
 		Extrude (mesh, shape2D, path); 
 
 	}
-	public void UpdateMesh2() {
 
-		mF = GetComponent<MeshFilter> (); 
-		if (mF.sharedMesh == null) {
-			mF.sharedMesh = new Mesh (); 
-		}
-		Mesh mesh = mF.sharedMesh; 
-
-		//
-		Vector3[] vertices = new Vector3[4]; 
-		Vector3[] normals = new Vector3[4]; 
-		Vector2[] uvs = new Vector2[4]; 
-
-		int[] trianglesIndices = new int[6];
-
-		vertices [0] = Vector3.back + Vector3.left; 
-		vertices [1] = Vector3.back + Vector3.right;
-		vertices [2] = Vector3.forward + Vector3.left; 
-		vertices [3] = Vector3.forward + Vector3.right; 
-
-		for (int i = 0; i < 4; i++) {
-			normals [i] = Vector3.up;
-		}
-
-		uvs [0] = Vector2.zero;
-		uvs [1] = Vector2.right; 
-		uvs [2] = Vector2.up; 
-		uvs [3] = Vector2.up + Vector2.right; 
-
-		trianglesIndices [0] = 1;
-		trianglesIndices[1] = 0; 
-		trianglesIndices [2] = 2; 
-
-		trianglesIndices [3] = 1; 
-		trianglesIndices [4] = 2; 
-		trianglesIndices [5] = 3;
-		//
-
-
-
-
-		mesh.Clear (); 
-		mesh.vertices = vertices; 
-		mesh.normals = normals; 
-		mesh.uv = uvs;
-		mesh.triangles = trianglesIndices; 
-
-
-		
-	}
 
 	public void Extrude( Mesh mesh, Shape2D shape, OrientedPoint[] path) {
 		int vertsInShape = shape.verts.Length; 
@@ -149,7 +103,13 @@ public class MeshFromSpline : MonoBehaviour {
 		OrientedPoint[] path = new OrientedPoint[numPoints];
 
 		for (int i = 0; i < numPoints; i++) {
-			path [i].position = bezierSpline.GetPointFromParametricValue (i * realIncrementSize); 
+			Vector3 bezierPoint = bezierSpline.GetPointFromParametricValue (i * realIncrementSize); 
+			if (adaptHeightToTerrain) {
+				float height = tCE.WorldToTerrainHeight (new Vector2 (bezierPoint.x, bezierPoint.z));
+				bezierPoint.y = height + verticalHeightOffset; 
+			} 
+			path [i].position = bezierPoint; 
+
 			path [i].rotation = bezierSpline.GetOrientationFromParametricValue (i * realIncrementSize);
 			path [i].cumulDistance = i * realIncrementSize; 
 		}
@@ -158,10 +118,7 @@ public class MeshFromSpline : MonoBehaviour {
 
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
 }
 [System.Serializable]
 public class Shape2D {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SplineToTrackTools : MonoBehaviour {
+public class SplineToTerrainTools : MonoBehaviour {
 
 	public TerrainCustomEditor tCE;
 	public BezierSpline spline;
@@ -34,15 +34,7 @@ public class SplineToTrackTools : MonoBehaviour {
 	private int equiNumSteps;
 
 
-	// Use this for initialization
-	void Start () {
-		
-	}
 
-	// Update is called once per frame
-	void Update () {
-		
-	}
 	public void UpdateTrackMarker() {
 		Debug.Log ("Applying track markers");
 		float currentDistance = 0; 
@@ -145,6 +137,17 @@ public class SplineToTrackTools : MonoBehaviour {
 
 
 
+		}
+	}
+
+	public void AdaptSplineToTerrain() {
+		int splineNodes = spline.ControlPointCount;
+		Debug.Log (splineNodes); 
+		for (int i = 0; i < splineNodes; i += 3) {
+			Vector3 nodePos = spline.GetControlPoint (i);
+			float terrainHeight = tCE.WorldToTerrainHeight (new Vector2 (nodePos.x, nodePos.z)); 
+			nodePos.y = terrainHeight;
+			spline.SetControlPoint (i, nodePos);
 		}
 	}
 

@@ -3,18 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-
+[System.Serializable]
 public class BezierSpline : MonoBehaviour
 
 {
  
-
-    //void Start(){ // Just playin around : path is followed.
-    //	for (float i = 0;i < 1f; i=i+0.05f){
-    //		Instantiate (curvePrefab,GetPoint(i),Quaternion.identity); 
-    //	}
-    //}
-    [SerializeField]
+    
     private bool loop; 
 
     public bool Loop {
@@ -29,10 +23,11 @@ public class BezierSpline : MonoBehaviour
             }
         }
     }
-    [SerializeField]
+    
+	[SerializeField]
 	private Vector3[] points;
 
-    [SerializeField]
+	[SerializeField]
     private BezierControlPointMode[] modes; 
 
     public int ControlPointCount{
@@ -55,8 +50,8 @@ public class BezierSpline : MonoBehaviour
 			UpdateParametricMapping (); 
 		}
 	}
-	public float[] cumulLenghts; 
-	public float[] discreteT; 
+	private float[] cumulLenghts; 
+	private float[] discreteT; 
 	public GameObject markerPrefab; 
 
 
@@ -186,14 +181,14 @@ public class BezierSpline : MonoBehaviour
 	public void Reset()
 	{
 		points = new Vector3[] {
-			new Vector3(0f, 0f, 0f),
-			new Vector3(0f, 0f, 1f),
-			new Vector3(0f, 0f, 2f),
-			new Vector3(0f, 0f, 3f)
+			new Vector3(0f, 0f, 10f),
+			new Vector3(0f, 0f, 20f),
+			new Vector3(0f, 0f, 30f),
+			new Vector3(0f, 0f, 40f)
 		};
         modes = new BezierControlPointMode[] {
-            BezierControlPointMode.Free,
-            BezierControlPointMode.Free 
+            BezierControlPointMode.Mirrored,
+            BezierControlPointMode.Mirrored 
         };
 	}
 
@@ -254,11 +249,11 @@ public class BezierSpline : MonoBehaviour
 	public void AddCurve() {
 		Vector3 point = points [points.Length - 1];
 		Array.Resize (ref points, points.Length + 3);
-		point.z += 1f; 
+		point.z += 10f; 
 		points [points.Length - 3] = point;
-		point.z += 1f; 
+		point.z += 10f; 
 		points [points.Length - 2] = point;
-		point.z += 1f; 
+		point.z += 10f; 
 		points [points.Length - 1] = point;
 
         Array.Resize(ref modes, modes.Length + 1);

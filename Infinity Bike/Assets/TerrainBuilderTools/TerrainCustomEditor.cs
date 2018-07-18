@@ -20,10 +20,7 @@ public class TerrainCustomEditor : MonoBehaviour {
 
 
 
-	void Awake() {
-		terrainData = GetComponent<Terrain> ().terrainData;
 
-	}
 	// Use this for initialization
 	public void MapHeight() {
 		Debug.Log ("HeightMapResolution");

@@ -1,12 +1,12 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(SplineToTrackTools))]
-public class SplineToTrackToolsInspector : Editor
+[CustomEditor(typeof(SplineToTerrainTools))]
+public class SplineToTerrainToolsInspector : Editor
 {
     
 	//private BezierSpline spline;
-	private SplineToTrackTools sTTT; 
+	private SplineToTerrainTools sTTT; 
 
 
 
@@ -16,7 +16,7 @@ public class SplineToTrackToolsInspector : Editor
 
 	public override void OnInspectorGUI() {
 
-		sTTT = target as SplineToTrackTools;
+		sTTT = target as SplineToTerrainTools;
 		DrawDefaultInspector ();
 
 
@@ -26,7 +26,11 @@ public class SplineToTrackToolsInspector : Editor
 			EditorUtility.SetDirty (sTTT);
 		}
 
-       
+		if (GUILayout.Button ("Adapt Spline to terrain")) {
+			Undo.RegisterCompleteObjectUndo (sTTT.tCE.terrainData, "Adapt spline to terain");
+			sTTT.AdaptSplineToTerrain ();
+			EditorUtility.SetDirty (sTTT);
+		}
 
 		if (GUILayout.Button ("Smooth Terrain For Track")) {
 			Undo.RegisterCompleteObjectUndo (sTTT.tCE.terrainData, "Smooth Terrain For Track");
