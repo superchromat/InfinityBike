@@ -156,8 +156,6 @@ public class MeshFromSpline : MonoBehaviour {
 
 		return path; 
 
-
-
 	}
 	
 	// Update is called once per frame
