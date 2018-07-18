@@ -16,9 +16,9 @@ See the Youtube video:
 [![Link to youtube video](https://img.youtube.com/vi/j3q3ih8c10g/0.jpg)](https://www.youtube.com/watch?v=j3q3ih8c10g)
 
 ## Where are we in development 
-In it's current form, the code should compile on a Windows or Mac. We have the communication between Arduino and Unity established and we even have a demo track that you can use to test
+In its current form, the code should compile on a Windows or Mac. We have the communication between Arduino and Unity established and we even have a demo track that you can use to test
 your set-up. If you want to take full advantage of this work, you will need to have access to a 3D printer. (Tip : A lot of community libraries are starting to have them available to the public.)
-Alternatively, you could design and machine your own parts. If you do let us know!
+Alternatively, you could design and machine your own parts. If you do, let us know!
 
 ## Installation
 To participate to this project, start by cloning the repository to a drive on your computer. You should get all the assets for the Unity program in the Infinity Bike folder and the Arduino Code in the ArduiBike folder.
@@ -68,11 +68,11 @@ You can use them as-is but make sure that the dimensions we used match your bike
 
 
 ## How to use?
-We did public a short 
+We published a short 
 <a href="https://www.instructables.com/id/Infinity-Bike-Indoors-Bike-Training-Video-Game/">instructable</a> 
 tutorial that should provide enough information to get started with this project. 
 
-Building a more in-depth tutorial for potential contributors is on the our To-do list.
+Building a more in-depth tutorial for potential contributors is on our To-do list.
 
 ** Because we used blender to generate the 3d models, you must have blender installed before opening the project. Otherwise some assets wont load properly.**
 
