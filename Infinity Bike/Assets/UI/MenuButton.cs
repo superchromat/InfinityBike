@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MenuButton : MonoBehaviour
 {
+    public Slider slider;
+
     public enum Menu
     {
         STARTSCREEN = 0, OPTIONSCEEN = 1 , GAMESCREEN = 2
@@ -38,10 +40,27 @@ public class MenuButton : MonoBehaviour
         #endif
     }   
 
-    public void LoadScene(int scene)
-    {
+    public void LoadScene(int sceneIndex)
+    {   
+        StartCoroutine(LoadAsynch(sceneIndex));
+    }   
 
-        SceneManager.LoadScene(scene);
+     
+
+    IEnumerator LoadAsynch(int sceneIndex)
+    {
+        AsyncOperation aOpr = SceneManager.LoadSceneAsync(sceneIndex);
+        while (!aOpr.isDone)
+        {
+            float progess = Mathf.Clamp01(aOpr.progress / 0.9f);
+            if (slider != null)
+                slider.value = progess;
+            yield return null;
+        }
+
+
     }
+
+
 
 }

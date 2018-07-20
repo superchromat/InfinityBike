@@ -20,7 +20,6 @@ public class RunArduinoThread : MonoBehaviour {
     {
         if (useKeyBoard)
         {
-            Debug.Log(Input.GetKey(KeyCode.Space));
             arduinoThread.CurrentActiveValueGetter = null;
             if (Input.GetKey(KeyCode.Space))
                 arduinoThread.arduinoInfo.arduinoValueStorage.rawSpeed = speed;

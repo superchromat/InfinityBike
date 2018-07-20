@@ -50,7 +50,7 @@ public class ArduinoInfo
         }
         catch (System.NullReferenceException e)
         {
-            Debug.LogWarning("Handled Error -> " + e.GetType() + " : " + e.Message);
+        //    Debug.LogWarning("Handled Error -> " + e.GetType() + " : " + e.Message);
         }
 
 
