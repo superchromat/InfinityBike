@@ -6,8 +6,6 @@ using System;
 public class PlayerMovement : MonoBehaviour
 {   
 
-    public bool isScriptActivated = false;
-
 	public float speedMultiplier = 1f;
 	public float angleChangeRange = 180f;
 
@@ -46,10 +44,7 @@ public class PlayerMovement : MonoBehaviour
         Debug.DrawLine(transform.TransformPoint( playerRigidBody.centerOfMass), transform.position);
 
         ApplyHandleBarRotation();
-        if (isScriptActivated)
-        { 
-          ApplyWheelForces();
-        }
+        ApplyWheelForces();
 
 		if (handleBar != null)
         {   
@@ -125,11 +120,6 @@ public class PlayerMovement : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {   
         GetComponent<Respawn>().onRespawn();
-    }
-
-    public void ChangeScriptActiveState(bool toSet)
-    {
-        isScriptActivated = toSet;
     }
 
 }

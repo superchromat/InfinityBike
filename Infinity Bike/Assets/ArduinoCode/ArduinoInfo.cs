@@ -48,9 +48,9 @@ public class ArduinoInfo
                 arduinoPort.Dispose();
             }
         }
-        catch (System.NullReferenceException e)
+        catch/* (System.NullReferenceException e)*/
         {
-        //    Debug.LogWarning("Handled Error -> " + e.GetType() + " : " + e.Message);
+            //    Debug.LogWarning("Handled Error -> " + e.GetType() + " : " + e.Message);
         }
 
 

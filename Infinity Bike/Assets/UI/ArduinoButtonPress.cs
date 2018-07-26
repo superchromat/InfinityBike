@@ -11,24 +11,14 @@ public class ArduinoButtonPress : MonoBehaviour {
     public ArduinoThread arduinoThread;
     public float delayTimer = 0.2f;
     private bool isCheckDone = true;
-    public Color startColour = new Color(1, 0, 0, 1);
-    public Color finalColor = new Color(0, 1, 0, 1);
-    ColorBlock colorBlock = new ColorBlock();
 
     void Start () {
-        colorBlock.highlightedColor = finalColor;
-        colorBlock.normalColor = startColour;
-        colorBlock.pressedColor = Color.white;
-        colorBlock.disabledColor = Color.white;
-        colorBlock.colorMultiplier = 1;
-
         if (onScreenButtonParent.Length > 0)
         foreach (Transform item in onScreenButtonParent)
         {
             Button[] butList = item.GetComponentsInChildren<Button>(true);
             foreach (Button button in butList)
             {
-                button.colors = colorBlock;
                 onScreenButton.Add(button);
             }
         }
@@ -37,7 +27,7 @@ public class ArduinoButtonPress : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        StartCoroutine(SelectClosestButton());
+        SelectClosestButton();
         if (isCheckDone)
         {
             StartCoroutine(ActivateClosestButton());
@@ -67,28 +57,23 @@ public class ArduinoButtonPress : MonoBehaviour {
         return closestButton;
     }
 
-    IEnumerator SelectClosestButton()
+    void SelectClosestButton()
     {
+        GameObject myEventSystem = GameObject.Find("EventSystem");
+        myEventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
         Button lastButton = closestButton;
 
         FindClosestActiveButton();
 
         if (lastButton != null)
         {
-            lastButton.colors = colorBlock;
             lastButton = closestButton;
 
         }
 
         if (closestButton != null)
-        {
-            ColorBlock blk = closestButton.colors;
-            blk.normalColor = colorBlock.highlightedColor;// Color.Lerp(closestButton.colors.normalColor, colorBlock.highlightedColor, Time.deltaTime*50);
+        {closestButton.Select();}
 
-            closestButton.colors = blk ;
-        }
-
-        yield return null;
 
     }
 
