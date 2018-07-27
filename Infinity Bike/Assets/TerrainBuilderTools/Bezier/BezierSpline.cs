@@ -14,6 +14,9 @@ public class BezierSpline : MonoBehaviour
     private void OnValidate()
     {
         saveLoad.dataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        if(points.Length ==0)
+        Load();
+
         UpdateParametricMapping();
     }
 
@@ -225,10 +228,24 @@ public class BezierSpline : MonoBehaviour
             i = (int)t;
             t -= i;
             i *= 3;
+        }
+        Vector3 toReturn = Vector3.zero;
+        try
+        {
+            toReturn = transform.TransformPoint(Bezier.GetPoint(points[i], points[i + 1], points[i + 2], points[i + 3], t));
+        }
+        catch
+        {
+            Debug.Log(" Error in BesierSpline.cs - > Get point \n\tPoint length : " + points.Length + " \tindex : " + i);
+            // temporary. I keept getting an error from this chunk of code but I can't find out why.
+            // 1. The problem was the script didn't reliably keep the variable points populated. It should be fixed but I keep this herre so see.
+
 
         }
-        return transform.TransformPoint(Bezier.GetPoint(points[i], points[i + 1], points[i + 2], points[i + 3], t));
-	}
+
+        return toReturn;
+
+    }
 	public  Vector3 GetVelocity(float t)
 	{
         int i; 

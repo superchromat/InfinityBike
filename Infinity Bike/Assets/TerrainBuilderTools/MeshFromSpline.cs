@@ -5,7 +5,6 @@ using UnityEngine;
 public class MeshFromSpline : MonoBehaviour {
 
 	private MeshFilter mF; 
-	private BezierSpline bezierSpline; 
 	public Shape2D shape2D; 
 	private OrientedPoint[] path; 
 	public float pathIncrementSize; 
@@ -101,21 +100,20 @@ public class MeshFromSpline : MonoBehaviour {
 		int numPoints = (int) Mathf.Ceil (bezierSpline.GetSplineLenght () / pathIncrementSize);
 		float realIncrementSize = bezierSpline.GetSplineLenght () / numPoints; 
 
-
 		OrientedPoint[] path = new OrientedPoint[numPoints+1];
 
 		for (int i = 0; i < numPoints; i++) {
 			Vector3 bezierPoint = bezierSpline.GetPointFromParametricValue (i * realIncrementSize); 
 			if (adaptHeightToTerrain) {
 				float height = tCE.WorldToTerrainHeight (new Vector2 (bezierPoint.x, bezierPoint.z));
+
 				bezierPoint.y = height + verticalHeightOffset; 
 			} 
-			path [i].position = bezierPoint; 
-
+			path [i].position = bezierPoint;
 			path [i].rotation = bezierSpline.GetOrientationFromParametricValue (i * realIncrementSize);
 			path [i].cumulDistance = i * realIncrementSize; 
 		}
-        path[numPoints] = path[0];
+        path[numPoints] = path[0]; //// This is how I closed the gap. I also increased the variable path's size by 1.
 
         return path; 
 

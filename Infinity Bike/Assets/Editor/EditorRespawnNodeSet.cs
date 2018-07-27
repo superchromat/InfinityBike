@@ -189,7 +189,6 @@ public class EditorRespawnNodeSet : Editor
         {
             if(trackNodeToolScript.sourceBesierSpline != null)
             trackNodeToolScript.PopulateTrackNodeWithBesier(trackNodeToolScript.pointsFromBezier);
-
         }
 
 

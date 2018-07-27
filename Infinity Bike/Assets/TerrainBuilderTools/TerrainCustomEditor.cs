@@ -154,11 +154,12 @@ public class TerrainCustomEditor : MonoBehaviour {
 		return i; 
 		
 	}
-	public float WorldToTerrainHeight(Vector2 world) {
+	public float WorldToTerrainHeight(Vector2 world)
+    {   
 		int[] i = WorldToTerrainPix (world); 
 		float height = terrainData.GetHeight (i [0], i [1]); 
 		return height;
-	}
+	}   
 
 	public void GenerateTrackFromBezier(int steps, float width) {//ProblyDelete
 		float t = 0; 

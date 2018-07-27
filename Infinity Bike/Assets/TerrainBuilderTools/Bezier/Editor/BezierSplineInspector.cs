@@ -50,21 +50,21 @@ public class BezierSplineInspector : Editor
 			p0 = p3;
 		}
 
-        ShowDirections();
+         ShowDirections();
 
     }
     private void ShowDirections ()
     {
-
         Handles.color = Color.green;
-		Vector3 point = spline.GetPoint(0f);
-		Handles.DrawLine(point, point + spline.GetDirection(0f) * directionScale);
-        int steps = stepsPerCurve * spline.CurveCount; 
-		for (int i = 1; i <= steps; i++) {
-			point = spline.GetPoint(i / (float)steps);
-			Handles.DrawLine(point, point +spline.GetDirection(i / (float)steps) * directionScale);
-		}
-	}
+        Vector3 point = spline.GetPoint(0f);
+        Handles.DrawLine(point, point + spline.GetDirection(0f) * directionScale);
+        int steps = stepsPerCurve * spline.CurveCount;
+        for (int i = 1; i <= steps; i++)
+        {
+            point = spline.GetPoint(i / (float)steps);
+            Handles.DrawLine(point, point + spline.GetDirection(i / (float)steps) * directionScale);
+        }
+    }
 
 
 
