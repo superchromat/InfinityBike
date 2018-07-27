@@ -102,18 +102,44 @@ public class MeshFromSpline : MonoBehaviour {
 
 		OrientedPoint[] path = new OrientedPoint[numPoints+1];
 
-		for (int i = 0; i < numPoints; i++) {
-			Vector3 bezierPoint = bezierSpline.GetPointFromParametricValue (i * realIncrementSize); 
-			if (adaptHeightToTerrain) {
-				float height = tCE.WorldToTerrainHeight (new Vector2 (bezierPoint.x, bezierPoint.z));
+		for (int i = 0; i < numPoints; i++)
+        {
 
-				bezierPoint.y = height + verticalHeightOffset; 
-			} 
+            Vector3 bezierPoint = bezierSpline.GetPointFromParametricValue (i * realIncrementSize);
+
+            Vector3 bound_bezierPoint = Vector3.zero;
+            Vector3 direction_bound = Vector3.zero;
+            Vector3 direction_startToMid = Vector3.zero;
+
+            if (adaptHeightToTerrain)
+            {
+                float height = tCE.WorldToTerrainHeight(new Vector2(bezierPoint.x, bezierPoint.z));
+                float weight = 1;
+                for (int j = 0; j < 4; j++)
+                {
+                    int bound_i = i + j - 2;
+                    if (bound_i >= numPoints) { bound_i -= numPoints; }
+                    else if (bound_i < 0) { bound_i += numPoints; }
+                    Vector3 bezierPoint2 = bezierSpline.GetPointFromParametricValue(bound_i * realIncrementSize);
+
+                    height += tCE.WorldToTerrainHeight(new Vector2(bezierPoint2.x, bezierPoint2.z));
+                    weight+=1;
+                }
+                height = height / weight;
+               
+                // The code above is for smoothing the road. It's not great but should work for now.
+
+
+
+                bezierPoint.y = height + verticalHeightOffset; 
+            } 
 			path [i].position = bezierPoint;
 			path [i].rotation = bezierSpline.GetOrientationFromParametricValue (i * realIncrementSize);
 			path [i].cumulDistance = i * realIncrementSize; 
 		}
-        path[numPoints] = path[0]; //// This is how I closed the gap. I also increased the variable path's size by 1.
+        path[numPoints] = path[0]; 
+        //// This is how I closed the gap. I also increased the variable path's size by 1.
+        //// Problem it causes the texture to act wierd at the start.
 
         return path; 
 
