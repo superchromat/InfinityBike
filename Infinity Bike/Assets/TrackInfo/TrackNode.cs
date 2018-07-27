@@ -5,7 +5,6 @@ using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
-
 [CreateAssetMenu(fileName = "TrackNode", menuName = "TrackNode", order = 1)]
 public class TrackNode : ScriptableObject 
 {
@@ -19,21 +18,10 @@ public class TrackNode : ScriptableObject
     }
 
     public void InsertNode(Vector3 toadd, int indexAhead)
-    {
-        /*
-        if (indexAhead < 0)
-        {
-            indexAhead += nodeList.Count;
-        }
-        else if (indexAhead > nodeList.Count)
-        {
-            indexAhead -= nodeList.Count;
-        }
-        */
-
+    {   
         ClampIndex(ref indexAhead);
         nodeList.Insert(indexAhead, toadd);
-    }
+    }   
 
     public void AddNode (Vector3 toadd)
 	{
@@ -71,13 +59,13 @@ public class TrackNode : ScriptableObject
     public void Save(string fileName)
     {
         Vector3Serialisable nodeListSerialisable = new Vector3Serialisable(nodeList, isLoopOpen);
-        SaveLoad<Vector3Serialisable>.Save(nodeListSerialisable, fileName);
+        SaveLoad.SaveLoadUtilities<Vector3Serialisable>.Save(nodeListSerialisable, fileName);
     }
 
     public void LoadFile(string fileName)
     {   
         Vector3Serialisable nodeListSerialisable = new Vector3Serialisable();
-        SaveLoad<Vector3Serialisable>.Load(out nodeListSerialisable, fileName);
+        SaveLoad.SaveLoadUtilities<Vector3Serialisable>.Load(out nodeListSerialisable, fileName);
         nodeListSerialisable.SetValuesToNodeList(out nodeList, out isLoopOpen);
     }
 
@@ -99,8 +87,7 @@ public class TrackNode : ScriptableObject
             { index += nodeList.Count; }
         }
     }   
-
-}
+}   
 
 [Serializable]
 public class Vector3Serialisable
@@ -132,6 +119,14 @@ public class Vector3Serialisable
         z = new List<float>();
         this.isLoopOpen = false;
     }
+    public void SetValuesToNodeList(out Vector3[] nodeList, out bool isLoopOpen)
+    {
+        nodeList = new Vector3[x.Count] ;
+        for (int i = 0; i < x.Count; i++)
+        { nodeList[i] = (new Vector3(x[i], y[i], z[i])); }
+        isLoopOpen = this.isLoopOpen;
+
+    }
 
     public void SetValuesToNodeList(out List<Vector3> nodeList, out bool isLoopOpen)
     {
@@ -152,13 +147,13 @@ public class TrackNodeValues
     public void Save(string fileName)
     {
         Vector3Serialisable nodeListSerialisable = new Vector3Serialisable(nodeList, isLoopOpen);
-        SaveLoad<Vector3Serialisable>.Save(nodeListSerialisable, fileName);
+        SaveLoad.SaveLoadUtilities<Vector3Serialisable>.Save(nodeListSerialisable, fileName);
     }
 
     public void LoadFile(string fileName)
     {
         Vector3Serialisable nodeListSerialisable = new Vector3Serialisable();
-        SaveLoad<Vector3Serialisable>.Load(out nodeListSerialisable, fileName);
+        SaveLoad.SaveLoadUtilities<Vector3Serialisable>.Load(out nodeListSerialisable, fileName);
         nodeListSerialisable.SetValuesToNodeList(out nodeList, out isLoopOpen);
     }
 

@@ -5,30 +5,54 @@ using System;
 
 [System.Serializable]
 public class BezierSpline : MonoBehaviour
+{   
+    private bool loop;    
+    [SerializeField]
+    private Vector3[] points;
 
-{
- 
+    public SaveLoad saveLoad = new SaveLoad();
+    private void OnValidate()
+    {
+        saveLoad.dataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        UpdateParametricMapping();
+    }
+
+
+    [SerializeField]
+    private BezierControlPointMode[] modes;
     
-    private bool loop; 
+    [ContextMenu("Save track data")]
+    public void Save()
+    {
+            Vector3Serialisable nodeListSerialisable = new Vector3Serialisable(new List<Vector3>(points), loop);
+        SaveLoad.SaveLoadUtilities<Vector3Serialisable>.Save(nodeListSerialisable, "TrackBesierPoints.Besier");
+    }
+    [ContextMenu("Load track data")]
+    public void Load()
+    {
+        Vector3Serialisable nodeListSerialisable = new Vector3Serialisable();
+        SaveLoad.SaveLoadUtilities<Vector3Serialisable>.Load(out nodeListSerialisable, "TrackBesierPoints.Besier");
+        nodeListSerialisable.SetValuesToNodeList(out points, out loop);
 
-    public bool Loop {
-        get {
-            return loop; 
+
+    }
+
+    public bool Loop
+    {
+        get
+        {
+            return loop;
         }
-        set {
+        set
+        {
             loop = value;
-            if (value == true){
+            if (value == true)
+            {
                 modes[modes.Length - 1] = modes[0];
                 SetControlPoint(0, points[0]);
             }
         }
     }
-    
-	[SerializeField]
-	private Vector3[] points;
-
-	[SerializeField]
-    private BezierControlPointMode[] modes; 
 
     public int ControlPointCount{
         get{
@@ -54,13 +78,8 @@ public class BezierSpline : MonoBehaviour
 	private float[] discreteT; 
 	public GameObject markerPrefab; 
 
-
-
-
-
-    public Vector3 GetControlPoint (int index) {
-        return points[index];
-    }
+    public Vector3 GetControlPoint (int index)
+    {return points[index];}
 
     public void SetControlPoint(int index, Vector3 point){
         if (index % 3 == 0)
@@ -266,7 +285,6 @@ public class BezierSpline : MonoBehaviour
             EnforceMode(0);
         }
     }
-
 	/// <summary>
 	/// The parametric mapping is an array in wich this scrips calculate the spline cummulative distance 
 	/// for a serie of points starting at the spline origin. This function must be updated every time the
@@ -299,7 +317,8 @@ public class BezierSpline : MonoBehaviour
 	///Returns the sline lenght approximation (not analytics).
 	///</summary>
 	public float GetSplineLenght() {
-		return cumulLenghts [LinearApproxSteps-1]; 
+
+        return cumulLenghts [LinearApproxSteps-1]; 
 		
 	}
 
@@ -335,14 +354,11 @@ public class BezierSpline : MonoBehaviour
 	public Vector3 GetPointFromParametricValue(float p) {
 		return GetPoint(GetTFromParametricValue(p)); 
 		}
-
-
-
+    
 	public Quaternion GetOrientationFromParametricValue(float p) {
 		return GetOrientation (GetTFromParametricValue (p)); 
 	}
-
-
+    
 	/// <summary>
 	/// This function is used for interpolation. For the input array, returns find the closest lower float 
 	/// to value and returns its index. 
@@ -383,8 +399,6 @@ public class BezierSpline : MonoBehaviour
 			marker.GetComponent<TextMesh> ().text = distance.ToString ();
 		}
 	}
-
-
 
 }
 

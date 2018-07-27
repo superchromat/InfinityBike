@@ -30,7 +30,6 @@ public class BezierSplineInspector : Editor
 		spline = target as BezierSpline;
 
 
-        Debug.Log(spline.ControlPointCount);
         handleTransform = spline.transform;
 
 		handleRotation = Tools.pivotRotation == PivotRotation.Local ?

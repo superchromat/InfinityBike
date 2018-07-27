@@ -19,11 +19,13 @@ public class MeshFromSpline : MonoBehaviour {
 	//	UpdateMesh (); 
 	//}
 
-	public void UpdateMesh() {
+	public void UpdateMesh()
+    {
 		path = GeneratePath ();
-		if (shape2D == null) {
+		if (shape2D == null)
+        {   
 			shape2D = new Shape2D (); 
-		}
+		}   
 
 		if (path == null) {
 			path = new OrientedPoint[5]; 
@@ -100,7 +102,7 @@ public class MeshFromSpline : MonoBehaviour {
 		float realIncrementSize = bezierSpline.GetSplineLenght () / numPoints; 
 
 
-		OrientedPoint[] path = new OrientedPoint[numPoints];
+		OrientedPoint[] path = new OrientedPoint[numPoints+1];
 
 		for (int i = 0; i < numPoints; i++) {
 			Vector3 bezierPoint = bezierSpline.GetPointFromParametricValue (i * realIncrementSize); 
@@ -113,8 +115,9 @@ public class MeshFromSpline : MonoBehaviour {
 			path [i].rotation = bezierSpline.GetOrientationFromParametricValue (i * realIncrementSize);
 			path [i].cumulDistance = i * realIncrementSize; 
 		}
+        path[numPoints] = path[0];
 
-		return path; 
+        return path; 
 
 	}
 	
@@ -162,9 +165,11 @@ public class Shape2D {
 		}
 
 	}
-	public void CalculateUS() {
+	public void CalculateUS()
+    {
 		us [0] = 0; 
-		for (int i = 1; i < verts.Length; i++) {
+		for (int i = 1; i < verts.Length; i++)
+        {
 			us [i] = us [i - 1] + (verts [i] - verts [i - 1]).magnitude;
 		}
 		

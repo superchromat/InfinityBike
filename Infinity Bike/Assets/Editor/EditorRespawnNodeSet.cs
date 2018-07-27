@@ -4,13 +4,12 @@ using System.Collections.Generic;
 using UnityEditor;
 
 [CustomEditor(typeof(TrackNodeTool))]
-public class EditorRespawnNodeSet : Editor {
+public class EditorRespawnNodeSet : Editor
+{   
+
 	private static bool doDrawTrajectory = false;
     private static int subscribeCount = 0; 
-
     private bool useSpaceBarToSet = false;
-    
-
 	private int cycleNodeIndex = 0;
     private bool enableOnScreenPlacement = false;
 
@@ -178,18 +177,36 @@ public class EditorRespawnNodeSet : Editor {
         GUILayout.EndVertical();
 
         GUILayout.BeginHorizontal();
+
             if (GUILayout.Button("Save track node to file"))
             {trackNodeToolScript.trackNode.Save(trackNodeToolScript.GetFileName());}
             if (GUILayout.Button("Load track node from file"))
             {trackNodeToolScript.trackNode.LoadFile(trackNodeToolScript.GetFileName());}
+
         GUILayout.EndHorizontal();
 
-        if (doDrawTrajectory)
+        if (GUILayout.Button("Import Track from bezier"))
+        {
+            if(trackNodeToolScript.sourceBesierSpline != null)
+            trackNodeToolScript.PopulateTrackNodeWithBesier(trackNodeToolScript.pointsFromBezier);
+
+        }
+
+
+
+
+
+            if (doDrawTrajectory)
         {GUILayout.TextField("Debug Draw color legend\n\tMain Track : RED and CYAN\n\tSelected node : GREEN\n\tFirst Node : YELLOW\n\tLast Node : BLUE");}
 
         if (useSpaceBarToSet)
         {GUILayout.TextField("Use Space Bar To Add\n\tDrag the tool around the scene and press spacebar to add a new node.\n\tTip : Place the scene in isometric view with a top view.");}
         
+
+
+
+
+
         SceneView.RepaintAll ();
 	}	
 
