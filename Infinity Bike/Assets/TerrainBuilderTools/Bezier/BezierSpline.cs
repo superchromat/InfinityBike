@@ -28,17 +28,15 @@ public class BezierSpline : MonoBehaviour
     public void Save()
     {
             Vector3Serialisable nodeListSerialisable = new Vector3Serialisable(new List<Vector3>(points), loop);
-        SaveLoad.SaveLoadUtilities<Vector3Serialisable>.Save(nodeListSerialisable, "TrackBesierPoints.Besier");
+        SaveLoad.SaveLoadUtilities<Vector3Serialisable>.Save(nodeListSerialisable, "TrackBesierPoints.Besier", saveLoad.dataPath);
     }
     [ContextMenu("Load track data")]
     public void Load()
-    {
+    {   
         Vector3Serialisable nodeListSerialisable = new Vector3Serialisable();
-        SaveLoad.SaveLoadUtilities<Vector3Serialisable>.Load(out nodeListSerialisable, "TrackBesierPoints.Besier");
+        SaveLoad.SaveLoadUtilities<Vector3Serialisable>.Load(out nodeListSerialisable, "TrackBesierPoints.Besier", saveLoad.dataPath);
         nodeListSerialisable.SetValuesToNodeList(out points, out loop);
-
-
-    }
+    }   
 
     public bool Loop
     {
@@ -236,7 +234,7 @@ public class BezierSpline : MonoBehaviour
         }
         catch
         {
-            Debug.Log(" Error in BesierSpline.cs - > Get point \n\tPoint length : " + points.Length + " \tindex : " + i);
+         //   Debug.Log(" Error in BesierSpline.cs - > Get point \n\tPoint length : " + points.Length + " \tindex : " + i);
             // temporary. I keept getting an error from this chunk of code but I can't find out why.
             // 1. The problem was the script didn't reliably keep the variable points populated. It should be fixed but I keep this herre so see.
 
@@ -334,6 +332,9 @@ public class BezierSpline : MonoBehaviour
 	///Returns the sline lenght approximation (not analytics).
 	///</summary>
 	public float GetSplineLenght() {
+
+        if (cumulLenghts == null)
+            UpdateParametricMapping();
 
         return cumulLenghts [LinearApproxSteps-1]; 
 		

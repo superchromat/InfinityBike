@@ -5,7 +5,7 @@ using System;
 
 public class AIDriver : MonoBehaviour
 {   
-    
+    [SerializeField]
     public AiSettings aiSettings = new AiSettings();
 
 	public TrackNode trackNode = null;
@@ -62,7 +62,8 @@ public class AIDriver : MonoBehaviour
         int numberOfNodes = aiSettings.numberNodeInPrediction;
         for (int j = 0; j < aiSettings.numberNodeInPrediction; j++)
         {
-            Vector3 nextNode = trackNode.GetNode(nearestNode + j);
+            int setNode = aiSettings.numberOfNodeAhead + j;
+            Vector3 nextNode = trackNode.GetNode(nearestNode + setNode);
             Vector3 nextDirection = (nextNode - frontWheel.transform.position).normalized;
             nextDirection -= Vector3.Dot(nextDirection, frontWheel.transform.up) * frontWheel.transform.up;
 
@@ -72,7 +73,7 @@ public class AIDriver : MonoBehaviour
                 if(j==0)
                     Debug.DrawRay(frontWheel.transform.position, nextDirection, Color.red);
                 else
-                    Debug.DrawRay(frontWheel.transform.position, nextDirection);
+                    Debug.DrawRay(frontWheel.transform.position, nextDirection, Color.white);
             }
             else
             {
@@ -90,6 +91,7 @@ public class AIDriver : MonoBehaviour
         { angle = -angle; }
         
         float resultAngle = Mathf.Lerp(frontWheel.steerAngle, angle, aiSettings.steeringLerpTime * Time.deltaTime);
+
         if (resultAngle > 45)
         { resultAngle = 45; }
         else if (resultAngle < -45)

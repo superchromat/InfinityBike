@@ -36,10 +36,13 @@ public class EditorRespawnNodeSet : Editor
     }   
     
     public override void OnInspectorGUI()
-	{
+	{   
 
         TrackNodeTool trackNodeToolScript = (TrackNodeTool)target;
-		DrawDefaultInspector ();
+        EditorUtility.SetDirty(trackNodeToolScript.trackNode);
+
+
+        DrawDefaultInspector();
 
         trackNodeToolScript.FindTrackFiles();
 
@@ -67,9 +70,7 @@ public class EditorRespawnNodeSet : Editor
         useSpaceBarToSet = GUILayout.Toggle(useSpaceBarToSet, "Use Space Bar To Add");
 
         trackNodeToolScript.trackNode.isLoopOpen = GUILayout.Toggle(trackNodeToolScript.trackNode.isLoopOpen, "Is Loop Open");
-
-
-
+        
         {
             GUILayout.BeginHorizontal();
                 if (GUILayout.Button("Cycle up selected node"))
@@ -104,7 +105,7 @@ public class EditorRespawnNodeSet : Editor
 			if (trackNode != null) 
 			{
 
-				Vector3 pos = CalculatePositionAboveTheTrack (trackNodeToolScript.GetComponent<Transform> ().position);
+				Vector3 pos = trackNodeToolScript.GetComponent<Transform> ().position;
 				GetTrackNode ().AddNode (pos);
 				cycleNodeIndex = GetTrackNode ().GetNodeCount () - 1;
 			}
@@ -113,7 +114,7 @@ public class EditorRespawnNodeSet : Editor
 
 		if (GUILayout.Button ("Set selected node")) 
 		{
-			Vector3 pos = CalculatePositionAboveTheTrack(trackNodeToolScript.GetComponent<Transform> ().position);
+			Vector3 pos = trackNodeToolScript.GetComponent<Transform> ().position;
 			TrackNode trackNode = GetTrackNode ();
 
 			if(trackNode!=null)
@@ -177,35 +178,33 @@ public class EditorRespawnNodeSet : Editor
         GUILayout.EndVertical();
 
         GUILayout.BeginHorizontal();
-
             if (GUILayout.Button("Save track node to file"))
-            {trackNodeToolScript.trackNode.Save(trackNodeToolScript.GetFileName());}
+            {trackNodeToolScript.trackNode.Save(trackNodeToolScript.GetFileName(),trackNodeToolScript.saveLoad.dataPath);}
             if (GUILayout.Button("Load track node from file"))
-            {trackNodeToolScript.trackNode.LoadFile(trackNodeToolScript.GetFileName());}
-
+            {
+                trackNodeToolScript.trackNode.Load(trackNodeToolScript.GetFileName(), trackNodeToolScript.saveLoad.dataPath);
+            }
         GUILayout.EndHorizontal();
 
         if (GUILayout.Button("Import Track from bezier"))
         {
-            if(trackNodeToolScript.sourceBesierSpline != null)
-            trackNodeToolScript.PopulateTrackNodeWithBesier(trackNodeToolScript.pointsFromBezier);
+            TrackNode trackNode = GetTrackNode();
+
+            if (trackNodeToolScript.sourceBesierSpline != null)
+            trackNodeToolScript.PopulateTrackNodeWithBesier(trackNodeToolScript.PointsFromBezier);
+            
+            for (int i = 0 ; i < trackNodeToolScript.PointsFromBezier; i++)
+            {
+                trackNode.SetNode(trackNode.GetNode(i), i);
+            }   
         }
-
-
-
-
-
-            if (doDrawTrajectory)
+        
+        if (doDrawTrajectory)
         {GUILayout.TextField("Debug Draw color legend\n\tMain Track : RED and CYAN\n\tSelected node : GREEN\n\tFirst Node : YELLOW\n\tLast Node : BLUE");}
 
         if (useSpaceBarToSet)
         {GUILayout.TextField("Use Space Bar To Add\n\tDrag the tool around the scene and press spacebar to add a new node.\n\tTip : Place the scene in isometric view with a top view.");}
         
-
-
-
-
-
         SceneView.RepaintAll ();
 	}	
 
@@ -254,11 +253,8 @@ public class EditorRespawnNodeSet : Editor
                     subscribeCount--;
                 }
                 return;
-            }
-
-
-
-
+            }   
+            
             for (int index = 0; index < trackNode.GetNodeCount(); index++)
             {
                 if (trackNode.isLoopOpen && index == 0)

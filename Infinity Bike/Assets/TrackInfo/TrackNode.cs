@@ -21,25 +21,30 @@ public class TrackNode : ScriptableObject
     {   
         ClampIndex(ref indexAhead);
         nodeList.Insert(indexAhead, toadd);
-    }   
+    }
+
+    Vector3 FindLocationForPoint(Vector3 toCalculate)
+    {
+        RaycastHit hit;
+
+        if (Physics.Raycast(toCalculate, Vector3.down, out hit, 100f))
+        { toCalculate = (hit.point + Vector3.up * 1.5f); }
+        else if (Physics.Raycast(toCalculate, Vector3.up, out hit, 100f))
+        { toCalculate = (hit.point + Vector3.up * 1.5f); }
+        return toCalculate;
+
+    }
 
     public void AddNode (Vector3 toadd)
 	{
-
-        RaycastHit hit;
-        if (Physics.Raycast(toadd, Vector3.down, out hit, 100f))
-        { nodeList.Add(hit.point + Vector3.up * 1.5f); }
-        else if(Physics.Raycast(toadd, Vector3.up, out hit, 100f))
-        { nodeList.Add(hit.point + Vector3.up * 1.5f); }
-
-
+        nodeList.Add(FindLocationForPoint(toadd));
     }	
 	
 	public void SetNode (Vector3 toadd, int index)
 	{	
 		if(nodeList.Count != 0)
 		{
-            nodeList[index] = toadd;
+            nodeList[index] = FindLocationForPoint(toadd);
 		}	
 	}
 
@@ -56,16 +61,17 @@ public class TrackNode : ScriptableObject
 	public int GetNodeCount()
 	{return nodeList.Count;}
 
-    public void Save(string fileName)
+    public void Save(string fileName, string path)
     {
+
         Vector3Serialisable nodeListSerialisable = new Vector3Serialisable(nodeList, isLoopOpen);
-        SaveLoad.SaveLoadUtilities<Vector3Serialisable>.Save(nodeListSerialisable, fileName);
+        SaveLoad.SaveLoadUtilities<Vector3Serialisable>.Save(nodeListSerialisable, fileName,path);
     }
 
-    public void LoadFile(string fileName)
+    public void Load(string fileName, string path)
     {   
         Vector3Serialisable nodeListSerialisable = new Vector3Serialisable();
-        SaveLoad.SaveLoadUtilities<Vector3Serialisable>.Load(out nodeListSerialisable, fileName);
+        SaveLoad.SaveLoadUtilities<Vector3Serialisable>.Load(out nodeListSerialisable, fileName,path);
         nodeListSerialisable.SetValuesToNodeList(out nodeList, out isLoopOpen);
     }
 
@@ -87,6 +93,7 @@ public class TrackNode : ScriptableObject
             { index += nodeList.Count; }
         }
     }   
+    
 }   
 
 [Serializable]
@@ -144,16 +151,16 @@ public class TrackNodeValues
     public bool isLoopOpen;
     public List<Vector3> nodeList = new List<Vector3>();
 
-    public void Save(string fileName)
+    public void Save(string fileName,string path)
     {
         Vector3Serialisable nodeListSerialisable = new Vector3Serialisable(nodeList, isLoopOpen);
-        SaveLoad.SaveLoadUtilities<Vector3Serialisable>.Save(nodeListSerialisable, fileName);
+        SaveLoad.SaveLoadUtilities<Vector3Serialisable>.Save(nodeListSerialisable, fileName,path);
     }
 
-    public void LoadFile(string fileName)
+    public void Loads(string fileName, string path)
     {
         Vector3Serialisable nodeListSerialisable = new Vector3Serialisable();
-        SaveLoad.SaveLoadUtilities<Vector3Serialisable>.Load(out nodeListSerialisable, fileName);
+        SaveLoad.SaveLoadUtilities<Vector3Serialisable>.Load(out nodeListSerialisable, fileName,path);
         nodeListSerialisable.SetValuesToNodeList(out nodeList, out isLoopOpen);
     }
 

@@ -18,7 +18,7 @@ public class SaveLoad
             if (dataPath == null)
             {dataPath = Application.dataPath;}
 
-            string destination = dataPath + "/" + fileName;
+            string destination = dataPath + "\\" + fileName;
             
             FileStream file;
 
@@ -30,14 +30,6 @@ public class SaveLoad
             file.Close();
             Debug.Log("Saved to : " + destination);
         }   
-
-        public static void Save(T serializableClass, string fileName)
-        {
-            Save(serializableClass, fileName, Application.dataPath);
-        }
-
-
-
 
         public static void Load(out T serializableClass, string fileName, string dataPath)
         {
@@ -56,17 +48,11 @@ public class SaveLoad
             else
             {
                 serializableClass = (T)Activator.CreateInstance(typeof(T), new object[] { });
-
             }
+            Debug.Log("Load from to : " + destination);
+
+
         }
-
-        public static void Load(out T serializableClass, string fileName)
-        {   
-            Load(out serializableClass, fileName, Application.dataPath);
-        }   
-
-
-
 
     }
 }
