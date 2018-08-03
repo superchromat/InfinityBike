@@ -18,27 +18,45 @@ public class Respawn : MonoBehaviour {
         set
         { onRespawn += value; }
     }   
+
     void ClearOnRespawnAction()
     {onRespawn = RespawnObject;}
 
     void Start () 
 	{	
-		rb = GetComponent<Rigidbody> ();
-        onRespawn += RespawnObject;
-        onRespawn();
-    }   
-    
-    void LateUpdate () 
-	{   
-        minDistanceNode = FindNearestNode(trackNode, transform);
-        if (  Vector3.Distance( trackNode.GetNode(minDistanceNode),transform.position) > verticalRespawnPoint)
-		{onRespawn();}
+        blockSpawnCheck = false;
+        rb = GetComponent<Rigidbody> ();
+        OnRespawn = RespawnObject;
 
         if (GetComponent<PlayerMovement>() != null)
-        {OnRespawn = GetComponent<PlayerMovement>().Stop;}
-        else if (GetComponent<AIDriver>()!= null)
-        {OnRespawn = GetComponent<AIDriver>().Stop;}
-    }   
+        { OnRespawn = GetComponent<PlayerMovement>().Stop; }
+        else if (GetComponent<AIDriver>() != null)
+        { OnRespawn = GetComponent<AIDriver>().Stop; }
+
+
+        OnRespawn();
+
+    }
+    bool blockSpawnCheck = false;
+    void LateUpdate () 
+	{
+        if (!blockSpawnCheck)
+        {
+            blockSpawnCheck = true;
+            StartCoroutine(CheckIfRespawnIsNeeded());
+        }
+    }
+
+    private IEnumerator CheckIfRespawnIsNeeded()
+    {
+
+        minDistanceNode = FindNearestNode(trackNode, transform);
+        if (Vector3.Distance(trackNode.GetNode(minDistanceNode), transform.position) > verticalRespawnPoint)
+        { OnRespawn(); }
+
+        yield return new WaitForSeconds(0.5f);
+        blockSpawnCheck = false;
+    }
 
     private void RespawnObject()
     {   

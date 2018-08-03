@@ -10,16 +10,17 @@ public class AIDriver : Movement
     public AiSettings aiSettings = new AiSettings();
 	public TrackNode trackNode = null;
     private AiPid pid = null;
+    public float maximumSteeringAngle = 45;
     private float TargetAngle
     {
         get { return targetAngle; }
         set
         {
             targetAngle = value;
-            if (targetAngle > 45)
-            { targetAngle = 45; }
-            else if (targetAngle < -45)
-            { targetAngle = -45; }
+            if (targetAngle > maximumSteeringAngle)
+            { targetAngle = maximumSteeringAngle; }
+            else if (targetAngle < -maximumSteeringAngle)
+            { targetAngle = -maximumSteeringAngle; }
             frontWheel.steerAngle = TargetAngle;
         }
 
@@ -29,7 +30,7 @@ public class AIDriver : Movement
 
     void Start () 
 	{   
-        nearestNode = 0;
+        nearestNode = Respawn.FindNearestNode(trackNode, transform) + 1; ;
         pid = GetComponent<AiPid>();
         rb = GetComponent<Rigidbody>();
 
@@ -44,20 +45,32 @@ public class AIDriver : Movement
         
 
         pid.UpdateErrorValue += () => { pid.errorVariable = (aiSettings.targetSqrSpeed - rb.velocity.sqrMagnitude); };
-    }   
+    }
+
+    private void Update()
+    {
+
+        if(Vector3.Distance(trackNode.GetNode(nearestNode),transform.position) > Vector3.Distance(trackNode.GetNode(nearestNode+1),transform.position) )
+        {   
+            nearestNode = nearestNode + 1;
+        }   
+
+        velocity = rb.velocity.sqrMagnitude;
+        SetRotationUp();
+        SetSteeringAngle();
+
+    }
 
     void FixedUpdate () 
 	{
-        velocity = rb.velocity.sqrMagnitude;
         pid.RunPID();
 
         Go(pid.controlVariable);
 
-        SetRotationUp();
-        SetSteeringAngle();
+
         ApplyVelocityDrag(velocityDrag);
 
-        if (trackNode.isLoopOpen && (nearestNode + 1 == (trackNode.GetNodeCount())))
+        if (trackNode.isLoopOpen && (nearestNode + 1 >= (trackNode.GetNodeCount())))
         { IdleMode = true; }
     }
 
@@ -70,42 +83,17 @@ public class AIDriver : Movement
     protected override void ExitIdleMode()
     {   
         aiSettings.SetRandomValues();
-    }   
+    }
 
     protected override void SetSteeringAngle()
     {
-        nearestNode = Respawn.FindNearestNode(trackNode, transform);
-        Vector3 targetDirection = Vector3.zero;
-        /*
-        float farNodeWeightHolder = 1;
-        int numberOfNodes = aiSettings.numberNodeInPrediction;
-        for (int j = 0; j < aiSettings.numberNodeInPrediction; j++)
-        {
-            int setNode = aiSettings.numberOfNodeAhead + j;
-            Vector3 nextNode = trackNode.GetNode(nearestNode + setNode);
-            Vector3 nextDirection = (nextNode - frontWheel.transform.position).normalized;
-            nextDirection -= Vector3.Dot(nextDirection, frontWheel.transform.up) * frontWheel.transform.up;
 
-            if (Vector3.Dot(nextDirection, frontWheel.transform.forward) > 0.25)
-            {
-                targetDirection += nextDirection * farNodeWeightHolder;
-            }
-            else
-            {   
-                numberOfNodes++;
-            }   
+     //   nearestNode = Respawn.FindNearestNode(trackNode, transform) + 1;
 
-            farNodeWeightHolder *= aiSettings.farNodeWeight;
-        }
-        */
+        Vector3 targetDirection = transform.InverseTransformPoint( trackNode.GetNode(nearestNode));
+        float dot = targetDirection.x / targetDirection.magnitude;
 
-        targetDirection = new Vector3(targetDirection.x, 0, targetDirection.z).normalized;
-        
-        float angle = Vector3.Angle(targetDirection, frontWheel.transform.forward);
-        if (Vector3.Dot(targetDirection, frontWheel.transform.right) < 0)
-        { angle = -angle; }
-
-        TargetAngle = Mathf.Lerp(frontWheel.steerAngle, angle, aiSettings.steeringLerpTime * Time.deltaTime);
+        TargetAngle = dot * maximumSteeringAngle;
     }   
          
     private void OnCollisionEnter(Collision collision)
@@ -117,3 +105,25 @@ public class AIDriver : Movement
     }
 
 }
+/*
+    float farNodeWeightHolder = 1;
+    int numberOfNodes = aiSettings.numberNodeInPrediction;
+    for (int j = 0; j < aiSettings.numberNodeInPrediction; j++)
+    {
+        int setNode = aiSettings.numberOfNodeAhead + j;
+        Vector3 nextNode = trackNode.GetNode(nearestNode + setNode);
+        Vector3 nextDirection = (nextNode - frontWheel.transform.position).normalized;
+        nextDirection -= Vector3.Dot(nextDirection, frontWheel.transform.up) * frontWheel.transform.up;
+
+        if (Vector3.Dot(nextDirection, frontWheel.transform.forward) > 0.25)
+        {
+            targetDirection += nextDirection * farNodeWeightHolder;
+        }
+        else
+        {   
+            numberOfNodes++;
+        }   
+
+        farNodeWeightHolder *= aiSettings.farNodeWeight;
+    }
+    */

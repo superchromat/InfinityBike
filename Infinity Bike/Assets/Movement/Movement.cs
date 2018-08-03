@@ -53,6 +53,7 @@ public abstract class Movement : MonoBehaviour
 
         if (GetNormal(out normal))
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward, normal), 50f * Time.deltaTime);
+
     }
     
     protected bool GetNormal(out Vector3 normal)
@@ -107,11 +108,7 @@ public abstract class Movement : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         lockDraftingCheck = false;
     }
-
-
-
-
-
+    
 
 
 
