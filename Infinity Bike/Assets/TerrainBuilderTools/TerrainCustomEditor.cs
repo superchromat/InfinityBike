@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
+//using UnityEditor;
 
 
 public class TerrainCustomEditor : MonoBehaviour {
@@ -16,10 +16,6 @@ public class TerrainCustomEditor : MonoBehaviour {
 	public float perlinAmplitude =1f; 
 
 	public BezierSpline bezierTrack; 
-
-
-
-
 
 	// Use this for initialization
 	public void MapHeight() {

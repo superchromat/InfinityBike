@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class AIDriver : MonoBehaviour
 {   
@@ -10,13 +9,16 @@ public class AIDriver : MonoBehaviour
 
 	public TrackNode trackNode = null;
 
-    public WheelCollider backWheel;
-    public WheelCollider frontWheel;
-
-    private new Rigidbody rigidbody;
 
     private AiPid pid;
     private int nearestNode;
+
+
+
+    private Rigidbody rb;
+    public float breakForce = 10000;
+    public WheelCollider backWheel;
+    public WheelCollider frontWheel;
 
     void Start () 
 	{   
@@ -25,17 +27,15 @@ public class AIDriver : MonoBehaviour
         
         aiSettings.SetRandomValues();
 
-        GetComponent<Respawn>().onRespawn += aiSettings.SetRandomValues;
-        GetComponent<Respawn>().onRespawn += pid.ResetValues;
-        GetComponent<Respawn>().onRespawn += ()=>{StartCoroutine(RestartHelper()); };
+        GetComponent<Respawn>().OnRespawn = aiSettings.SetRandomValues;
+        GetComponent<Respawn>().OnRespawn = pid.ResetValues;
+        GetComponent<Respawn>().OnRespawn = ()=>{StartCoroutine(RestartHelper()); };
         
         backWheel.ConfigureVehicleSubsteps(1, 12, 15);
         frontWheel.ConfigureVehicleSubsteps(1, 12, 15);
         
-        rigidbody = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
 
-        frontWheel.brakeTorque = 0;
-        backWheel.brakeTorque = 0;
         SetUpPIDReferences();
     }   
 
@@ -43,21 +43,59 @@ public class AIDriver : MonoBehaviour
 	{   
         SetRotationUp();
         frontWheel.steerAngle = SetSteeringAngle();
-        rigidbody.AddForce(-aiSettings.velocityDrag * rigidbody.velocity.normalized * Mathf.Abs(Vector3.SqrMagnitude(rigidbody.velocity)));
-        SetWheelMotorTorque();
+        rb.AddForce(-aiSettings.velocityDrag * rb.velocity.normalized * Mathf.Abs(Vector3.SqrMagnitude(rb.velocity)));
+        Go();
 
-        if (trackNode.isLoopOpen && nearestNode+1 == (trackNode.GetNodeCount() ))
+        if (trackNode.isLoopOpen && nearestNode + 1 == (trackNode.GetNodeCount() ))
         {SetAIToIdleMode();}
 
     }   
 
-    private float SetSteeringAngle()
+    void SetAIToIdleMode()
+    {
+        aiSettings.targetSqrSpeed = 0;
+    }   
+    
+    void SetUpPIDReferences()
+    {
+        pid.UpdateErrorValue += PIDerrorCalc;
+        pid.ReactToControlVariable += PIDActiveControl;
+    }   
+    
+    void PIDerrorCalc()
     {   
+        pid.errorVariable = (aiSettings.targetSqrSpeed - rb.velocity.sqrMagnitude);
+    }   
+    
+    void PIDActiveControl()
+    {
+        if (aiSettings.targetSqrSpeed != 0)
+        {   
+            aiSettings.maxMotorTorque = pid.controlVariable;
+        }   
+        else
+        {   
+            aiSettings.maxMotorTorque = 0;
+            backWheel.brakeTorque = pid.controlVariable;
+        }   
+    }
+    
+    IEnumerator RestartHelper()
+    {
+        Stop();
+        yield return null;
+        Go();
+    }
+
+
+
+    private float SetSteeringAngle()
+    {
         nearestNode = Respawn.FindNearestNode(trackNode, transform);
         float farNodeWeightHolder = 1;
         Vector3 targetDirection = Vector3.zero;
 
-        Debug.DrawRay(frontWheel.transform.position, frontWheel.transform.forward*2, Color.blue);
+        Debug.DrawRay(frontWheel.transform.position, frontWheel.transform.forward * 2, Color.blue);
 
         int numberOfNodes = aiSettings.numberNodeInPrediction;
         for (int j = 0; j < aiSettings.numberNodeInPrediction; j++)
@@ -69,8 +107,8 @@ public class AIDriver : MonoBehaviour
 
             if (Vector3.Dot(nextDirection, frontWheel.transform.forward) > 0.25)
             {
-                targetDirection += nextDirection* farNodeWeightHolder;
-                if(j==0)
+                targetDirection += nextDirection * farNodeWeightHolder;
+                if (j == 0)
                     Debug.DrawRay(frontWheel.transform.position, nextDirection, Color.red);
                 else
                     Debug.DrawRay(frontWheel.transform.position, nextDirection, Color.white);
@@ -89,30 +127,31 @@ public class AIDriver : MonoBehaviour
         float angle = Vector3.Angle(targetDirection, frontWheel.transform.forward);
         if (Vector3.Dot(targetDirection, frontWheel.transform.right) < 0)
         { angle = -angle; }
-        
+
         float resultAngle = Mathf.Lerp(frontWheel.steerAngle, angle, aiSettings.steeringLerpTime * Time.deltaTime);
 
         if (resultAngle > 45)
         { resultAngle = 45; }
         else if (resultAngle < -45)
-        {resultAngle = -45;}
+        { resultAngle = -45; }
 
         return resultAngle;
 
-    }   
+    }
 
-    private void SetWheelMotorTorque()
+    public void Go()
     {
+        backWheel.brakeTorque = 0;
+        frontWheel.brakeTorque = 0;
         backWheel.motorTorque = aiSettings.maxMotorTorque;
-    }   
+    }
 
-    private void OnCollisionEnter(Collision collision)
-    {   
-        try
-        {GetComponent<Respawn>().onRespawn();}
-        catch(NullReferenceException)
-        {Debug.LogError(GetComponent<Respawn>().name);}
-    }   
+    public void Stop()
+    {
+        backWheel.brakeTorque = breakForce;
+        frontWheel.brakeTorque = breakForce;
+        backWheel.motorTorque = 0;
+    }
 
     void SetRotationUp()
     { transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward, GetNormal()), 100f * Time.deltaTime); }
@@ -131,46 +170,12 @@ public class AIDriver : MonoBehaviour
         return normal.normalized;
     }
 
-
-    void SetAIToIdleMode()
+    private void OnCollisionEnter(Collision collision)
     {
-        aiSettings.targetSqrSpeed = 0;
-    }   
-
-
-    void SetUpPIDReferences()
-    {
-        pid.UpdateErrorValue += PIDerrorCalc;
-        pid.ReactToControlVariable += PIDActiveControl;
-    }   
-
-
-    void PIDerrorCalc()
-    {   
-        pid.errorVariable = (aiSettings.targetSqrSpeed - rigidbody.velocity.sqrMagnitude);
-    }   
-
-    void PIDActiveControl()
-    {
-        if (aiSettings.targetSqrSpeed != 0)
-        {   
-            aiSettings.maxMotorTorque = pid.controlVariable;
-        }   
-        else
-        {   
-            aiSettings.maxMotorTorque = 0;
-            backWheel.brakeTorque = pid.controlVariable;
-        }   
-    }
-    IEnumerator RestartHelper()
-    {
-        aiSettings.maxMotorTorque = 0;
-        frontWheel.brakeTorque = 100000;
-        backWheel.brakeTorque = 100000;
-        yield return null;
-        frontWheel.brakeTorque = 0;
-        backWheel.brakeTorque = 0;
-
+        try
+        { GetComponent<Respawn>().OnRespawn(); }
+        catch (System.NullReferenceException)
+        { Debug.LogError(GetComponent<Respawn>().name); }
     }
 
-}   
+}

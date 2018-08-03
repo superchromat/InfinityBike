@@ -7,7 +7,7 @@ public class MeshFromSpline : MonoBehaviour {
 	private MeshFilter mF; 
 	public Shape2D shape2D; 
 	private OrientedPoint[] path; 
-	public float pathIncrementSize; 
+	public float pathIncrementSize;
 	public TerrainCustomEditor tCE; 
 	public bool adaptHeightToTerrain = true;
 	public float verticalHeightOffset; 

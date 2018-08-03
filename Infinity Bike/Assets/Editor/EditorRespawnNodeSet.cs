@@ -41,7 +41,6 @@ public class EditorRespawnNodeSet : Editor
         TrackNodeTool trackNodeToolScript = (TrackNodeTool)target;
         EditorUtility.SetDirty(trackNodeToolScript.trackNode);
 
-
         DrawDefaultInspector();
 
         trackNodeToolScript.FindTrackFiles();
@@ -211,23 +210,16 @@ public class EditorRespawnNodeSet : Editor
 
 
 	void CycleNode(int dir)
-	{	
+	{	    
 		TrackNodeTool trackNodeToolScript = (TrackNodeTool)target;
 		TrackNode trackNode = GetTrackNode ();
-
+            
 		if(trackNode!=null)
 		{   
 			cycleNodeIndex += dir;
             trackNode.ClampIndex(ref cycleNodeIndex);
-
-            /*
-			if (cycleNodeIndex >=trackNode.GetNodeCount ()) 
-			{cycleNodeIndex = 0;}
-			if (cycleNodeIndex < 0) 
-			{cycleNodeIndex =trackNode.GetNodeCount () - 1;}
-            */
 		}	
-	}
+	}       
     
 	void DebugDraw(SceneView sceneView)
 	{

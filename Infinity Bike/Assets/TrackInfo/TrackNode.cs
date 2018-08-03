@@ -6,7 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
 [CreateAssetMenu(fileName = "TrackNode", menuName = "TrackNode", order = 1)]
-public class TrackNode : ScriptableObject 
+public class TrackNode : ScriptableObject
 {
     public bool isLoopOpen;
     public List<Vector3> nodeList = new List<Vector3>();
@@ -14,16 +14,15 @@ public class TrackNode : ScriptableObject
     public void DeleteNode(int index)
     {
         if (GetNodeCount() > 0)
-        {nodeList.RemoveAt(index);}
+        { nodeList.RemoveAt(index); }
     }
-
     public void InsertNode(Vector3 toadd, int indexAhead)
-    {   
+    {
         ClampIndex(ref indexAhead);
         nodeList.Insert(indexAhead, toadd);
     }
 
-    Vector3 FindLocationForPoint(Vector3 toCalculate)
+    private Vector3 FindLocationForPoint(Vector3 toCalculate)
     {
         RaycastHit hit;
 
@@ -35,11 +34,10 @@ public class TrackNode : ScriptableObject
 
     }
 
-    public void AddNode (Vector3 toadd)
-	{
+    public void AddNode(Vector3 toadd)
+    {
         nodeList.Add(FindLocationForPoint(toadd));
-    }	
-	
+    }
 	public void SetNode (Vector3 toadd, int index)
 	{	
 		if(nodeList.Count != 0)
@@ -47,13 +45,11 @@ public class TrackNode : ScriptableObject
             nodeList[index] = FindLocationForPoint(toadd);
 		}	
 	}
-
 	public Vector3 GetNode (int index)
-	{
-
-		if (GetNodeCount () == 0) 
+	{   
+		if ( GetNodeCount () == 0 ) 
 		{return Vector3.zero;}
-
+        
         ClampIndex(ref index);
         return nodeList[index];
 	}   
@@ -67,7 +63,6 @@ public class TrackNode : ScriptableObject
         Vector3Serialisable nodeListSerialisable = new Vector3Serialisable(nodeList, isLoopOpen);
         SaveLoad.SaveLoadUtilities<Vector3Serialisable>.Save(nodeListSerialisable, fileName,path);
     }
-
     public void Load(string fileName, string path)
     {   
         Vector3Serialisable nodeListSerialisable = new Vector3Serialisable();
@@ -93,7 +88,6 @@ public class TrackNode : ScriptableObject
             { index += nodeList.Count; }
         }
     }   
-    
 }   
 
 [Serializable]
