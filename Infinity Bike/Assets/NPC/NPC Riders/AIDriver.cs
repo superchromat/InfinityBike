@@ -75,11 +75,9 @@ public class AIDriver : Movement
     protected override void SetSteeringAngle()
     {
         nearestNode = Respawn.FindNearestNode(trackNode, transform);
-        float farNodeWeightHolder = 1;
         Vector3 targetDirection = Vector3.zero;
-
-        Debug.DrawRay(frontWheel.transform.position, frontWheel.transform.forward * 2, Color.blue);
-
+        /*
+        float farNodeWeightHolder = 1;
         int numberOfNodes = aiSettings.numberNodeInPrediction;
         for (int j = 0; j < aiSettings.numberNodeInPrediction; j++)
         {
@@ -91,10 +89,6 @@ public class AIDriver : Movement
             if (Vector3.Dot(nextDirection, frontWheel.transform.forward) > 0.25)
             {
                 targetDirection += nextDirection * farNodeWeightHolder;
-                if (j == 0)
-                    Debug.DrawRay(frontWheel.transform.position, nextDirection, Color.red);
-                else
-                    Debug.DrawRay(frontWheel.transform.position, nextDirection, Color.white);
             }
             else
             {   
@@ -103,6 +97,7 @@ public class AIDriver : Movement
 
             farNodeWeightHolder *= aiSettings.farNodeWeight;
         }
+        */
 
         targetDirection = new Vector3(targetDirection.x, 0, targetDirection.z).normalized;
         

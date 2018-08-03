@@ -23,6 +23,7 @@ public class PlayerMovement : Movement
     public Transform handleBar;
     public Vector3 centerOfMass = Vector3.down;
     public ArduinoThread serialValues;
+
     
     void Start () 
 	{   
@@ -53,11 +54,19 @@ public class PlayerMovement : Movement
 
         SetRotationUp();
         ApplyVelocityDrag(velocityDrag);
+        if (!lockDraftingCheck)
+        {
+            lockDraftingCheck = true;
+            CheckIfFollowingDriver();
 
-       CheckIfFollowingDriver();
+        }
 
     }
-    
+
+
+
+
+
     protected override void SetSteeringAngle()
     {
         TargetAngle = (serialValues.arduinoInfo.arduinoValueStorage.rawRotation / ((serialValues.arduinoInfo.rotationAnalogRange.range)) - 0.5f) * angleChangeRange;
@@ -76,7 +85,7 @@ public class PlayerMovement : Movement
     }
     private void OnDrawGizmos()
     {
-        Gizmos.DrawSphere(transform.position + transform.forward*2, 0.4f);
+      //  Gizmos.DrawSphere(transform.position + transform.forward*2, 0.4f);
 
 
     }

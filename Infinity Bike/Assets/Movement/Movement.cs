@@ -75,10 +75,11 @@ public abstract class Movement : MonoBehaviour
         normal = vect;
         return isGrounded;
     }
+    protected bool lockDraftingCheck = false;
 
 
 
-    protected void CheckIfFollowingDriver()
+    protected IEnumerator CheckIfFollowingDriver()
     {
         bool hitValid = false;
         Vector3 pos = transform.position;
@@ -92,10 +93,9 @@ public abstract class Movement : MonoBehaviour
             }   
         }
 
+
         if (hitValid)
         {
-            Debug.DrawLine(transform.position, hit.transform.position,Color.red);
-
             float distance = Vector3.Distance(transform.position, hit.transform.position);
 
             if (distance > 0.1f)
@@ -103,9 +103,18 @@ public abstract class Movement : MonoBehaviour
             else
             { ApplyVelocityDrag(-velocityDrag); }
 
-
         }
+        yield return new WaitForSeconds(0.5f);
+        lockDraftingCheck = false;
     }
+
+
+
+
+
+
+
+
 
     public void Go(float motorTorque)
     {
