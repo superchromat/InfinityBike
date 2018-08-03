@@ -3,26 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : Movement
 {   
-
-	public float speedMultiplier = 1f;
-
+    public float speedMultiplier = 1f;
 	public float angleChangeRange = 180f;
-
-	public float velocityDrag = 1f;
+    private float TargetAngle
+    {
+        get
+        {   
+            return targetAngle;
+        }   
+        set
+        {   
+            targetAngle = value;
+            frontWheel.steerAngle = value;
+        }   
+    }
     
-	public ArduinoThread serialValues;
-
-	public Transform handleBar;
-
-	private float processedAngle = 0;
-
-	private float processedSpeed = 0;
-
+    public Transform handleBar;
     public Vector3 centerOfMass = Vector3.down;
-
-
+    public ArduinoThread serialValues;
+    
     void Start () 
 	{   
         backWheel.ConfigureVehicleSubsteps(1, 12, 15);
@@ -30,104 +31,53 @@ public class PlayerMovement : MonoBehaviour
 
         rb = GetComponent<Rigidbody> ();
         rb.centerOfMass = centerOfMass;
+        IdleMode = true;
     }
 
     void FixedUpdate()
     {   
-        Debug.DrawLine(transform.TransformPoint( rb.centerOfMass), transform.position);
+        float targetTorque = serialValues.arduinoInfo.arduinoValueStorage.rawSpeed * speedMultiplier;
+
+        if (!IdleMode && targetTorque > 0)
+        {Go(targetTorque);}
+        else
+        {
+            Stop();
+            IdleMode = true;
+        }
 
         SetSteeringAngle();
-        ApplyWheelForces();
 
 		if (handleBar != null)
-        {   
-			handleBar.localRotation = Quaternion.Euler (0, processedAngle + 90, 90);
-		}   
+        {handleBar.localRotation = Quaternion.Euler (0, TargetAngle + 90, 90);}   
 
         SetRotationUp();
-    }
-
-    void ApplyWheelForces()
-	{   
-		processedSpeed = serialValues.arduinoInfo.arduinoValueStorage.rawSpeed * speedMultiplier;
-        
-        if (processedSpeed != 0) 
-		{   
-            Go();
-        }	
-		else
-		{   
-            Stop();
-        }   
-        
         ApplyVelocityDrag(velocityDrag);
+
+       CheckIfFollowingDriver();
+
+    }
+    
+    protected override void SetSteeringAngle()
+    {
+        TargetAngle = (serialValues.arduinoInfo.arduinoValueStorage.rawRotation / ((serialValues.arduinoInfo.rotationAnalogRange.range)) - 0.5f) * angleChangeRange;
     }   
+    
+    protected override void EnterIdleMode()
+    { }
 
-    void ApplyVelocityDrag(float drag)
-	{	
-		rb.AddForce (-drag * rb.velocity.normalized*Mathf.Abs( Vector3.SqrMagnitude(rb.velocity)));
-	}
+    protected override void ExitIdleMode()
+    { }
 
-
-
-
-    private Rigidbody rb;
-    public float breakForce = 10000;
-    public WheelCollider backWheel;
-    public WheelCollider frontWheel;
-    void SetSteeringAngle()
-    {
-        processedAngle = (serialValues.arduinoInfo.arduinoValueStorage.rawRotation / ((serialValues.arduinoInfo.rotationAnalogRange.range)) - 0.5f) * angleChangeRange;
-        frontWheel.steerAngle = processedAngle;
-    }
-
-    public void Go()
-    {
-        backWheel.brakeTorque = 0;
-        frontWheel.brakeTorque = 0;
-        backWheel.motorTorque = processedSpeed;
-    }
-
-    public void Stop()
-    {
-        backWheel.brakeTorque = breakForce;
-        frontWheel.brakeTorque = breakForce;
-        backWheel.motorTorque = 0;
-    }
-
-    void SetRotationUp()
-    {
-        Vector3 normal = Vector3.zero;
-
-        if(GetNormal(out normal))
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward,normal), 50f * Time.deltaTime);
-
-    }
-
-    private bool GetNormal(out Vector3 normal)
-	{
-		WheelHit hit;
-        Vector3 vect = Vector3.zero;
-        bool isGrounded = false;
-        if (backWheel.GetGroundHit(out hit))
-        {
-            vect += hit.normal;
-            isGrounded = true;
-        }
-
-        if (frontWheel.GetGroundHit(out hit))
-        {
-            vect += hit.normal;
-            isGrounded = true;
-        }
-
-        normal = vect;
-        return isGrounded;
-	}   
 
     private void OnCollisionEnter(Collision collision)
     {   
         GetComponent<Respawn>().OnRespawn();
     }
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(transform.position + transform.forward*2, 0.4f);
 
+
+    }
 }

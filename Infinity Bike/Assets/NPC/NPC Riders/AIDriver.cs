@@ -2,94 +2,77 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AIDriver : MonoBehaviour
+public class AIDriver : Movement
 {   
-    [SerializeField]
-    public AiSettings aiSettings = new AiSettings();
-
-	public TrackNode trackNode = null;
-
-
-    private AiPid pid;
     private int nearestNode;
 
+    [SerializeField]
+    public AiSettings aiSettings = new AiSettings();
+	public TrackNode trackNode = null;
+    private AiPid pid = null;
+    private float TargetAngle
+    {
+        get { return targetAngle; }
+        set
+        {
+            targetAngle = value;
+            if (targetAngle > 45)
+            { targetAngle = 45; }
+            else if (targetAngle < -45)
+            { targetAngle = -45; }
+            frontWheel.steerAngle = TargetAngle;
+        }
 
+    }
+    public float velocity;
 
-    private Rigidbody rb;
-    public float breakForce = 10000;
-    public WheelCollider backWheel;
-    public WheelCollider frontWheel;
 
     void Start () 
 	{   
         nearestNode = 0;
         pid = GetComponent<AiPid>();
-        
+        rb = GetComponent<Rigidbody>();
+
         aiSettings.SetRandomValues();
 
         GetComponent<Respawn>().OnRespawn = aiSettings.SetRandomValues;
         GetComponent<Respawn>().OnRespawn = pid.ResetValues;
-        GetComponent<Respawn>().OnRespawn = ()=>{StartCoroutine(RestartHelper()); };
+        GetComponent<Respawn>().OnRespawn = Stop;
         
         backWheel.ConfigureVehicleSubsteps(1, 12, 15);
         frontWheel.ConfigureVehicleSubsteps(1, 12, 15);
         
-        rb = GetComponent<Rigidbody>();
 
-        SetUpPIDReferences();
+        pid.UpdateErrorValue += () => { pid.errorVariable = (aiSettings.targetSqrSpeed - rb.velocity.sqrMagnitude); };
     }   
 
     void FixedUpdate () 
-	{   
+	{
+        velocity = rb.velocity.sqrMagnitude;
+        pid.RunPID();
+
+        Go(pid.controlVariable);
+
         SetRotationUp();
-        frontWheel.steerAngle = SetSteeringAngle();
-        rb.AddForce(-aiSettings.velocityDrag * rb.velocity.normalized * Mathf.Abs(Vector3.SqrMagnitude(rb.velocity)));
-        Go();
+        SetSteeringAngle();
+        ApplyVelocityDrag(velocityDrag);
 
-        if (trackNode.isLoopOpen && nearestNode + 1 == (trackNode.GetNodeCount() ))
-        {SetAIToIdleMode();}
+        if (trackNode.isLoopOpen && (nearestNode + 1 == (trackNode.GetNodeCount())))
+        { IdleMode = true; }
+    }
 
-    }   
-
-    void SetAIToIdleMode()
-    {
-        aiSettings.targetSqrSpeed = 0;
-    }   
-    
-    void SetUpPIDReferences()
-    {
-        pid.UpdateErrorValue += PIDerrorCalc;
-        pid.ReactToControlVariable += PIDActiveControl;
-    }   
-    
-    void PIDerrorCalc()
+    protected override void EnterIdleMode()
     {   
-        pid.errorVariable = (aiSettings.targetSqrSpeed - rb.velocity.sqrMagnitude);
+        aiSettings.targetSqrSpeed = 0;
+        TargetAngle = 0;
+    }
+    
+    protected override void ExitIdleMode()
+    {   
+        aiSettings.SetRandomValues();
     }   
-    
-    void PIDActiveControl()
-    {
-        if (aiSettings.targetSqrSpeed != 0)
-        {   
-            aiSettings.maxMotorTorque = pid.controlVariable;
-        }   
-        else
-        {   
-            aiSettings.maxMotorTorque = 0;
-            backWheel.brakeTorque = pid.controlVariable;
-        }   
-    }
-    
-    IEnumerator RestartHelper()
-    {
-        Stop();
-        yield return null;
-        Go();
-    }
 
-
-
-    private float SetSteeringAngle()
+    protected override void SetSteeringAngle()
     {
         nearestNode = Respawn.FindNearestNode(trackNode, transform);
         float farNodeWeightHolder = 1;
@@ -114,62 +97,22 @@ public class AIDriver : MonoBehaviour
                     Debug.DrawRay(frontWheel.transform.position, nextDirection, Color.white);
             }
             else
-            {
+            {   
                 numberOfNodes++;
-            }
+            }   
 
             farNodeWeightHolder *= aiSettings.farNodeWeight;
         }
 
         targetDirection = new Vector3(targetDirection.x, 0, targetDirection.z).normalized;
-
-
+        
         float angle = Vector3.Angle(targetDirection, frontWheel.transform.forward);
         if (Vector3.Dot(targetDirection, frontWheel.transform.right) < 0)
         { angle = -angle; }
 
-        float resultAngle = Mathf.Lerp(frontWheel.steerAngle, angle, aiSettings.steeringLerpTime * Time.deltaTime);
-
-        if (resultAngle > 45)
-        { resultAngle = 45; }
-        else if (resultAngle < -45)
-        { resultAngle = -45; }
-
-        return resultAngle;
-
-    }
-
-    public void Go()
-    {
-        backWheel.brakeTorque = 0;
-        frontWheel.brakeTorque = 0;
-        backWheel.motorTorque = aiSettings.maxMotorTorque;
-    }
-
-    public void Stop()
-    {
-        backWheel.brakeTorque = breakForce;
-        frontWheel.brakeTorque = breakForce;
-        backWheel.motorTorque = 0;
-    }
-
-    void SetRotationUp()
-    { transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward, GetNormal()), 100f * Time.deltaTime); }
-
-    private Vector3 GetNormal()
-    {
-        Vector3 normal = Vector3.zero;
-
-        WheelHit hit;
-        backWheel.GetGroundHit(out hit);
-        normal += hit.normal;
-        frontWheel.GetGroundHit(out hit);
-        normal += hit.normal;
-
-
-        return normal.normalized;
-    }
-
+        TargetAngle = Mathf.Lerp(frontWheel.steerAngle, angle, aiSettings.steeringLerpTime * Time.deltaTime);
+    }   
+         
     private void OnCollisionEnter(Collision collision)
     {
         try

@@ -14,8 +14,6 @@ public class AiSettings
 
     public float farNodeWeight = 0.5f;
 
-    public float velocityDrag = 1f;
-
     public void SetRandomValues()
     {
         targetSqrSpeed = UnityEngine.Random.Range((float)36, (float)64);
