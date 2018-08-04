@@ -36,21 +36,21 @@ public class TerrainCustomEditor : MonoBehaviour {
 		}
 		for( int h = 0; h < terrainData.alphamapResolution ; h++) {
 			for (int v = 0; v < terrainData.alphamapResolution; v ++ ) {
-				
+				alphaMap [h, v, 0] = 1;
 				//Ground
 				if (newMap [h, v] < 0.25f) {
-					alphaMap [h, v, 0] = 1; 
-					alphaMap [h, v, 1] = 0; 
-					alphaMap [h, v, 2] = 0; 
+					//alphaMap [h, v, 0] = 1; 
+					//alphaMap [h, v, 1] = 0; 
+					//alphaMap [h, v, 2] = 0; 
 				} else if (newMap [h, v] >= 0.25f && newMap [h, v] < 0.75f) {
-					alphaMap [h, v, 0] = 0; 
-					alphaMap [h, v, 1] = 1; 
-					alphaMap [h, v, 2] = 0; 
+					//alphaMap [h, v, 0] = 0; 
+					//alphaMap [h, v, 1] = 1; 
+					//alphaMap [h, v, 2] = 0; 
 					
 				} else {
-					alphaMap [h, v, 0] = 0; 
-					alphaMap [h, v, 1] = 0; 
-					alphaMap [h, v, 2] = 1; 
+					//alphaMap [h, v, 0] = 0; 
+					//alphaMap [h, v, 1] = 0; 
+					//alphaMap [h, v, 2] = 1; 
 				}
 				//Middle 
 				//Top 

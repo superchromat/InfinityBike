@@ -38,8 +38,10 @@ public class BezierSpline : MonoBehaviour
 
 
 	//Parametric Mapping parameters
+	[SerializeField]
 	private float splineLenght;
 
+	[SerializeField]
 	private int linearApproxSteps = 1000; 
 	public int LinearApproxSteps {
 		get {
@@ -50,7 +52,10 @@ public class BezierSpline : MonoBehaviour
 			UpdateParametricMapping (); 
 		}
 	}
+
+	[SerializeField]
 	private float[] cumulLenghts; 
+	[SerializeField]
 	private float[] discreteT; 
 	public GameObject markerPrefab; 
 
