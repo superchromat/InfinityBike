@@ -33,6 +33,7 @@ public class PlayerMovement : Movement
         rb = GetComponent<Rigidbody> ();
         rb.centerOfMass = centerOfMass;
         IdleMode = true;
+
     }
 
     void FixedUpdate()
