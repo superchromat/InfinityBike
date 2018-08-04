@@ -28,6 +28,19 @@ public class AIDriver : Movement
     public float velocity;
 
 
+    struct TrajectoryOffset
+    {
+        public float frequency;
+        public float timeOffSet;
+        public float spatialOffset;
+        public float amplitude;
+    }
+    TrajectoryOffset trajectoryOffset = new TrajectoryOffset();
+
+
+    private float timeAlive = 0;
+
+
     void Start () 
 	{   
         nearestNode = Respawn.FindNearestNode(trackNode, transform) + 1; ;
@@ -36,10 +49,22 @@ public class AIDriver : Movement
 
         aiSettings.SetRandomValues();
 
-        GetComponent<Respawn>().OnRespawn = aiSettings.SetRandomValues;
-        GetComponent<Respawn>().OnRespawn = pid.ResetValues;
-        GetComponent<Respawn>().OnRespawn = Stop;
+
+        trajectoryOffset.frequency = 1f/Random.Range(1, 100);
+        trajectoryOffset.timeOffSet = Random.Range(0, 2f*Mathf.PI);
+        trajectoryOffset.spatialOffset = Random.Range(-3, 3);
+        trajectoryOffset.amplitude = Random.Range(0.1f, 3- Mathf.Abs(trajectoryOffset.spatialOffset));
         
+
+        Respawn resp = GetComponent<Respawn>();
+
+        resp.OnRespawn = aiSettings.SetRandomValues;
+        resp.OnRespawn = pid.ResetValues;
+        resp.OnRespawn = Stop;
+        resp.OnRespawn = ()=> { nearestNode = Respawn.FindNearestNode(trackNode, transform) + 1; timeAlive = 0;IdleMode = false; };
+        resp.OnRespawn();
+
+        timeAlive = 0;
         backWheel.ConfigureVehicleSubsteps(1, 12, 15);
         frontWheel.ConfigureVehicleSubsteps(1, 12, 15);
         
@@ -49,11 +74,9 @@ public class AIDriver : Movement
 
     private void Update()
     {
+        timeAlive += Time.deltaTime; ;
 
-        if(Vector3.Distance(trackNode.GetNode(nearestNode),transform.position) > Vector3.Distance(trackNode.GetNode(nearestNode+1),transform.position) )
-        {   
-            nearestNode = nearestNode + 1;
-        }   
+
 
         velocity = rb.velocity.sqrMagnitude;
         SetRotationUp();
@@ -88,9 +111,14 @@ public class AIDriver : Movement
     protected override void SetSteeringAngle()
     {
 
-     //   nearestNode = Respawn.FindNearestNode(trackNode, transform) + 1;
+        if(Vector3.Dot(trackNode.GetNode(nearestNode)- transform.position,transform.forward) < 0  )
+        { nearestNode = nearestNode + 1; }
 
         Vector3 targetDirection = transform.InverseTransformPoint( trackNode.GetNode(nearestNode));
+        targetDirection.x += trajectoryOffset.amplitude * Mathf.Sin(trajectoryOffset.frequency * timeAlive+ trajectoryOffset.timeOffSet)+ trajectoryOffset.spatialOffset;
+
+
+
         float dot = targetDirection.x / targetDirection.magnitude;
 
         TargetAngle = dot * maximumSteeringAngle;

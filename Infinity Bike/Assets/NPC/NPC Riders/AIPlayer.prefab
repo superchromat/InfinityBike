@@ -73,7 +73,6 @@ GameObject:
   - component: {fileID: 114995508200210644}
   - component: {fileID: 114765275787244818}
   - component: {fileID: 114404732270841006}
-  - component: {fileID: 114409725603378992}
   m_Layer: 8
   m_Name: AIPlayer
   m_TagString: Untagged
@@ -213,25 +212,6 @@ MonoBehaviour:
   kProportion: 0.1
   kIntegral: 1
   kDifferential: 0
---- !u!114 &114409725603378992
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1764943666027998}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11c299c4ff2960e448efb44479e0db7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controlVariable: 0
-  errorVariable: 0
-  proportionValue: 0
-  integralValue: 0
-  diffentialValue: 0
-  kProportion: 0
-  kIntegral: 0
-  kDifferential: 0
 --- !u!114 &114765275787244818
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -251,12 +231,10 @@ MonoBehaviour:
   aiSettings:
     maxMotorTorque: 0
     targetSqrSpeed: 49
-    steeringLerpTime: 2
-    numberNodeInPrediction: 4
-    numberOfNodeAhead: 4
-    farNodeWeight: 0.5
   trackNode: {fileID: 11400000, guid: 7d5b0d579628f5642b9e1a7c3b57d7ee, type: 2}
+  maximumSteeringAngle: 45
   velocity: 0
+  trajectoryOffset: {x: 0, y: 0}
 --- !u!114 &114995508200210644
 MonoBehaviour:
   m_ObjectHideFlags: 1

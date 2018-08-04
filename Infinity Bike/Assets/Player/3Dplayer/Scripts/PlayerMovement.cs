@@ -4,29 +4,29 @@ using UnityEngine;
 using System;
 
 public class PlayerMovement : Movement
-{   
+{
     public float speedMultiplier = 1f;
 	public float angleChangeRange = 180f;
     private float TargetAngle
     {
         get
-        {   
+        {
             return targetAngle;
-        }   
+        }
         set
-        {   
+        {
             targetAngle = value;
             frontWheel.steerAngle = value;
-        }   
+        }
     }
-    
+
     public Transform handleBar;
     public Vector3 centerOfMass = Vector3.down;
     public ArduinoThread serialValues;
 
-    
-    void Start () 
-	{   
+
+    void Start ()
+	{
         backWheel.ConfigureVehicleSubsteps(1, 12, 15);
         frontWheel.ConfigureVehicleSubsteps(1, 12, 15);
 
@@ -37,7 +37,7 @@ public class PlayerMovement : Movement
     }
 
     void FixedUpdate()
-    {   
+    {
         float targetTorque = serialValues.arduinoInfo.arduinoValueStorage.rawSpeed * speedMultiplier;
 
         if (!IdleMode && targetTorque > 0)
@@ -51,7 +51,7 @@ public class PlayerMovement : Movement
         SetSteeringAngle();
 
 		if (handleBar != null)
-        {handleBar.localRotation = Quaternion.Euler (0, TargetAngle + 90, 90);}   
+        {handleBar.localRotation = Quaternion.Euler (0, TargetAngle + 90, 90);}
 
         SetRotationUp();
         ApplyVelocityDrag(velocityDrag);
@@ -71,8 +71,8 @@ public class PlayerMovement : Movement
     protected override void SetSteeringAngle()
     {
         TargetAngle = (serialValues.arduinoInfo.arduinoValueStorage.rawRotation / ((serialValues.arduinoInfo.rotationAnalogRange.range)) - 0.5f) * angleChangeRange;
-    }   
-    
+    }
+
     protected override void EnterIdleMode()
     { }
 
@@ -81,7 +81,7 @@ public class PlayerMovement : Movement
 
 
     private void OnCollisionEnter(Collision collision)
-    {   
+    {
         GetComponent<Respawn>().OnRespawn();
     }
     private void OnDrawGizmos()
