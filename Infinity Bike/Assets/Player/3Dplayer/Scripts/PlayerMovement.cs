@@ -43,8 +43,7 @@ public class PlayerMovement : Movement
         if (!IdleMode && targetTorque > 0)
         {   
             Go(targetTorque);
-            IdleMode = false;
-        }
+        }   
         else
         {   
             Stop();
