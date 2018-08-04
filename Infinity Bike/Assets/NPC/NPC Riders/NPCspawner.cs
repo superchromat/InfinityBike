@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class NPCspawner : MonoBehaviour 
 {
+    
 	public Transform player;
-
 	public GameObject toSpawnPrefab = null;
-
-    public List<GameObject> NPCList = new List<GameObject> ();
 	public TrackNode trackNodes;
 
-	public int maxNpcOnTrack = 20;
+    public List<GameObject> npcList = new List<GameObject>();
+    public int maxNpcOnTrack = 20;
 
 	[Range(0,1f)]
 	public float spawnProb = 0f;
@@ -20,26 +19,49 @@ public class NPCspawner : MonoBehaviour
 
 	// Use this for initialization
 	void Start () 
-	{
-        try
+	{   
+        GenerateList();
+    }   
+
+    [ContextMenu("GenerateList")]
+    void GenerateList()
+    {
+
+        while (npcList.Count > maxNpcOnTrack)
         {
-            for (int i = 0; i < maxNpcOnTrack; i++)
-            {
-                NPCList.Add(GenerateNewNPC("NPC_Rider_" + i));
-            }
-		}
-        catch (UnassignedReferenceException e)
-        {
-            Debug.LogWarning(e.Message) ;
-            enabled = false;
-            return;
+            if(Application.isEditor)
+            DestroyImmediate(npcList[npcList.Count - 1]);
+            else
+            Destroy(npcList[npcList.Count - 1]);
+
+            npcList.RemoveAt(npcList.Count - 1);
         }
 
-	}
+
+
+        List<GameObject> holder = new List<GameObject>();
+        for (int i = 0; i < npcList.Count; i++)
+        {
+            if (npcList[i] == null)
+            {
+                holder.Add(npcList[i]);
+            }
+        }
+        foreach (GameObject item in holder)
+        {npcList.Remove(item);}
+
+        {
+            int i = npcList.Count;
+            for (; i < maxNpcOnTrack; i++)
+            { npcList.Add(GenerateNewNPC("NPC_" + npcList.Count)); }
+        }
+
+    }
 
     public GameObject GenerateNewNPC(string name)
     {
         GameObject obj = Instantiate(toSpawnPrefab, transform);
+
         obj.SetActive(false);
         obj.name = name;
         return obj;
@@ -69,28 +91,33 @@ public class NPCspawner : MonoBehaviour
 	[ContextMenu("Spawn NPC")]
 	void SpawnNPC()
 	{
-
-
-
-        for (int i = 0 ; i < NPCList.Count ; i++) 
+        for (int i = 0 ; i < npcList.Count; i++) 
 		{	
-			if (NPCList [i].activeSelf == false) 
-			{	
-				NPCList [i].SetActive (true);
+			if (npcList[i].activeSelf == false) 
+			{
+                npcList[i].SetActive (true);
                 int node = 0;
 
                 if (!trackNodes.isLoopOpen)
                 node = Random.Range(0, trackNodes.GetNodeCount() - 1);
 
 
-                NPCList[i].transform.position = trackNodes.GetNode(node);
-                NPCList [i].transform.forward = trackNodes.GetNode(node+1) - trackNodes.GetNode(node);
+                npcList[i].transform.position = trackNodes.GetNode(node);
+                npcList[i].transform.forward = trackNodes.GetNode(node+1) - trackNodes.GetNode(node);
                 
                 return;
 			}	
 		}	
-	}   
+	}
 
+    private void OnValidate()
+    {
+        if (maxNpcOnTrack < 0)
+        {
+            maxNpcOnTrack = 0;
+        }
 
-}   
+    }
+
+}
 

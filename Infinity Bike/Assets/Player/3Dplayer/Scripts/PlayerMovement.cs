@@ -40,9 +40,12 @@ public class PlayerMovement : Movement
         float targetTorque = serialValues.arduinoInfo.arduinoValueStorage.rawSpeed * speedMultiplier;
 
         if (!IdleMode && targetTorque > 0)
-        {Go(targetTorque);}
+        {   
+            Go(targetTorque);
+            IdleMode = false;
+        }
         else
-        {
+        {   
             Stop();
             IdleMode = true;
         }
@@ -55,11 +58,10 @@ public class PlayerMovement : Movement
         SetRotationUp();
         ApplyVelocityDrag(velocityDrag);
         if (!lockDraftingCheck)
-        {
+        {   
             lockDraftingCheck = true;
             CheckIfFollowingDriver();
-
-        }
+        }   
 
     }
 

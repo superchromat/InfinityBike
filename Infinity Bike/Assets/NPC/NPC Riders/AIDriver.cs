@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class AIDriver : Movement
 {   
-    private int nearestNode;
+    private int closestNode;
+    private int ClosestNode
+    {
+        get { return closestNode + 10; }
+        set { closestNode = value;   }
+
+    }
 
     [SerializeField]
     public AiSettings aiSettings = new AiSettings();
@@ -16,52 +22,43 @@ public class AIDriver : Movement
         get { return targetAngle; }
         set
         {
-            targetAngle = value;
+            if (float.IsNaN(value))
+            { targetAngle = 0; }
+            else
+            { targetAngle = value; }
+
             if (targetAngle > maximumSteeringAngle)
             { targetAngle = maximumSteeringAngle; }
             else if (targetAngle < -maximumSteeringAngle)
             { targetAngle = -maximumSteeringAngle; }
-            frontWheel.steerAngle = TargetAngle;
+            frontWheel.steerAngle = targetAngle;
         }
 
     }
+
     public float velocity;
-
-
-    struct TrajectoryOffset
-    {
-        public float frequency;
-        public float timeOffSet;
-        public float spatialOffset;
-        public float amplitude;
-    }
-    TrajectoryOffset trajectoryOffset = new TrajectoryOffset();
-
-
+    private Vector3 nextWaypoint;
+    
     private float timeAlive = 0;
-
+    Respawn respawn = null;
 
     void Start () 
-	{   
-        nearestNode = Respawn.FindNearestNode(trackNode, transform) + 1; ;
+	{
+
+        respawn = GetComponent<Respawn>(); ;
+
+        ClosestNode = Respawn.FindNearestNode(trackNode, transform);
         pid = GetComponent<AiPid>();
         rb = GetComponent<Rigidbody>();
 
         aiSettings.SetRandomValues();
-
-
-        trajectoryOffset.frequency = 1f/Random.Range(1, 100);
-        trajectoryOffset.timeOffSet = Random.Range(0, 2f*Mathf.PI);
-        trajectoryOffset.spatialOffset = Random.Range(-3, 3);
-        trajectoryOffset.amplitude = Random.Range(0.1f, 3- Mathf.Abs(trajectoryOffset.spatialOffset));
-        
 
         Respawn resp = GetComponent<Respawn>();
 
         resp.OnRespawn = aiSettings.SetRandomValues;
         resp.OnRespawn = pid.ResetValues;
         resp.OnRespawn = Stop;
-        resp.OnRespawn = ()=> { nearestNode = Respawn.FindNearestNode(trackNode, transform) + 1; timeAlive = 0;IdleMode = false; };
+        resp.OnRespawn = ()=> { ClosestNode = Respawn.FindNearestNode(trackNode, transform); timeAlive = 0; StartCoroutine (SetIdleOnATimer(1f)); };
         resp.OnRespawn();
 
         timeAlive = 0;
@@ -72,86 +69,81 @@ public class AIDriver : Movement
         pid.UpdateErrorValue += () => { pid.errorVariable = (aiSettings.targetSqrSpeed - rb.velocity.sqrMagnitude); };
     }
 
+
+
     private void Update()
     {
-        timeAlive += Time.deltaTime; ;
-
-
+        timeAlive += Time.deltaTime;
 
         velocity = rb.velocity.sqrMagnitude;
         SetRotationUp();
-        SetSteeringAngle();
 
-    }
+        nextWaypoint = GetNextWayPoint();
+        Vector3 trackDirection = (trackNode.GetNode(ClosestNode + 1) - trackNode.GetNode(ClosestNode)).normalized;
+        if (Vector3.Dot(trackDirection, transform.forward) < 0)
+        {respawn.OnRespawn();}
+        
+        Debug.DrawLine(transform.position, transform.TransformPoint(nextWaypoint), Color.blue);
+
+    }   
 
     void FixedUpdate () 
 	{
-        pid.RunPID();
+        if (!IdleMode && isGrounded)
+        {
+            pid.RunPID();
+            Go(pid.controlVariable);
+        }
 
-        Go(pid.controlVariable);
-
-
+        SetSteeringAngle();
         ApplyVelocityDrag(velocityDrag);
 
-        if (trackNode.isLoopOpen && (nearestNode + 1 >= (trackNode.GetNodeCount())))
+
+        if (trackNode.isLoopOpen && (ClosestNode + 1 >= (trackNode.GetNodeCount())))
         { IdleMode = true; }
     }
 
     protected override void EnterIdleMode()
     {   
-        aiSettings.targetSqrSpeed = 0;
-        TargetAngle = 0;
-    }
+        Stop();
+    }   
     
     protected override void ExitIdleMode()
     {   
-        aiSettings.SetRandomValues();
-    }
+    }   
 
     protected override void SetSteeringAngle()
     {
+        float dot = nextWaypoint.x / nextWaypoint.magnitude;
+        TargetAngle = Mathf.Lerp(TargetAngle, dot * maximumSteeringAngle, aiSettings.turnSpeed*Time.fixedDeltaTime);
+    }
 
-        if(Vector3.Dot(trackNode.GetNode(nearestNode)- transform.position,transform.forward) < 0  )
-        { nearestNode = nearestNode + 1; }
-
-        Vector3 targetDirection = transform.InverseTransformPoint( trackNode.GetNode(nearestNode));
-        targetDirection.x += trajectoryOffset.amplitude * Mathf.Sin(trajectoryOffset.frequency * timeAlive+ trajectoryOffset.timeOffSet)+ trajectoryOffset.spatialOffset;
-
-
-
-        float dot = targetDirection.x / targetDirection.magnitude;
-
-        TargetAngle = dot * maximumSteeringAngle;
-    }   
-         
-    private void OnCollisionEnter(Collision collision)
+    private Vector3 GetNextWayPoint()
     {
+        ClosestNode = Respawn.FindNearestNode(trackNode, transform);
+
+        Vector3 targetDirection = transform.InverseTransformPoint(trackNode.GetNode(ClosestNode));
+        targetDirection.x += aiSettings.trajectoryOffset.amplitude * Mathf.Sin(aiSettings.trajectoryOffset.frequency * timeAlive + aiSettings.trajectoryOffset.timeOffSet) + aiSettings.trajectoryOffset.transverseOffset;
+        return targetDirection;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {   
         try
-        { GetComponent<Respawn>().OnRespawn(); }
+        { respawn.OnRespawn(); }
         catch (System.NullReferenceException)
         { Debug.LogError(GetComponent<Respawn>().name); }
     }
 
-}
-/*
-    float farNodeWeightHolder = 1;
-    int numberOfNodes = aiSettings.numberNodeInPrediction;
-    for (int j = 0; j < aiSettings.numberNodeInPrediction; j++)
+    IEnumerator SetIdleOnATimer(float timeIdle)
     {
-        int setNode = aiSettings.numberOfNodeAhead + j;
-        Vector3 nextNode = trackNode.GetNode(nearestNode + setNode);
-        Vector3 nextDirection = (nextNode - frontWheel.transform.position).normalized;
-        nextDirection -= Vector3.Dot(nextDirection, frontWheel.transform.up) * frontWheel.transform.up;
+        IdleMode = true;
 
-        if (Vector3.Dot(nextDirection, frontWheel.transform.forward) > 0.25)
-        {
-            targetDirection += nextDirection * farNodeWeightHolder;
-        }
-        else
-        {   
-            numberOfNodes++;
-        }   
+        yield return new WaitForSeconds(timeIdle);
 
-        farNodeWeightHolder *= aiSettings.farNodeWeight;
+        IdleMode = false;
     }
-    */
+
+
+
+}

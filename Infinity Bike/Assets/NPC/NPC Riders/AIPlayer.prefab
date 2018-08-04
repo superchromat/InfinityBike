@@ -227,14 +227,20 @@ MonoBehaviour:
   backWheel: {fileID: 146141247246734872}
   frontWheel: {fileID: 146736936422582028}
   velocityDrag: 1
-  idleMode: 1
+  isGrounded: 1
+  idleMode: 0
   aiSettings:
     maxMotorTorque: 0
     targetSqrSpeed: 49
+    turnSpeed: 5
+    trajectoryOffset:
+      frequency: 0
+      timeOffSet: 0
+      transverseOffset: 0
+      amplitude: 0
   trackNode: {fileID: 11400000, guid: 7d5b0d579628f5642b9e1a7c3b57d7ee, type: 2}
   maximumSteeringAngle: 45
   velocity: 0
-  trajectoryOffset: {x: 0, y: 0}
 --- !u!114 &114995508200210644
 MonoBehaviour:
   m_ObjectHideFlags: 1

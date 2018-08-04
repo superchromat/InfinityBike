@@ -5,41 +5,44 @@ using System;
 
 public class Respawn : MonoBehaviour {
 
-	public TrackNode trackNode = null;
-	public float verticalRespawnPoint = 50f;
-	private Rigidbody rb = null;
-    private int minDistanceNode = 0;
+    public TrackNode trackNode = null;
+    public float verticalRespawnPoint = 50f;
+    private Rigidbody rb = null;
+    private int closestNode = 0;
+    bool blockSpawnCheck = false;
+
 
     private Action onRespawn = null;
     public Action OnRespawn
-    {   
+    {
         get
-        { return onRespawn; }
+        {
+            if (onRespawn == null)
+            { onRespawn = RespawnObject; }
+            return onRespawn;
+        }
         set
         { onRespawn += value; }
-    }   
+    }
 
     void ClearOnRespawnAction()
-    {onRespawn = RespawnObject;}
+    { onRespawn = RespawnObject; }
 
-    void Start () 
-	{	
+    void Start()
+    {   
         blockSpawnCheck = false;
-        rb = GetComponent<Rigidbody> ();
+        rb = GetComponent<Rigidbody>();
         OnRespawn = RespawnObject;
-
-        if (GetComponent<PlayerMovement>() != null)
-        { OnRespawn = GetComponent<PlayerMovement>().Stop; }
-        else if (GetComponent<AIDriver>() != null)
-        { OnRespawn = GetComponent<AIDriver>().Stop; }
+        
+        if ((GetComponent<Movement>()) != null)
+        { OnRespawn = GetComponent<Movement>().Stop; }
 
 
         OnRespawn();
+    }   
 
-    }
-    bool blockSpawnCheck = false;
-    void LateUpdate () 
-	{
+    void LateUpdate()
+    {
         if (!blockSpawnCheck)
         {
             blockSpawnCheck = true;
@@ -49,22 +52,24 @@ public class Respawn : MonoBehaviour {
 
     private IEnumerator CheckIfRespawnIsNeeded()
     {
-
-        minDistanceNode = FindNearestNode(trackNode, transform);
-        if (Vector3.Distance(trackNode.GetNode(minDistanceNode), transform.position) > verticalRespawnPoint)
-        { OnRespawn(); }
-
+        closestNode = FindNearestNode(trackNode, transform);
+        if (Vector3.Distance(trackNode.GetNode(closestNode), transform.position) > verticalRespawnPoint)
+        {
+            OnRespawn();
+        }
+        
         yield return new WaitForSeconds(0.5f);
         blockSpawnCheck = false;
     }
 
     private void RespawnObject()
-    {   
+    {
+
         if (trackNode.GetNodeCount() <= 1)
         { return; }
         
-        if (minDistanceNode >= trackNode.GetNodeCount())
-        { minDistanceNode = 0; }
+        if (closestNode >= trackNode.GetNodeCount())
+        { closestNode = 0; }
         
         if (rb != null)
         {
@@ -72,17 +77,8 @@ public class Respawn : MonoBehaviour {
             rb.angularVelocity = Vector3.zero;
         }
 
-
-        WheelCollider[] wheel = GetComponentsInChildren<WheelCollider>();
-        foreach (WheelCollider item in wheel)
-        {
-            item.brakeTorque = 1000f;
-            item.motorTorque = 0;
-            item.steerAngle = 0;
-        }
-
-        transform.position = trackNode.GetNode(minDistanceNode);
-        transform.forward = trackNode.GetNode(minDistanceNode + 1) - transform.position;
+        transform.position = trackNode.GetNode(closestNode);
+        transform.forward = trackNode.GetNode(closestNode + 1) - trackNode.GetNode(closestNode-1);
     }   
     
 	static public int FindNearestNode(TrackNode respawnPoint, Transform objToRespawn)

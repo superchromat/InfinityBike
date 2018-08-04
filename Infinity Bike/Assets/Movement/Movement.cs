@@ -10,8 +10,8 @@ public abstract class Movement : MonoBehaviour
     public WheelCollider backWheel;
     public WheelCollider frontWheel;
     public float velocityDrag = 1f;
-
-
+    public bool isGrounded = true;
+    
     protected float targetAngle = 0;
     [SerializeField]
     protected bool idleMode = true;
@@ -50,13 +50,16 @@ public abstract class Movement : MonoBehaviour
     protected void SetRotationUp()
     {
         Vector3 normal = Vector3.zero;
+        GetNormal(out normal);
 
-        if (GetNormal(out normal))
+        if (isGrounded)
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward, normal), 50f * Time.deltaTime);
+        else
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward, Vector3.up), 50f * Time.deltaTime);
 
     }
-    
-    protected bool GetNormal(out Vector3 normal)
+
+    protected void GetNormal(out Vector3 normal)
     {
         WheelHit hit;
         Vector3 vect = Vector3.zero;
@@ -74,7 +77,7 @@ public abstract class Movement : MonoBehaviour
         }
 
         normal = vect;
-        return isGrounded;
+        this.isGrounded = isGrounded;
     }
     protected bool lockDraftingCheck = false;
 

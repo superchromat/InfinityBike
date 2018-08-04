@@ -19,7 +19,7 @@ public class RunArduinoThread : MonoBehaviour {
     private void Update()
     {
         if (useKeyBoard)
-        {
+        {   
             arduinoThread.CurrentActiveValueGetter = null;
             if (Input.GetKey(KeyCode.Space))
                 arduinoThread.arduinoInfo.arduinoValueStorage.rawSpeed = speed;
