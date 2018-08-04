@@ -94,10 +94,10 @@ public class Respawn : MonoBehaviour {
 		for (int index = 0 ; index < respawnPoint.GetNodeCount() ; index++)
 		{
 			if (Vector3.Distance (objToRespawn.transform.position, respawnPoint.GetNode(index)) < minDistance) 
-			{
+			{   
 				minDistance = Vector3.Distance (objToRespawn.transform.position, respawnPoint.GetNode(index));
 				minDistanceNode = count;
-			}
+			}   
 			count++;
 		}
 
