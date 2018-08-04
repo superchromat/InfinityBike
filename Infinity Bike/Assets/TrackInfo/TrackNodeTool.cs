@@ -6,38 +6,81 @@ using System;
 public class TrackNodeTool : MonoBehaviour {
 
 	public TrackNode trackNode = null;
-    public string fileName = "track_1";
-    private string extension = ".track";
-    public List<string> availableTrackFiles = new List<string>();
-
-    private void Start()
-    {   
-        if (trackNode.GetNodeCount() == 0)
+    public BezierSpline sourceBesierSpline = null;
+    
+    [SerializeField]
+    private float distanceBetweenPoints = 0.1f;
+    public float DistanceBetweenPoints
+    {
+        get { return distanceBetweenPoints; }
+        set
         {
-            trackNode.LoadFile(fileName + extension);
+            if (value <= 0)
+            {
+                distanceBetweenPoints = 0.05f;
+            }
+            else
+            {
+                distanceBetweenPoints = value;
+            }
+            if (sourceBesierSpline != null)
+                pointsFromBezier = Mathf.FloorToInt(sourceBesierSpline.GetSplineLenght() / distanceBetweenPoints);
         }
     }
+    [SerializeField]
+    private int pointsFromBezier = 5;
+    public int PointsFromBezier
+    {
+        get { return pointsFromBezier; }
+    }
+
+    public List<string> availableTrackFiles = new List<string>();
+    public SaveLoad saveLoad = new SaveLoad();
+    
+    private void Start()
+    {
+        if (trackNode.GetNodeCount() == 0)
+        {
+            trackNode.Load(saveLoad.fileName +"."+ saveLoad.extension,saveLoad.dataPath);
+        }
+    }   
 
     public string GetFileName()
     {
-        return fileName + extension;
+        return saveLoad.fileName + "." + saveLoad.extension;
     }
 
     public void FindTrackFiles()
     {   
         availableTrackFiles.Clear();
-        string[] files = System.IO.Directory.GetFiles(Application.persistentDataPath, "*.track");
+        string patern = "*." + saveLoad.extension;
+        string[] files = System.IO.Directory.GetFiles(saveLoad.dataPath, patern);
+
         foreach (string item in files)
         {
             string x = item;
-            if (x.Contains(Application.persistentDataPath))
+            if (x.Contains(saveLoad.dataPath))
             {
-                x = x.Replace(Application.persistentDataPath, "").Remove(0, 1);
-                x = x.Replace(".track", "");
+                x = x.Replace(saveLoad.dataPath, "").Remove(0, 1);
+                x = x.Replace("."+saveLoad.extension, "");
             }
             availableTrackFiles.Add(x);
         }
-    }   
+    }
 
-
-}
+    public void PopulateTrackNodeWithBesier(int numberOfNodes)
+    {
+        trackNode.nodeList.Clear();
+        for (int node = 0; node < numberOfNodes; node++)
+        {
+            trackNode.AddNode(sourceBesierSpline.GetPoint((float)node /(float)numberOfNodes));
+        }   
+    }
+    
+    private void OnValidate()
+    {   
+        DistanceBetweenPoints = distanceBetweenPoints;
+        FindTrackFiles();
+    }
+    
+}   

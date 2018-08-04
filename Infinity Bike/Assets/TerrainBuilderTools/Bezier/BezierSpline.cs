@@ -5,30 +5,55 @@ using System;
 
 [System.Serializable]
 public class BezierSpline : MonoBehaviour
+{   
+    private bool loop;    
+    [SerializeField]
+    private Vector3[] points;
 
-{
- 
+    public SaveLoad saveLoad = new SaveLoad();
+    private void OnValidate()
+    {
+        saveLoad.dataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        if(points.Length ==0)
+        Load();
+
+        UpdateParametricMapping();
+    }
+
+
+    [SerializeField]
+    private BezierControlPointMode[] modes;
     
-    private bool loop; 
+    [ContextMenu("Save track data")]
+    public void Save()
+    {
+            Vector3Serialisable nodeListSerialisable = new Vector3Serialisable(new List<Vector3>(points), loop);
+        SaveLoad.SaveLoadUtilities<Vector3Serialisable>.Save(nodeListSerialisable, "TrackBesierPoints.Besier", saveLoad.dataPath);
+    }
+    [ContextMenu("Load track data")]
+    public void Load()
+    {   
+        Vector3Serialisable nodeListSerialisable = new Vector3Serialisable();
+        SaveLoad.SaveLoadUtilities<Vector3Serialisable>.Load(out nodeListSerialisable, "TrackBesierPoints.Besier", saveLoad.dataPath);
+        nodeListSerialisable.SetValuesToNodeList(out points, out loop);
+    }   
 
-    public bool Loop {
-        get {
-            return loop; 
+    public bool Loop
+    {
+        get
+        {
+            return loop;
         }
-        set {
+        set
+        {
             loop = value;
-            if (value == true){
+            if (value == true)
+            {
                 modes[modes.Length - 1] = modes[0];
                 SetControlPoint(0, points[0]);
             }
         }
     }
-    
-	[SerializeField]
-	private Vector3[] points;
-
-	[SerializeField]
-    private BezierControlPointMode[] modes; 
 
     public int ControlPointCount{
         get{
@@ -59,13 +84,8 @@ public class BezierSpline : MonoBehaviour
 	private float[] discreteT; 
 	public GameObject markerPrefab; 
 
-
-
-
-
-    public Vector3 GetControlPoint (int index) {
-        return points[index];
-    }
+    public Vector3 GetControlPoint (int index)
+    {return points[index];}
 
     public void SetControlPoint(int index, Vector3 point){
         if (index % 3 == 0)
@@ -211,10 +231,24 @@ public class BezierSpline : MonoBehaviour
             i = (int)t;
             t -= i;
             i *= 3;
+        }
+        Vector3 toReturn = Vector3.zero;
+        try
+        {
+            toReturn = transform.TransformPoint(Bezier.GetPoint(points[i], points[i + 1], points[i + 2], points[i + 3], t));
+        }
+        catch
+        {
+         //   Debug.Log(" Error in BesierSpline.cs - > Get point \n\tPoint length : " + points.Length + " \tindex : " + i);
+            // temporary. I keept getting an error from this chunk of code but I can't find out why.
+            // 1. The problem was the script didn't reliably keep the variable points populated. It should be fixed but I keep this herre so see.
+
 
         }
-        return transform.TransformPoint(Bezier.GetPoint(points[i], points[i + 1], points[i + 2], points[i + 3], t));
-	}
+
+        return toReturn;
+
+    }
 	public  Vector3 GetVelocity(float t)
 	{
         int i; 
@@ -271,7 +305,6 @@ public class BezierSpline : MonoBehaviour
             EnforceMode(0);
         }
     }
-
 	/// <summary>
 	/// The parametric mapping is an array in wich this scrips calculate the spline cummulative distance 
 	/// for a serie of points starting at the spline origin. This function must be updated every time the
@@ -304,7 +337,11 @@ public class BezierSpline : MonoBehaviour
 	///Returns the sline lenght approximation (not analytics).
 	///</summary>
 	public float GetSplineLenght() {
-		return cumulLenghts [LinearApproxSteps-1]; 
+
+        if (cumulLenghts == null)
+            UpdateParametricMapping();
+
+        return cumulLenghts [LinearApproxSteps-1]; 
 		
 	}
 
@@ -340,14 +377,11 @@ public class BezierSpline : MonoBehaviour
 	public Vector3 GetPointFromParametricValue(float p) {
 		return GetPoint(GetTFromParametricValue(p)); 
 		}
-
-
-
+    
 	public Quaternion GetOrientationFromParametricValue(float p) {
 		return GetOrientation (GetTFromParametricValue (p)); 
 	}
-
-
+    
 	/// <summary>
 	/// This function is used for interpolation. For the input array, returns find the closest lower float 
 	/// to value and returns its index. 
@@ -388,8 +422,6 @@ public class BezierSpline : MonoBehaviour
 			marker.GetComponent<TextMesh> ().text = distance.ToString ();
 		}
 	}
-
-
 
 }
 

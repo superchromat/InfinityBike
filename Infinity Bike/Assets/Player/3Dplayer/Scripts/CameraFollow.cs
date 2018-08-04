@@ -37,7 +37,6 @@ public class CameraFollow : MonoBehaviour {
         Vector3 targetPosition = objToFollowBack.position + objToFollowBack.rotation * tempCamOff;
 
         float dist = Vector3.Dot(objToFollowBack.transform.forward, targetPosition - transform.position);
-        Vector3 tempVect = (targetPosition - transform.position) - dist * objToFollowBack.transform.forward;
         transform.position += dist * objToFollowBack.transform.forward;
         transform.position = Vector3.Lerp(transform.position, targetPosition, smoothTime * Time.deltaTime);
 

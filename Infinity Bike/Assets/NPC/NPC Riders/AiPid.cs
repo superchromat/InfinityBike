@@ -19,13 +19,12 @@ public class AiPid : MonoBehaviour {
     public float kDifferential;
 
     public Action UpdateErrorValue;
-    public Action ReactToControlVariable;
     private void Start()
     {
         ResetValues();
     }
-
-    private void FixedUpdate()
+    
+    public void RunPID()
     {
         UpdateErrorValue();
 
@@ -34,10 +33,12 @@ public class AiPid : MonoBehaviour {
         diffentialValue = (errorVariableLastFrame - errorVariable) / Time.fixedDeltaTime;
 
         controlVariable = kProportion * proportionValue + kIntegral * integralValue + kDifferential * diffentialValue;
-        
-        ReactToControlVariable();
+
         errorVariableLastFrame = errorVariable;
+
+
     }
+
     public void ResetValues()
     {
         controlVariable = 0; ;
@@ -47,16 +48,13 @@ public class AiPid : MonoBehaviour {
         integralValue = 0;
         diffentialValue = 0;
     }
-
-
-
+    
     AiPid(
             float controlVariable,
             float kProportion,
             float kIntegral,
             float kDifferential,
-            Action UpdateErrorValue,
-            Action ReactToControlVariable
+            Action UpdateErrorValue
          )
     {   
         this.controlVariable = controlVariable;
@@ -67,12 +65,10 @@ public class AiPid : MonoBehaviour {
         integralValue = 0;
         errorVariable = 0;
         this.UpdateErrorValue = UpdateErrorValue;
-        this.ReactToControlVariable = ReactToControlVariable;
     }   
 
     AiPid()
     {
-        ReactToControlVariable += () => { };
         UpdateErrorValue += ()=>{ };
         this.controlVariable = 0;
         this.kProportion = 0;

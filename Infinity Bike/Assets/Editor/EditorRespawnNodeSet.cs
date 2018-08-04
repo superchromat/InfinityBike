@@ -4,13 +4,12 @@ using System.Collections.Generic;
 using UnityEditor;
 
 [CustomEditor(typeof(TrackNodeTool))]
-public class EditorRespawnNodeSet : Editor {
+public class EditorRespawnNodeSet : Editor
+{   
+
 	private static bool doDrawTrajectory = false;
     private static int subscribeCount = 0; 
-
     private bool useSpaceBarToSet = false;
-    
-
 	private int cycleNodeIndex = 0;
     private bool enableOnScreenPlacement = false;
 
@@ -37,10 +36,12 @@ public class EditorRespawnNodeSet : Editor {
     }   
     
     public override void OnInspectorGUI()
-	{
+	{   
 
         TrackNodeTool trackNodeToolScript = (TrackNodeTool)target;
-		DrawDefaultInspector ();
+        EditorUtility.SetDirty(trackNodeToolScript.trackNode);
+
+        DrawDefaultInspector();
 
         trackNodeToolScript.FindTrackFiles();
 
@@ -68,9 +69,7 @@ public class EditorRespawnNodeSet : Editor {
         useSpaceBarToSet = GUILayout.Toggle(useSpaceBarToSet, "Use Space Bar To Add");
 
         trackNodeToolScript.trackNode.isLoopOpen = GUILayout.Toggle(trackNodeToolScript.trackNode.isLoopOpen, "Is Loop Open");
-
-
-
+        
         {
             GUILayout.BeginHorizontal();
                 if (GUILayout.Button("Cycle up selected node"))
@@ -105,7 +104,7 @@ public class EditorRespawnNodeSet : Editor {
 			if (trackNode != null) 
 			{
 
-				Vector3 pos = CalculatePositionAboveTheTrack (trackNodeToolScript.GetComponent<Transform> ().position);
+				Vector3 pos = trackNodeToolScript.GetComponent<Transform> ().position;
 				GetTrackNode ().AddNode (pos);
 				cycleNodeIndex = GetTrackNode ().GetNodeCount () - 1;
 			}
@@ -114,7 +113,7 @@ public class EditorRespawnNodeSet : Editor {
 
 		if (GUILayout.Button ("Set selected node")) 
 		{
-			Vector3 pos = CalculatePositionAboveTheTrack(trackNodeToolScript.GetComponent<Transform> ().position);
+			Vector3 pos = trackNodeToolScript.GetComponent<Transform> ().position;
 			TrackNode trackNode = GetTrackNode ();
 
 			if(trackNode!=null)
@@ -179,11 +178,26 @@ public class EditorRespawnNodeSet : Editor {
 
         GUILayout.BeginHorizontal();
             if (GUILayout.Button("Save track node to file"))
-            {trackNodeToolScript.trackNode.Save(trackNodeToolScript.GetFileName());}
+            {trackNodeToolScript.trackNode.Save(trackNodeToolScript.GetFileName(),trackNodeToolScript.saveLoad.dataPath);}
             if (GUILayout.Button("Load track node from file"))
-            {trackNodeToolScript.trackNode.LoadFile(trackNodeToolScript.GetFileName());}
+            {
+                trackNodeToolScript.trackNode.Load(trackNodeToolScript.GetFileName(), trackNodeToolScript.saveLoad.dataPath);
+            }
         GUILayout.EndHorizontal();
 
+        if (GUILayout.Button("Import Track from bezier"))
+        {
+            TrackNode trackNode = GetTrackNode();
+
+            if (trackNodeToolScript.sourceBesierSpline != null)
+            trackNodeToolScript.PopulateTrackNodeWithBesier(trackNodeToolScript.PointsFromBezier);
+            
+            for (int i = 0 ; i < trackNodeToolScript.PointsFromBezier; i++)
+            {
+                trackNode.SetNode(trackNode.GetNode(i), i);
+            }   
+        }
+        
         if (doDrawTrajectory)
         {GUILayout.TextField("Debug Draw color legend\n\tMain Track : RED and CYAN\n\tSelected node : GREEN\n\tFirst Node : YELLOW\n\tLast Node : BLUE");}
 
@@ -196,23 +210,16 @@ public class EditorRespawnNodeSet : Editor {
 
 
 	void CycleNode(int dir)
-	{	
+	{	    
 		TrackNodeTool trackNodeToolScript = (TrackNodeTool)target;
 		TrackNode trackNode = GetTrackNode ();
-
+            
 		if(trackNode!=null)
 		{   
 			cycleNodeIndex += dir;
             trackNode.ClampIndex(ref cycleNodeIndex);
-
-            /*
-			if (cycleNodeIndex >=trackNode.GetNodeCount ()) 
-			{cycleNodeIndex = 0;}
-			if (cycleNodeIndex < 0) 
-			{cycleNodeIndex =trackNode.GetNodeCount () - 1;}
-            */
 		}	
-	}
+	}       
     
 	void DebugDraw(SceneView sceneView)
 	{
@@ -238,11 +245,8 @@ public class EditorRespawnNodeSet : Editor {
                     subscribeCount--;
                 }
                 return;
-            }
-
-
-
-
+            }   
+            
             for (int index = 0; index < trackNode.GetNodeCount(); index++)
             {
                 if (trackNode.isLoopOpen && index == 0)

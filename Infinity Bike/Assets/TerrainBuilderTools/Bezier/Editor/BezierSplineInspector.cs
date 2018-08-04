@@ -28,7 +28,9 @@ public class BezierSplineInspector : Editor
 	private void OnSceneGUI()
 	{
 		spline = target as BezierSpline;
-		handleTransform = spline.transform;
+
+
+        handleTransform = spline.transform;
 
 		handleRotation = Tools.pivotRotation == PivotRotation.Local ?
 			handleTransform.rotation : Quaternion.identity;
@@ -47,24 +49,27 @@ public class BezierSplineInspector : Editor
 			Handles.DrawBezier(p0, p3, p1, p2, Color.white, null, 2f);
 			p0 = p3;
 		}
-        ShowDirections();
 
-	}
-	private void ShowDirections () {
-		Handles.color = Color.green;
-		Vector3 point = spline.GetPoint(0f);
-		Handles.DrawLine(point, point + spline.GetDirection(0f) * directionScale);
-        int steps = stepsPerCurve * spline.CurveCount; 
-		for (int i = 1; i <= steps; i++) {
-			point = spline.GetPoint(i / (float)steps);
-			Handles.DrawLine(point, point +spline.GetDirection(i / (float)steps) * directionScale);
-		}
-	}
+         ShowDirections();
+
+    }
+    private void ShowDirections ()
+    {
+        Handles.color = Color.green;
+        Vector3 point = spline.GetPoint(0f);
+        Handles.DrawLine(point, point + spline.GetDirection(0f) * directionScale);
+        int steps = stepsPerCurve * spline.CurveCount;
+        for (int i = 1; i <= steps; i++)
+        {
+            point = spline.GetPoint(i / (float)steps);
+            Handles.DrawLine(point, point + spline.GetDirection(i / (float)steps) * directionScale);
+        }
+    }
 
 
 
 	private Vector3 ShowPoint(int index)
-	{
+	{   
         Vector3 point = handleTransform.TransformPoint(spline.GetControlPoint(index));
         float size = HandleUtility.GetHandleSize(point);
         if (index == 0 ){
@@ -128,7 +133,9 @@ public class BezierSplineInspector : Editor
 		}
 
 	}
-    public void DrawSelectedPointInspector() {
+    public void DrawSelectedPointInspector()
+    {
+       
         GUILayout.Label("Selected Point");
         EditorGUI.BeginChangeCheck(); 
         Vector3 point = EditorGUILayout.Vector3Field("Position",spline.GetControlPoint(selectedIndex));
