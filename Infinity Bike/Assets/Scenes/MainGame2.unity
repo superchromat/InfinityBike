@@ -38,11 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 650897624}
-<<<<<<< HEAD
-  m_IndirectSpecularColor: {r: 0.07063737, g: 0.048527624, b: 0.043328807, a: 1}
-=======
   m_IndirectSpecularColor: {r: 0.070581764, g: 0.04853139, b: 0.04321327, a: 1}
->>>>>>> 56c47cc95149c3a0561dc94435c653053b7965d5
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -174,12 +170,8 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4486618134017852, guid: d0ef89be938fa4ba394d3721b07e1840, type: 2}
       propertyPath: m_RootOrder
-<<<<<<< HEAD
-      value: 8
-=======
       value: 7
->>>>>>> 56c47cc95149c3a0561dc94435c653053b7965d5
-      objectReference: {fileID: 0}
+     objectReference: {fileID: 0}
     - target: {fileID: 33606274588967038, guid: d0ef89be938fa4ba394d3721b07e1840,
         type: 2}
       propertyPath: m_Mesh
@@ -210,12 +202,6 @@ Prefab:
       propertyPath: m_TreeCrossFadeLength
       value: 0
       objectReference: {fileID: 0}
-<<<<<<< HEAD
-    - target: {fileID: 114624925401562260, guid: d0ef89be938fa4ba394d3721b07e1840,
-        type: 2}
-      propertyPath: points.Array.data[0].x
-      value: 89.57126
-=======
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d0ef89be938fa4ba394d3721b07e1840, type: 2}
   m_IsPrefabAsset: 0
@@ -605,7 +591,6 @@ Prefab:
     - target: {fileID: 4388685523063978, guid: 0794a03c4d2fb00488fa771afd334f9e, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
->>>>>>> 56c47cc95149c3a0561dc94435c653053b7965d5
       objectReference: {fileID: 0}
     - target: {fileID: 4388685523063978, guid: 0794a03c4d2fb00488fa771afd334f9e, type: 2}
       propertyPath: m_LocalPosition.y
@@ -642,33 +627,18 @@ Prefab:
       objectReference: {fileID: 338210550}
     - target: {fileID: 114099281304009188, guid: 0794a03c4d2fb00488fa771afd334f9e,
         type: 2}
-<<<<<<< HEAD
-      propertyPath: points.Array.data[1].x
-      value: 51.442795
-=======
       propertyPath: spawnOnFrameProbability
       value: 0.3333
->>>>>>> 56c47cc95149c3a0561dc94435c653053b7965d5
       objectReference: {fileID: 0}
     - target: {fileID: 114099281304009188, guid: 0794a03c4d2fb00488fa771afd334f9e,
         type: 2}
-<<<<<<< HEAD
-      propertyPath: cumulLenghts.Array.data[1]
-      value: 1.7162211
-=======
       propertyPath: firstSpawnOffset
       value: 1
->>>>>>> 56c47cc95149c3a0561dc94435c653053b7965d5
       objectReference: {fileID: 0}
     - target: {fileID: 114099281304009188, guid: 0794a03c4d2fb00488fa771afd334f9e,
         type: 2}
-<<<<<<< HEAD
-      propertyPath: cumulLenghts.Array.data[2]
-      value: 3.4189866
-=======
       propertyPath: spawnMinDistance
       value: 10
->>>>>>> 56c47cc95149c3a0561dc94435c653053b7965d5
       objectReference: {fileID: 0}
     - target: {fileID: 114099281304009188, guid: 0794a03c4d2fb00488fa771afd334f9e,
         type: 2}
