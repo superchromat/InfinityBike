@@ -5690,7 +5690,7 @@ Prefab:
     - target: {fileID: 114755978923309162, guid: a3e18b342435e494cb8d4c13d5e867b3,
         type: 2}
       propertyPath: availableTrackFiles.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4391307512246700, guid: a3e18b342435e494cb8d4c13d5e867b3, type: 2}
       propertyPath: m_LocalPosition.x
@@ -5741,6 +5741,16 @@ Prefab:
     - target: {fileID: 4171877404417188, guid: a3e18b342435e494cb8d4c13d5e867b3, type: 2}
       propertyPath: m_LocalPosition.x
       value: 84.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114755978923309162, guid: a3e18b342435e494cb8d4c13d5e867b3,
+        type: 2}
+      propertyPath: sourceBesierSpline
+      value: 
+      objectReference: {fileID: 717639515}
+    - target: {fileID: 114755978923309162, guid: a3e18b342435e494cb8d4c13d5e867b3,
+        type: 2}
+      propertyPath: pointsFromBezier
+      value: 15990
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a3e18b342435e494cb8d4c13d5e867b3, type: 2}
