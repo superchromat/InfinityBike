@@ -2,17 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(EnvironementObserver))]
 public abstract class Movement : MonoBehaviour
 {
-
+    protected EnvironementObserver environementObserver;
     protected Rigidbody rb;
     public float breakForce = 10000;
     public WheelCollider backWheel;
     public WheelCollider frontWheel;
+
     public float velocityDrag = 1f;
     public bool isGrounded = true;
-    
     protected float targetAngle = 0;
+    
+    [SerializeField]
+    public EnvironementObserver.LayerToReact layerToReact;
+    
     [SerializeField]
     protected bool idleMode = true;
     public bool IdleMode
@@ -36,9 +42,18 @@ public abstract class Movement : MonoBehaviour
 
     }
 
-    
+
+
+    protected void MovementStart()
+    {   
+        environementObserver = GetComponent<EnvironementObserver>();
+        rb = GetComponent<Rigidbody>();
+    }   
+
     protected abstract void EnterIdleMode();
     protected abstract void ExitIdleMode();
+
+
 
     protected abstract void SetSteeringAngle();
 
@@ -79,58 +94,50 @@ public abstract class Movement : MonoBehaviour
         normal = vect;
         this.isGrounded = isGrounded;
     }
+
     protected bool lockDraftingCheck = false;
-
-
-
-    protected IEnumerator CheckIfFollowingDriver()
-    {
-        bool hitValid = false;
-        Vector3 pos = transform.position;
-        RaycastHit hit;
-        Ray ray = new Ray(transform.position, transform.forward);
-        if (Physics.SphereCast(ray, 0.4f, out hit,2.5f))
+    protected void CheckIfFollowingDriver()
+    {   
+        float closestDistance = float.MaxValue;
+        bool hitFound = false;
+        foreach (RaycastHit item in environementObserver.hit)
         {
-            if (hit.transform.gameObject.GetComponent<Movement>() != null)
+            if ((  (1<<item.transform.gameObject.layer) & layerToReact.npcLayer.value) != 0)
             {
-                hitValid = true;
+                hitFound = true;
+                float distance = Vector3.Distance(transform.position, item.transform.position);
+                if (distance < closestDistance)
+                {distance = closestDistance;}
+                Debug.DrawLine(transform.position, item.transform.position, Color.red);
             }   
         }
 
-
-        if (hitValid)
+        if (hitFound)
         {
-            float distance = Vector3.Distance(transform.position, hit.transform.position);
-
-            if (distance > 0.1f)
-            { ApplyVelocityDrag(-velocityDrag / (1 + distance)); }
+            if (closestDistance > 0.1f)
+            { ApplyVelocityDrag(-velocityDrag / (1 + closestDistance)); }
             else
             { ApplyVelocityDrag(-velocityDrag); }
 
+            Debug.Log("hit");
         }
-        yield return new WaitForSeconds(0.5f);
-        lockDraftingCheck = false;
-    }
+
+
+
+
+    }   
     
-
-
-
-
     public void Go(float motorTorque)
     {
         backWheel.brakeTorque = 0;
         frontWheel.brakeTorque = 0;
         backWheel.motorTorque = motorTorque;
     }
-
     public void Stop()
     {
         backWheel.brakeTorque = breakForce;
         frontWheel.brakeTorque = breakForce;
         backWheel.motorTorque = 0;
     }
-
-
-
-
-}
+    
+}   

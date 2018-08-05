@@ -27,10 +27,10 @@ public class PlayerMovement : Movement
 
     void Start ()
 	{
+        MovementStart();
         backWheel.ConfigureVehicleSubsteps(1, 12, 15);
         frontWheel.ConfigureVehicleSubsteps(1, 12, 15);
 
-        rb = GetComponent<Rigidbody> ();
         rb.centerOfMass = centerOfMass;
         IdleMode = true;
 
@@ -57,11 +57,8 @@ public class PlayerMovement : Movement
 
         SetRotationUp();
         ApplyVelocityDrag(velocityDrag);
-        if (!lockDraftingCheck)
-        {   
-            lockDraftingCheck = true;
-            CheckIfFollowingDriver();
-        }   
+        environementObserver.TallyUpCommingObstacles();
+        CheckIfFollowingDriver();
 
     }
 

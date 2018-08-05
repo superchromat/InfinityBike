@@ -44,12 +44,11 @@ public class AIDriver : Movement
 
     void Start () 
 	{
-
+        MovementStart();
         respawn = GetComponent<Respawn>(); ;
 
         ClosestNode = Respawn.FindNearestNode(trackNode, transform);
         pid = GetComponent<AiPid>();
-        rb = GetComponent<Rigidbody>();
 
         aiSettings.SetRandomValues();
 
@@ -83,7 +82,7 @@ public class AIDriver : Movement
         if (Vector3.Dot(trackDirection, transform.forward) < 0)
         {respawn.OnRespawn();}
         
-        Debug.DrawLine(transform.position, transform.TransformPoint(nextWaypoint), Color.blue);
+ //       Debug.DrawLine(transform.position, transform.TransformPoint(nextWaypoint), Color.blue);
 
     }   
 

@@ -1,0 +1,28 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class EnvironementObserver : MonoBehaviour
+{
+
+    private bool hitValid = false;
+    public RaycastHit[] hit;
+    public LayerMask layersToCheck;
+
+    [System.Serializable]
+    public struct LayerToReact
+    {
+        public LayerMask playerLayer;
+        public LayerMask npcLayer;
+        public LayerMask obstacleLayer;
+    }
+
+    public void TallyUpCommingObstacles()
+    {   
+        Ray ray = new Ray(transform.position, transform.forward);
+        Vector3 pos = transform.position;
+        hit = Physics.SphereCastAll(ray, 0.4f, 2.5f,layersToCheck);
+    }   
+
+
+}
