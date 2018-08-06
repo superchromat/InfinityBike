@@ -25,6 +25,17 @@ public class Respawn : MonoBehaviour {
         { onRespawn += value; }
     }
 
+    public void AddToRespawnAction(Action toAdd)
+    {
+        onRespawn += toAdd;
+    }
+
+    public void CallRespawnAction()
+    {
+        onRespawn();
+    }
+
+
     void ClearOnRespawnAction()
     { onRespawn = RespawnObject; }
 
