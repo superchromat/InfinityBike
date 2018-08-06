@@ -16,7 +16,7 @@ public class Editor_RespawnPlayer : Editor {
 		{
             try
             {
-                respawnScript.OnRespawn();
+                respawnScript.CallRespawnAction();
 
             }
             catch (System.Exception)

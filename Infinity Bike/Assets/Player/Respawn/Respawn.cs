@@ -13,17 +13,17 @@ public class Respawn : MonoBehaviour {
 
 
     private Action onRespawn = null;
-    public Action OnRespawn
-    {
-        get
-        {
-            if (onRespawn == null)
-            { onRespawn = RespawnObject; }
-            return onRespawn;
-        }
-        set
-        { onRespawn += value; }
-    }
+    //public Action OnRespawn
+    //{
+    //    get
+    //    {
+    //        if (onRespawn == null)
+    //        { onRespawn = RespawnObject; }
+    //        return onRespawn;
+    //    }
+    //    set
+    //    { onRespawn += value; }
+    //}
 
     public void AddToRespawnAction(Action toAdd)
     {
@@ -43,13 +43,13 @@ public class Respawn : MonoBehaviour {
     {   
         blockSpawnCheck = false;
         rb = GetComponent<Rigidbody>();
-        OnRespawn = RespawnObject;
+        onRespawn = RespawnObject;
         
         if ((GetComponent<Movement>()) != null)
-        { OnRespawn = GetComponent<Movement>().Stop; }
+        { AddToRespawnAction(GetComponent<Movement>().Stop); }
 
 
-        OnRespawn();
+        CallRespawnAction();
     }   
 
     void LateUpdate()
@@ -66,7 +66,7 @@ public class Respawn : MonoBehaviour {
         closestNode = FindNearestNode(trackNode, transform);
         if (Vector3.Distance(trackNode.GetNode(closestNode), transform.position) > verticalRespawnPoint)
         {
-            OnRespawn();
+            CallRespawnAction();
         }
         
         yield return new WaitForSeconds(0.5f);

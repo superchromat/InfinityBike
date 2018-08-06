@@ -54,11 +54,11 @@ public class AIDriver : Movement
 
         Respawn resp = GetComponent<Respawn>();
 
-        resp.OnRespawn = aiSettings.SetRandomValues;
-        resp.OnRespawn = pid.ResetValues;
-        resp.OnRespawn = Stop;
-        resp.OnRespawn = ()=> { ClosestNode = Respawn.FindNearestNode(trackNode, transform); timeAlive = 0; StartCoroutine (SetIdleOnATimer(1f)); };
-        resp.OnRespawn();
+        resp.AddToRespawnAction( aiSettings.SetRandomValues);
+        resp.AddToRespawnAction( pid.ResetValues);
+        resp.AddToRespawnAction( Stop);
+        resp.AddToRespawnAction( ()=> { ClosestNode = Respawn.FindNearestNode(trackNode, transform); timeAlive = 0; StartCoroutine (SetIdleOnATimer(1f)); });
+        resp.CallRespawnAction();
 
         timeAlive = 0;
         backWheel.ConfigureVehicleSubsteps(1, 12, 15);
@@ -80,7 +80,7 @@ public class AIDriver : Movement
         nextWaypoint = GetNextWayPoint();
         Vector3 trackDirection = (trackNode.GetNode(ClosestNode + 1) - trackNode.GetNode(ClosestNode)).normalized;
         if (Vector3.Dot(trackDirection, transform.forward) < 0)
-        {respawn.OnRespawn();}
+        {respawn.CallRespawnAction();}
         
  //       Debug.DrawLine(transform.position, transform.TransformPoint(nextWaypoint), Color.blue);
 
@@ -129,7 +129,7 @@ public class AIDriver : Movement
     private void OnCollisionEnter(Collision collision)
     {   
         try
-        { respawn.OnRespawn(); }
+        { respawn.CallRespawnAction(); }
         catch (System.NullReferenceException)
         { Debug.LogError(GetComponent<Respawn>().name); }
     }
