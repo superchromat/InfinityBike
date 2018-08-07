@@ -5,8 +5,8 @@ using UnityEngine;
 public class RunArduinoThread : MonoBehaviour {
     public ArduinoThread arduinoThread;
     public bool useKeyBoard = false;
-    public ushort speed = 80;
-    public ushort rotation = 200;
+    public ushort keyBoardSpeed = 80;
+    public ushort keyBoardRotation = 200;
     // Use this for initialization
     void Start ()
     {   
@@ -22,15 +22,15 @@ public class RunArduinoThread : MonoBehaviour {
         {   
             arduinoThread.CurrentActiveValueGetter = null;
             if (Input.GetKey(KeyCode.Space))
-                arduinoThread.arduinoInfo.arduinoValueStorage.rawSpeed = speed;
+                arduinoThread.arduinoInfo.arduinoValueStorage.rawSpeed = keyBoardSpeed;
             else
                 arduinoThread.arduinoInfo.arduinoValueStorage.rawSpeed = 0;
             float val = 0;
             if (Input.GetKey(KeyCode.A))
-                val = (ushort)(512 - (int)rotation);
+                val = (ushort)(512 - (int)keyBoardRotation);
 
             if (Input.GetKey(KeyCode.D))
-                val = (ushort)(512 + (int)rotation);
+                val = (ushort)(512 + (int)keyBoardRotation);
 
             if (!(Input.GetKey(KeyCode.A) ^ Input.GetKey(KeyCode.D)))
             { val = 512; }
