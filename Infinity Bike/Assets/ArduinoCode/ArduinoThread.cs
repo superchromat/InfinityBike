@@ -9,9 +9,14 @@ using System.Threading;
 
 
 [CreateAssetMenu(fileName = "ArduinoThread", menuName = "Generator/ArduinoThread", order = 2)]
-public class ArduinoThread : ScriptableObject 
-{   
-    
+public class ArduinoThread : ScriptableObject
+{
+    bool isArduinoConnected = false;
+    public bool IsArduinoConnected
+    {   
+        get {return isArduinoConnected;}
+    }   
+
     public Action CurrentActiveValueGetter = null;
     public ArduinoInfo arduinoInfo = new ArduinoInfo();
     private ArduinoInfo threadSafeArduinoInfo = new ArduinoInfo();
@@ -90,6 +95,7 @@ public class ArduinoThread : ScriptableObject
     
     private string AutoDetectArduinoPort()
     {
+        isArduinoConnected = false;
         Debug.Log("started auto Dectect");
         try
         {
@@ -133,7 +139,7 @@ public class ArduinoThread : ScriptableObject
                     {
                         Debug.Log(port + " " + result);
                         arduinoThread = (new Thread(AsynchronousReadFromArduino));
-
+                        isArduinoConnected = true;
                         return port;
                     }
                 }

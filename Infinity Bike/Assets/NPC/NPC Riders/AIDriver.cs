@@ -5,12 +5,7 @@ using UnityEngine;
 public class AIDriver : Movement
 {   
     private int closestNode;
-    private int ClosestNode
-    {
-        get { return closestNode + 10; }
-        set { closestNode = value;   }
 
-    }
 
     [SerializeField]
     public AiSettings aiSettings = new AiSettings();
@@ -45,19 +40,20 @@ public class AIDriver : Movement
     void Start () 
 	{
         MovementStart();
+        Transform player = GetComponentInParent<NPCspawner>().player;
         respawn = GetComponent<Respawn>(); ;
 
-        ClosestNode = Respawn.FindNearestNode(trackNode, transform);
+        
         pid = GetComponent<AiPid>();
 
         aiSettings.SetRandomValues();
 
         Respawn resp = GetComponent<Respawn>();
-
+        closestNode = Respawn.FindNearestNode(trackNode, transform);
         resp.AddToRespawnAction( aiSettings.SetRandomValues);
         resp.AddToRespawnAction( pid.ResetValues);
         resp.AddToRespawnAction( Stop);
-        resp.AddToRespawnAction( ()=> { ClosestNode = Respawn.FindNearestNode(trackNode, transform); timeAlive = 0; StartCoroutine (SetIdleOnATimer(1f)); });
+        resp.AddToRespawnAction( ()=> { closestNode = Respawn.FindNearestNode(trackNode, transform); timeAlive = 0; StartCoroutine (SetIdleOnATimer(1f)); });
         resp.CallRespawnAction();
 
         timeAlive = 0;
@@ -78,7 +74,7 @@ public class AIDriver : Movement
         SetRotationUp();
 
         nextWaypoint = GetNextWayPoint();
-        Vector3 trackDirection = (trackNode.GetNode(ClosestNode + 1) - trackNode.GetNode(ClosestNode)).normalized;
+        Vector3 trackDirection = (trackNode.GetNode(closestNode + 1) - trackNode.GetNode(closestNode)).normalized;
         if (Vector3.Dot(trackDirection, transform.forward) < 0)
         {respawn.CallRespawnAction();}
         
@@ -98,7 +94,7 @@ public class AIDriver : Movement
         ApplyVelocityDrag(velocityDrag);
 
 
-        if (trackNode.isLoopOpen && (ClosestNode + 1 >= (trackNode.GetNodeCount())))
+        if (trackNode.isLoopOpen && (closestNode + 1 >= (trackNode.GetNodeCount())))
         { IdleMode = true; }
     }
 
@@ -119,9 +115,9 @@ public class AIDriver : Movement
 
     private Vector3 GetNextWayPoint()
     {
-        ClosestNode = Respawn.FindNearestNode(trackNode, transform);
+        closestNode = Respawn.FindNearestNode(trackNode, transform);
 
-        Vector3 targetDirection = transform.InverseTransformPoint(trackNode.GetNode(ClosestNode));
+        Vector3 targetDirection = transform.InverseTransformPoint(trackNode.GetNode(closestNode));
         targetDirection.x += aiSettings.trajectoryOffset.amplitude * Mathf.Sin(aiSettings.trajectoryOffset.frequency * timeAlive + aiSettings.trajectoryOffset.timeOffSet) + aiSettings.trajectoryOffset.transverseOffset;
         return targetDirection;
     }
