@@ -7911,6 +7911,11 @@ Prefab:
       propertyPath: layerToReact.obstacleLayer.m_Bits
       value: 1024
       objectReference: {fileID: 0}
+    - target: {fileID: 114359011556196496, guid: 3a2f2fce2a3d049bba2cac964e96b0d6,
+        type: 2}
+      propertyPath: verticalRespawnPoint
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a2f2fce2a3d049bba2cac964e96b0d6, type: 2}
   m_IsPrefabAsset: 0
