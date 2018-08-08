@@ -51,9 +51,11 @@ public class TrackNodeTool : MonoBehaviour {
     }
 
     public void FindTrackFiles()
-    {   
+    {
+        saveLoad.dataPath = Application.dataPath;
         availableTrackFiles.Clear();
         string patern = "*." + saveLoad.extension;
+
         string[] files = System.IO.Directory.GetFiles(saveLoad.dataPath, patern);
 
         foreach (string item in files)

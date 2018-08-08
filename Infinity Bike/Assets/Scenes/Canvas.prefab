@@ -473,6 +473,8 @@ GameObject:
   - component: {fileID: 114842844418866734}
   - component: {fileID: 114851051118848834}
   - component: {fileID: 114183702924776372}
+  - component: {fileID: 114295893227245472}
+  - component: {fileID: 114813234098259726}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -798,6 +800,18 @@ MonoBehaviour:
   width: 0.2
   height: 0.08
   centerPosition: {x: 0.15, y: 0.6}
+--- !u!114 &114295893227245472
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1889066889041988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4e34d510076ba249a4c52ad47a21915, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerRB: {fileID: 0}
 --- !u!114 &114332868079014406
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1086,7 +1100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebeb96306aab23b4c9c73a1261fc5c7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slider: {fileID: 0}
+  slider: {fileID: 114975715702767054}
   onScreenButtonGroup:
   - {fileID: 224144197498926886}
   - {fileID: 224448594511124918}
@@ -1219,7 +1233,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_MethodName: CallOnRespawn
+        m_MethodName: CallRespawnAction
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1304,17 +1318,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: ChangeScriptActiveState
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
       - m_Target: {fileID: 114694928012498658}
         m_MethodName: StartTimer
         m_Mode: 1
@@ -1476,6 +1479,18 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114813234098259726
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1889066889041988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4e34d510076ba249a4c52ad47a21915, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerRB: {fileID: 0}
 --- !u!114 &114820855281972882
 MonoBehaviour:
   m_ObjectHideFlags: 1

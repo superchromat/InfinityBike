@@ -118,8 +118,6 @@ public abstract class Movement : MonoBehaviour
             { ApplyVelocityDrag(-velocityDrag / (1 + closestDistance)); }
             else
             { ApplyVelocityDrag(-velocityDrag); }
-
-            Debug.Log("hit");
         }
 
 

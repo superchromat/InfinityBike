@@ -80,7 +80,7 @@ public class PlayerMovement : Movement
 
     private void OnCollisionEnter(Collision collision)
     {
-        GetComponent<Respawn>().OnRespawn();
+        GetComponent<Respawn>().CallRespawnAction();
     }
     private void OnDrawGizmos()
     {

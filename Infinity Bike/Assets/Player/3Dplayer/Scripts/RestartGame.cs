@@ -22,7 +22,7 @@ public class RestartGame : MonoBehaviour {
             if(cameraMain==null)
             cameraMain.transform.position = startPosition;
 
-            GetComponent<Respawn>().OnRespawn();
+            GetComponent<Respawn>().CallRespawnAction();
             transform.position = startPosition;
 
             Transform[] npcTransforms = npcManager.GetComponentsInChildren<Transform>();
