@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RunArduinoThread : MonoBehaviour {
+public class RunArduinoThread : MonoBehaviour
+{   
+
     public ArduinoThread arduinoThread;
     public bool useKeyBoard = false;
     public ushort keyBoardSpeed = 80;
@@ -11,14 +13,15 @@ public class RunArduinoThread : MonoBehaviour {
     void Start ()
     {   
         if (arduinoThread.arduinoInfo.arduinoPort == null || !arduinoThread.arduinoInfo.arduinoPort.IsOpen)
-        {
+        {   
             arduinoThread.Initialisation();
-        }
+        }   
     }
 
     private void Update()
     {
-        if (useKeyBoard)
+
+        if (useKeyBoard || !arduinoThread.IsArduinoConnected)
         {   
             arduinoThread.CurrentActiveValueGetter = null;
             if (Input.GetKey(KeyCode.Space))
@@ -40,7 +43,7 @@ public class RunArduinoThread : MonoBehaviour {
         else
         {
             arduinoThread.RunThread();
-        }   
+        }
 
     }
 

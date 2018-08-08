@@ -5,7 +5,6 @@ using UnityEngine;
 public class EnvironementObserver : MonoBehaviour
 {
 
-    private bool hitValid = false;
     public RaycastHit[] hit;
     public LayerMask layersToCheck;
 

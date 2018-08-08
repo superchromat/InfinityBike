@@ -7,6 +7,15 @@ public class CommonCanvasVariables : MonoBehaviour
 
     public GameObject playerRB;
 
+    private void Start()
+    {
+        if (playerRB == null)
+        {
+            throw new System.Exception("Please attach player object to the script attached to " + gameObject.name);
+        }
+    }
+
+
     public void RespawnPlayer()
     {playerRB.GetComponent<Respawn>().CallRespawnAction();}
 
@@ -16,10 +25,5 @@ public class CommonCanvasVariables : MonoBehaviour
         playerRB.GetComponent<PlayerMovement>().IdleMode = false;
 
     }
-
-
-
-
-
 
 }
