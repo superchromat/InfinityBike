@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class NPCspawner : MonoBehaviour 
 {
-    
-	public Transform player;
-	public GameObject toSpawnPrefab = null;
+    public GameObject player;   
+
+    public GameObject toSpawnPrefab = null;
 	public TrackNode trackNodes;
 
     public List<GameObject> npcList = new List<GameObject>();
@@ -89,16 +89,13 @@ public class NPCspawner : MonoBehaviour
 	[ContextMenu("Spawn NPC")]
 	void SpawnNPC()
 	{
-        int node = 0;
-        node = Respawn.FindNearestNode(trackNodes, player)-10;
-
         for (int i = 0 ; i < npcList.Count; i++) 
 		{	
 			if (npcList[i].activeSelf == false) 
 			{
-                npcList[i].SetActive (true);                
-                npcList[i].transform.position = trackNodes.GetNode(node);
-                npcList[i].transform.forward = trackNodes.GetNode(node+1) - trackNodes.GetNode(node);
+                npcList[i].SetActive (true);
+
+
                 return; 
 			}	        
 		}	

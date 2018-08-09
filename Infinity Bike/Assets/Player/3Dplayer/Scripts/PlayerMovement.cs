@@ -37,7 +37,7 @@ public class PlayerMovement : Movement
     }
 
     void FixedUpdate()
-    {
+    {   
         float targetTorque = serialValues.arduinoInfo.arduinoValueStorage.rawSpeed * speedMultiplier;
 
         if (!IdleMode && targetTorque > 0)
@@ -58,9 +58,19 @@ public class PlayerMovement : Movement
         SetRotationUp();
         ApplyVelocityDrag(velocityDrag);
         environementObserver.TallyUpCommingObstacles();
-        CheckIfFollowingDriver();
-
-    }
+        GameObject folowing;
+        if (CheckIfFollowingDriver(out folowing))
+        {
+            if (folowing != null)
+            {   
+                float distance = 1+(folowing.transform.position - transform.position).sqrMagnitude;
+                if (distance > 1.01f)
+                { ApplyVelocityDrag(-velocityDrag / (1 + distance)*2); }
+                else
+                { ApplyVelocityDrag(-velocityDrag*2); }
+            }   
+        }
+    }   
 
 
 

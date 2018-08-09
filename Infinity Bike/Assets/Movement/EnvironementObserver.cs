@@ -7,6 +7,7 @@ public class EnvironementObserver : MonoBehaviour
 
     public RaycastHit[] hit;
     public LayerMask layersToCheck;
+    public float distanceToCheck = 2.5f;
 
     [System.Serializable]
     public struct LayerToReact
@@ -20,7 +21,7 @@ public class EnvironementObserver : MonoBehaviour
     {   
         Ray ray = new Ray(transform.position, transform.forward);
         Vector3 pos = transform.position;
-        hit = Physics.SphereCastAll(ray, 0.4f, 2.5f,layersToCheck);
+        hit = Physics.SphereCastAll(ray, 0.4f, distanceToCheck, layersToCheck);
     }   
 
 

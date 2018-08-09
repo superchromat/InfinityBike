@@ -15,7 +15,14 @@ public abstract class Movement : MonoBehaviour
     public float velocityDrag = 1f;
     public bool isGrounded = true;
     protected float targetAngle = 0;
-    
+
+    protected int closestNode = 0;
+    public int ClosestNode
+    {
+        get { return closestNode; }
+    }
+
+
     [SerializeField]
     public EnvironementObserver.LayerToReact layerToReact;
     
@@ -95,11 +102,11 @@ public abstract class Movement : MonoBehaviour
         this.isGrounded = isGrounded;
     }
 
-    protected bool lockDraftingCheck = false;
-    protected void CheckIfFollowingDriver()
+    protected bool CheckIfFollowingDriver(out GameObject obj)
     {   
         float closestDistance = float.MaxValue;
         bool hitFound = false;
+        obj = null;
         foreach (RaycastHit item in environementObserver.hit)
         {
             if ((  (1<<item.transform.gameObject.layer) & layerToReact.npcLayer.value) != 0)
@@ -108,17 +115,14 @@ public abstract class Movement : MonoBehaviour
                 float distance = Vector3.Distance(transform.position, item.transform.position);
                 if (distance < closestDistance)
                 {distance = closestDistance;}
-                Debug.DrawLine(transform.position, item.transform.position, Color.red);
+                obj = item.collider.gameObject;
             }   
         }
 
-        if (hitFound)
-        {
-            if (closestDistance > 0.1f)
-            { ApplyVelocityDrag(-velocityDrag / (1 + closestDistance)); }
-            else
-            { ApplyVelocityDrag(-velocityDrag); }
-        }
+        return hitFound;
+
+
+
 
 
 

@@ -7,7 +7,10 @@ public class RunArduinoThread : MonoBehaviour
 
     public ArduinoThread arduinoThread;
     public bool useKeyBoard = false;
-    public ushort keyBoardSpeed = 80;
+
+
+
+public ushort keyBoardSpeed = 80;
     public ushort keyBoardRotation = 200;
     // Use this for initialization
     void Start ()
@@ -21,13 +24,13 @@ public class RunArduinoThread : MonoBehaviour
     private void Update()
     {
 
-        if (useKeyBoard || !arduinoThread.IsArduinoConnected)
+        if (!arduinoThread.IsArduinoConnected || useKeyBoard )
         {   
-            arduinoThread.CurrentActiveValueGetter = null;
             if (Input.GetKey(KeyCode.Space))
                 arduinoThread.arduinoInfo.arduinoValueStorage.rawSpeed = keyBoardSpeed;
             else
                 arduinoThread.arduinoInfo.arduinoValueStorage.rawSpeed = 0;
+
             float val = 0;
             if (Input.GetKey(KeyCode.A))
                 val = (ushort)(512 - (int)keyBoardRotation);
@@ -37,10 +40,12 @@ public class RunArduinoThread : MonoBehaviour
 
             if (!(Input.GetKey(KeyCode.A) ^ Input.GetKey(KeyCode.D)))
             { val = 512; }
+
             arduinoThread.arduinoInfo.arduinoValueStorage.rawRotation = (ushort)Mathf.Lerp((float)(arduinoThread.arduinoInfo.arduinoValueStorage.rawRotation), val, 5.0f * Time.deltaTime);
 
         }
-        else
+
+        if(!useKeyBoard)
         {
             arduinoThread.RunThread();
         }

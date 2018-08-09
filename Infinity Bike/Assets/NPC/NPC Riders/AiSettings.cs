@@ -16,7 +16,7 @@ public class AiSettings
 
     public void SetRandomValues()
     {   
-        targetSqrSpeed = UnityEngine.Random.Range((float)36, (float)64);
+        targetSqrSpeed = UnityEngine.Random.Range((float)36, (float)49);
         trajectoryOffset.frequency = 1f / UnityEngine.Random.Range(1, 100);
         trajectoryOffset.timeOffSet = UnityEngine.Random.Range(0, 2f * Mathf.PI)*0;
         trajectoryOffset.transverseOffset = UnityEngine.Random.Range(-trackWidth, trackWidth);
