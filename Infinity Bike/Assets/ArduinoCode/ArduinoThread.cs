@@ -38,8 +38,11 @@ public class ArduinoThread : ScriptableObject
 
     void SetArduinoInfo()
     {
-        arduinoInfo.arduinoValueStorage.rawRotation = threadSafeArduinoInfo.arduinoValueStorage.rawRotation;
-        arduinoInfo.arduinoValueStorage.rawSpeed = threadSafeArduinoInfo.arduinoValueStorage.rawSpeed;
+        if (isArduinoConnected)
+        {
+            arduinoInfo.arduinoValueStorage.rawRotation = threadSafeArduinoInfo.arduinoValueStorage.rawRotation;
+            arduinoInfo.arduinoValueStorage.rawSpeed = threadSafeArduinoInfo.arduinoValueStorage.rawSpeed;
+        }
     }
 
 

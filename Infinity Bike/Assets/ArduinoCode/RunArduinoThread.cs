@@ -23,7 +23,6 @@ public ushort keyBoardSpeed = 80;
 
     private void Update()
     {
-
         if (!arduinoThread.IsArduinoConnected || useKeyBoard )
         {   
             if (Input.GetKey(KeyCode.Space))

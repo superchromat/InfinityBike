@@ -8,6 +8,7 @@ public class AIDriver : Movement
     [SerializeField]
     public AiSettings aiSettings = new AiSettings();
 	public TrackNode trackNode = null;
+    [HideInInspector]
     public AiPid pid = null;
     public float maximumSteeringAngle = 45;
 

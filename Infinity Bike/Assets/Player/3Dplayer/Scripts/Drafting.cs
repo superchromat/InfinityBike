@@ -18,6 +18,9 @@ public class Drafting : MonoBehaviour
 
     public float folowingTime;
     public float timeBeforeUpdatingFollowingSpeed = 1;
+
+    float targetSpeedbefore = 0;
+    AIDriver followingAiDriver = null;
     
 
     void Start ()
@@ -44,7 +47,10 @@ public class Drafting : MonoBehaviour
         }   
 
         if (folowingTime > timeBeforeUpdatingFollowingSpeed)
-        {following.GetComponent<AIDriver>().aiSettings.targetSqrSpeed = Vector3.Dot(rb.velocity , rb.velocity);}   
+        {   
+            
+            followingAiDriver.aiSettings.targetSqrSpeed = Vector3.Dot(rb.velocity , rb.velocity);
+        }       
     }   
     
     
@@ -53,27 +59,27 @@ public class Drafting : MonoBehaviour
     {
         GameObject newFollowing = null;
         if (CheckIfFollowingDriver(out newFollowing))
-        {
+        {   
             if (following != newFollowing && newFollowing != null)
             {
-                if (following != null)
-                { following.GetComponent<AIDriver>().aiSettings.SetRandomValues(); }
+                if(followingAiDriver!=null)
+                followingAiDriver.aiSettings.targetSqrSpeed = targetSpeedbefore;
 
                 following = newFollowing;
+                followingAiDriver = following.GetComponent<AIDriver>();
+                targetSpeedbefore = followingAiDriver.aiSettings.targetSqrSpeed;
+
                 SetDraftingMarker();
-            }
-
+            }   
+            
             ApplyDrag();
-        }
+            
+        }   
         else
-        {
-            if (following != null)
-            { following.GetComponent<AIDriver>().aiSettings.SetRandomValues(); }
-
+        {   
             following = null;
             followingIndicator.SetActive(false);
-
-        }
+        }   
 
 
 
@@ -103,6 +109,9 @@ public class Drafting : MonoBehaviour
                     if (distance < closestDistance)
                     { distance = closestDistance; }
                     newFollowing = item.collider.gameObject;
+
+
+
                 }
             }
         }

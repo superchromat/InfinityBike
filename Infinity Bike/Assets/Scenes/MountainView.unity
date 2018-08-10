@@ -25856,11 +25856,11 @@ MonoBehaviour:
     obstacleLayer:
       serializedVersion: 2
       m_Bits: 1024
-  draftingDrag: -3
+  draftingDrag: -0.5
   followingIndicatorPrefab: {fileID: 1464730000646642, guid: e58fb7c95a556e742a1f3febb3832758,
     type: 2}
   folowingTime: 0
-  timeBeforeUpdatingFollowingSpeed: 2
+  timeBeforeUpdatingFollowingSpeed: 1.2
 --- !u!1 &1119125893
 GameObject:
   m_ObjectHideFlags: 0
