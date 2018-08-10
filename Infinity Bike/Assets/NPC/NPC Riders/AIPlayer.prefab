@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4548622845137776}
   - component: {fileID: 33475096277168786}
   - component: {fileID: 23467174229640036}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -279,12 +279,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controlVariable: 0
   errorVariable: 0
-  proportionValue: 0
-  integralValue: 0
-  diffentialValue: 0
-  kProportion: 0.1
-  kIntegral: 1
-  kDifferential: 0
+  pidConstant:
+    kProportion: 6.09184
+    kIntegral: 1.127328
+    kDifferential: 0.1243544
+  pidValue: {fileID: 0}
 --- !u!114 &114765275787244818
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -299,21 +298,10 @@ MonoBehaviour:
   breakForce: 10000
   backWheel: {fileID: 146141247246734872}
   frontWheel: {fileID: 146736936422582028}
-  velocityDrag: 1
   isGrounded: 1
-  layerToReact:
-    playerLayer:
-      serializedVersion: 2
-      m_Bits: 0
-    npcLayer:
-      serializedVersion: 2
-      m_Bits: 0
-    obstacleLayer:
-      serializedVersion: 2
-      m_Bits: 0
+  velocityDrag: 1
   idleMode: 0
   aiSettings:
-    maxMotorTorque: 0
     targetSqrSpeed: 49
     turnSpeed: 5
     trajectoryOffset:
@@ -322,8 +310,10 @@ MonoBehaviour:
       transverseOffset: 0
       amplitude: 0
   trackNode: {fileID: 11400000, guid: 7d5b0d579628f5642b9e1a7c3b57d7ee, type: 2}
+  pid: {fileID: 0}
   maximumSteeringAngle: 45
-  velocity: 0
+  velocitySqr: 0
+  lookAhead: 1
 --- !u!114 &114995508200210644
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -372,7 +362,7 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 10
     m_AsymptoteValue: 10
-    m_Stiffness: 1
+    m_Stiffness: 0.5
   m_SidewaysFriction:
     m_ExtremumSlip: 0.1
     m_ExtremumValue: 1

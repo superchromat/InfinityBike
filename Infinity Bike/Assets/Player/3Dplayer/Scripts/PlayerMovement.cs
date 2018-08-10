@@ -7,6 +7,7 @@ public class PlayerMovement : Movement
 {
     public float speedMultiplier = 1f;
 	public float angleChangeRange = 180f;
+
     private float TargetAngle
     {
         get
@@ -26,7 +27,7 @@ public class PlayerMovement : Movement
 
 
     void Start ()
-	{
+	{   
         MovementStart();
         backWheel.ConfigureVehicleSubsteps(1, 12, 15);
         frontWheel.ConfigureVehicleSubsteps(1, 12, 15);
@@ -46,7 +47,7 @@ public class PlayerMovement : Movement
         }   
         else
         {   
-            Stop();
+            Stop(breakForce);
             IdleMode = true;
         }
 
@@ -57,19 +58,8 @@ public class PlayerMovement : Movement
 
         SetRotationUp();
         ApplyVelocityDrag(velocityDrag);
-        environementObserver.TallyUpCommingObstacles();
-        GameObject folowing;
-        if (CheckIfFollowingDriver(out folowing))
-        {
-            if (folowing != null)
-            {   
-                float distance = 1+(folowing.transform.position - transform.position).sqrMagnitude;
-                if (distance > 1.01f)
-                { ApplyVelocityDrag(-velocityDrag / (1 + distance)*2); }
-                else
-                { ApplyVelocityDrag(-velocityDrag*2); }
-            }   
-        }
+
+
     }   
 
 

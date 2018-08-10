@@ -10,17 +10,17 @@ public class AiPid : MonoBehaviour {
     public float errorVariable;
     private float errorVariableLastFrame;
 
-    public float proportionValue;
-    public float integralValue;
-    public float diffentialValue;
+    [SerializeField]
+    public PIDConstant pidConstant = new PIDConstant(1,1,1);
 
-    public float kProportion;
-    public float kIntegral;
-    public float kDifferential;
+    [SerializeField]
+    public PIDValue pidValue;
 
     public Action UpdateErrorValue;
     private void Start()
     {
+        if (pidValue == null)
+            pidValue = ScriptableObject.CreateInstance<PIDValue>();
         ResetValues();
     }
     
@@ -28,11 +28,11 @@ public class AiPid : MonoBehaviour {
     {
         UpdateErrorValue();
 
-        proportionValue = errorVariable;
-        integralValue += errorVariable * Time.fixedDeltaTime;
-        diffentialValue = (errorVariableLastFrame - errorVariable) / Time.fixedDeltaTime;
+        pidValue.proportionValue = errorVariable;
+        pidValue.integralValue   +=errorVariable * Time.fixedDeltaTime;
+        pidValue.diffentialValue = (errorVariableLastFrame - errorVariable) / Time.fixedDeltaTime;
 
-        controlVariable = kProportion * proportionValue + kIntegral * integralValue + kDifferential * diffentialValue;
+        controlVariable = pidConstant.kProportion * pidValue.proportionValue + pidConstant.kIntegral * pidValue.integralValue + pidConstant.kDifferential * pidValue.diffentialValue;
 
         errorVariableLastFrame = errorVariable;
 
@@ -41,12 +41,9 @@ public class AiPid : MonoBehaviour {
 
     public void ResetValues()
     {
-        controlVariable = 0; ;
+        controlVariable = 0;
         errorVariable = 0 ;
         errorVariableLastFrame =0;
-        proportionValue = 0;
-        integralValue = 0;
-        diffentialValue = 0;
     }
     
     AiPid(
@@ -59,10 +56,11 @@ public class AiPid : MonoBehaviour {
     {   
         this.controlVariable = controlVariable;
         this.errorVariableLastFrame = 0;
-        this.kProportion = kProportion;
-        this.kIntegral = kIntegral;
-        this.kDifferential = kDifferential;
-        integralValue = 0;
+        this.pidConstant.kProportion = kProportion;
+        this.pidConstant.kIntegral = kIntegral;
+        this.pidConstant.kDifferential = kDifferential;
+        
+
         errorVariable = 0;
         this.UpdateErrorValue = UpdateErrorValue;
     }   
@@ -71,10 +69,37 @@ public class AiPid : MonoBehaviour {
     {
         UpdateErrorValue += ()=>{ };
         this.controlVariable = 0;
-        this.kProportion = 0;
-        this.kIntegral = 0;
-        this.kDifferential = 0;
-        integralValue = 0;
+        this.pidConstant.kProportion = 0;
+        this.pidConstant.kIntegral = 0;
+        this.pidConstant.kDifferential = 0;
         errorVariable = 0;
-    }   
-}   
+    }
+
+    [Serializable]
+    public class PIDConstant
+    {
+        public float kProportion;
+        public float kIntegral;
+        public float kDifferential;
+
+        public PIDConstant(
+            float kProportion,
+            float kIntegral,
+            float kDifferential)
+        {
+            this.kProportion = kProportion;
+            this.kIntegral = kIntegral;
+            this.kDifferential = kDifferential;
+        }
+    };
+
+    [Serializable]
+    public class PIDValue:ScriptableObject
+    {
+        public float proportionValue;
+        public float integralValue;
+        public float diffentialValue;
+    };
+
+
+}

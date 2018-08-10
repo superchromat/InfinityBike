@@ -25,7 +25,15 @@ public class ArduinoThread : ScriptableObject
     public void Initialisation()
     {
        arduinoThread = (new Thread(AsychronousAutoDetectArduino));
-       CurrentActiveValueGetter = () => {if(!arduinoThread.IsAlive) arduinoThread.Start(); };
+       CurrentActiveValueGetter = 
+       () => 
+       {
+           if (!arduinoThread.IsAlive)
+           {
+             arduinoThread.Start();
+           }
+           
+       };
     }
 
     void SetArduinoInfo()

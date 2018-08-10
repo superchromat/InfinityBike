@@ -239,7 +239,7 @@ public class BezierSpline : MonoBehaviour
         }
         catch
         {
-         //   Debug.Log(" Error in BesierSpline.cs - > Get point \n\tPoint length : " + points.Length + " \tindex : " + i);
+            Debug.Log(" Error in BesierSpline.cs - > Get point \n\tPoint length : " + points.Length + " \tindex : " + i);
             // temporary. I keept getting an error from this chunk of code but I can't find out why.
             // 1. The problem was the script didn't reliably keep the variable points populated. It should be fixed but I keep this herre so see.
 

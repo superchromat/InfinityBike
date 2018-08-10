@@ -3,11 +3,56 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+[ExecuteInEditMode]
 public class TrackNodeTool : MonoBehaviour {
 
 	public TrackNode trackNode = null;
     public BezierSpline sourceBesierSpline = null;
-    
+
+    public TrackNodeToolSettings trackNodeToolSettings =null;
+
+    private void Update()
+    {
+        if (trackNodeToolSettings.doDrawTrajectory)
+        {
+            DebugDraw();
+        }
+    }
+
+    void DebugDraw()
+    {
+
+        if (trackNode.GetNodeCount() <= 0)
+        { return; }
+
+        if (trackNode != null)
+        {
+
+            for (int index = 0; index < trackNode.GetNodeCount(); index++)
+            {
+                if (trackNode.isLoopOpen && index == 0)
+                { continue; }
+                Color col;
+                if ((index & 1) == 1)
+                {
+                    col = Color.red;
+                }
+                else
+                {
+                    col = Color.cyan;
+                }
+                Debug.DrawLine(trackNode.GetNode(index), trackNode.GetNode(index - 1),col);
+            }
+
+            Debug.DrawLine(trackNode.GetNode(trackNode.GetNodeCount() - 1), transform.position, Color.blue);
+
+            Debug.DrawLine(trackNode.GetNode(0), transform.position, Color.yellow);
+            Debug.DrawLine(trackNode.GetNode(trackNodeToolSettings.cycleNodeIndex), transform.position, Color.green);
+
+        }   
+
+    }
+
     [SerializeField]
     private float distanceBetweenPoints = 0.1f;
     public float DistanceBetweenPoints
@@ -74,9 +119,7 @@ public class TrackNodeTool : MonoBehaviour {
     {
         trackNode.nodeList.Clear();
         for (int node = 0; node < numberOfNodes; node++)
-        {
-            trackNode.AddNode(sourceBesierSpline.GetPoint((float)node /(float)numberOfNodes));
-        }   
+        {trackNode.AddNode(sourceBesierSpline.GetPoint((float)node / (float)numberOfNodes));}
     }
     
     private void OnValidate()

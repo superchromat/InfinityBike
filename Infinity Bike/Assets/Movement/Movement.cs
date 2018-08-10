@@ -6,13 +6,11 @@ using UnityEngine;
 [RequireComponent(typeof(EnvironementObserver))]
 public abstract class Movement : MonoBehaviour
 {
-    protected EnvironementObserver environementObserver;
     protected Rigidbody rb;
     public float breakForce = 10000;
     public WheelCollider backWheel;
     public WheelCollider frontWheel;
 
-    public float velocityDrag = 1f;
     public bool isGrounded = true;
     protected float targetAngle = 0;
 
@@ -21,10 +19,11 @@ public abstract class Movement : MonoBehaviour
     {
         get { return closestNode; }
     }
+    public float velocityDrag = 1f;
 
 
-    [SerializeField]
-    public EnvironementObserver.LayerToReact layerToReact;
+
+
     
     [SerializeField]
     protected bool idleMode = true;
@@ -53,7 +52,6 @@ public abstract class Movement : MonoBehaviour
 
     protected void MovementStart()
     {   
-        environementObserver = GetComponent<EnvironementObserver>();
         rb = GetComponent<Rigidbody>();
     }   
 
@@ -64,7 +62,7 @@ public abstract class Movement : MonoBehaviour
 
     protected abstract void SetSteeringAngle();
 
-    protected void ApplyVelocityDrag(float drag)
+    public void ApplyVelocityDrag(float drag)
     {
         rb.AddForce(-drag * rb.velocity.normalized * Mathf.Abs(Vector3.SqrMagnitude(rb.velocity)));
     }
@@ -80,6 +78,17 @@ public abstract class Movement : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward, Vector3.up), 50f * Time.deltaTime);
 
     }
+    public Vector3 WheelNormal
+    {
+        get
+        {   
+            Vector3 normal;
+            GetNormal(out normal);
+            return new Vector3(normal.x,normal.y,normal.z);
+        }   
+    }
+
+
 
     protected void GetNormal(out Vector3 normal)
     {
@@ -99,46 +108,22 @@ public abstract class Movement : MonoBehaviour
         }
 
         normal = vect;
+        normal.Normalize();
         this.isGrounded = isGrounded;
     }
 
-    protected bool CheckIfFollowingDriver(out GameObject obj)
-    {   
-        float closestDistance = float.MaxValue;
-        bool hitFound = false;
-        obj = null;
-        foreach (RaycastHit item in environementObserver.hit)
-        {
-            if ((  (1<<item.transform.gameObject.layer) & layerToReact.npcLayer.value) != 0)
-            {
-                hitFound = true;
-                float distance = Vector3.Distance(transform.position, item.transform.position);
-                if (distance < closestDistance)
-                {distance = closestDistance;}
-                obj = item.collider.gameObject;
-            }   
-        }
 
-        return hitFound;
-
-
-
-
-
-
-
-    }   
     
-    public void Go(float motorTorque)
+    public void Go(float _motorTorque)
     {
         backWheel.brakeTorque = 0;
         frontWheel.brakeTorque = 0;
-        backWheel.motorTorque = motorTorque;
+        backWheel.motorTorque = _motorTorque;
     }
-    public void Stop()
+    public void Stop(float _breakForce)
     {
-        backWheel.brakeTorque = breakForce;
-        frontWheel.brakeTorque = breakForce;
+        backWheel.brakeTorque = _breakForce;
+        frontWheel.brakeTorque = _breakForce;
         backWheel.motorTorque = 0;
     }
     

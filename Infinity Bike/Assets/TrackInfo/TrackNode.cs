@@ -25,10 +25,11 @@ public class TrackNode : ScriptableObject
     private Vector3 FindLocationForPoint(Vector3 toCalculate)
     {
         RaycastHit hit;
+        int layerToIgnore = (1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("NPC"));
 
-        if (Physics.Raycast(toCalculate, Vector3.down, out hit, 100f))
+        if (Physics.Raycast(toCalculate, Vector3.down, out hit, 100f, ~layerToIgnore))
         { toCalculate = (hit.point + Vector3.up * 1.5f); }
-        else if (Physics.Raycast(toCalculate, Vector3.up, out hit, 100f))
+        else if (Physics.Raycast(toCalculate, Vector3.up, out hit, 100f, ~layerToIgnore))
         { toCalculate = (hit.point + Vector3.up * 1.5f); }
         return toCalculate;
 
@@ -72,7 +73,11 @@ public class TrackNode : ScriptableObject
 
     public void ClampIndex( ref int index)
     {
-        if (isLoopOpen)
+        if (nodeList.Count == 0)
+        {
+            index = 0;
+        }
+        else if (isLoopOpen)
         {
             if (index >= nodeList.Count)
             { index = nodeList.Count - 1; }
@@ -82,11 +87,15 @@ public class TrackNode : ScriptableObject
         }
         else
         {
-            while (index >= nodeList.Count)
-            { index -= nodeList.Count; }
-            while (index < 0)
-            { index += nodeList.Count; }
+            while (index < 0 || index >= nodeList.Count)
+            {
+                while (index >= nodeList.Count)
+                { index -= nodeList.Count; }
+                while (index < 0)
+                { index += nodeList.Count; }
+            }
         }
+
     }   
 }   
 

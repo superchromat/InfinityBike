@@ -14,10 +14,9 @@ public class NPCAroundPlayer : MonoBehaviour {
 
     // Use this for initialization
     void Start ()
-    {
+    {   
         nPCspawner = GetComponent<NPCspawner>();
         player = nPCspawner.player;
-
     }   
 	
 	// Update is called once per frame
@@ -25,11 +24,9 @@ public class NPCAroundPlayer : MonoBehaviour {
     {
         if (!isCheckStarted)
         {   
-
             isCheckStarted = true;
             StartCoroutine(CheckIfNPCisTooFarFromPlayer());
         }   
-
     }   
     
     IEnumerator CheckIfNPCisTooFarFromPlayer()
@@ -63,17 +60,6 @@ public class NPCAroundPlayer : MonoBehaviour {
         
         isCheckStarted = false;
     }   
+    
 
-
-
-
-
-
-
-
-
-
-
-
-
-}
+}   

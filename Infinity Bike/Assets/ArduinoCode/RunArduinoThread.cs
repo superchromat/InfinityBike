@@ -15,10 +15,10 @@ public ushort keyBoardSpeed = 80;
     // Use this for initialization
     void Start ()
     {   
+
         if (arduinoThread.arduinoInfo.arduinoPort == null || !arduinoThread.arduinoInfo.arduinoPort.IsOpen)
-        {   
-            arduinoThread.Initialisation();
-        }   
+        {arduinoThread.Initialisation();}   
+
     }
 
     private void Update()

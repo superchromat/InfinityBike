@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-
 public class Respawn : MonoBehaviour {
 
     public TrackNode trackNode = null;
@@ -18,23 +17,28 @@ public class Respawn : MonoBehaviour {
     {onRespawn += toAdd;}
 
     public void CallRespawnAction()
-    {onRespawn();}
-    
-    void ClearOnRespawnAction()
-    {onRespawn = RespawnObject;}
-    
+    {
+        if (onRespawn == null)
+            RespawnObject();
+        else
+            onRespawn();
+    }
+
     void Start()
     {   
         blockSpawnCheck = false;
         rb = GetComponent<Rigidbody>();
-        onRespawn = RespawnObject;
-        
+
+        Movement mov = GetComponent<Movement>();
         if ((GetComponent<Movement>()) != null)
-        { AddToRespawnAction(GetComponent<Movement>().Stop); }
+        {   
+            AddToRespawnAction( ()=> { mov.Stop(mov.breakForce); }  );
+        }   
     }   
 
     void LateUpdate()
-    {   
+    {
+
         if (!blockSpawnCheck)
         {
             blockSpawnCheck = true;
@@ -56,7 +60,8 @@ public class Respawn : MonoBehaviour {
         blockSpawnCheck = false;
     }
 
-    private void RespawnObject()
+
+    public void RespawnObject()
     {   
         if (trackNode.GetNodeCount() <= 1)
         { return; }

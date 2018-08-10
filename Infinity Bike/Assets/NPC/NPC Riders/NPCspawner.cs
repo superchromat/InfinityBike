@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class NPCspawner : MonoBehaviour 
 {
     public GameObject player;   
@@ -24,7 +25,7 @@ public class NPCspawner : MonoBehaviour
     }   
 
     [ContextMenu("GenerateList")]
-    void GenerateList()
+    public void GenerateList()
     {
 
         while (npcList.Count > maxNpcOnTrack)

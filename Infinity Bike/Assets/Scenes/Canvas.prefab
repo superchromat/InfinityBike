@@ -473,8 +473,7 @@ GameObject:
   - component: {fileID: 114842844418866734}
   - component: {fileID: 114851051118848834}
   - component: {fileID: 114183702924776372}
-  - component: {fileID: 114295893227245472}
-  - component: {fileID: 114813234098259726}
+  - component: {fileID: 114805956078249660}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -563,7 +562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1168b07afa3cc748a9a54d6b7a7d9c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  commonCanvasVariables: {fileID: 114805956078249660}
   menuReapearDelay: 1
   menuID: 0
 --- !u!114 &114070396646727034
@@ -800,18 +799,6 @@ MonoBehaviour:
   width: 0.2
   height: 0.08
   centerPosition: {x: 0.15, y: 0.6}
---- !u!114 &114295893227245472
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1889066889041988}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4e34d510076ba249a4c52ad47a21915, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerRB: {fileID: 0}
 --- !u!114 &114332868079014406
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1232,8 +1219,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: CallRespawnAction
+      - m_Target: {fileID: 114805956078249660}
+        m_MethodName: RespawnPlayer
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1340,9 +1327,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_MethodName: set_IdleMode
-        m_Mode: 6
+      - m_Target: {fileID: 114805956078249660}
+        m_MethodName: StartRace
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1364,7 +1351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3191e42520c0872428e1c178fe52184c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  commonCanvasVariables: {fileID: 114805956078249660}
 --- !u!114 &114694928012498658
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1479,7 +1466,7 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114813234098259726
+--- !u!114 &114805956078249660
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1487,7 +1474,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1889066889041988}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4e34d510076ba249a4c52ad47a21915, type: 3}
+  m_Script: {fileID: 11500000, guid: 75bb154f748796449a2d5dc64bfe46a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerRB: {fileID: 0}

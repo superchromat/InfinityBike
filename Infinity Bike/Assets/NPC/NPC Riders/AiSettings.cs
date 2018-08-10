@@ -6,7 +6,6 @@ using System;
 [Serializable]
 public class AiSettings
 {
-    public float maxMotorTorque = 10f;
     public float targetSqrSpeed = 49f;
     public float turnSpeed = 5;
     [SerializeField]
