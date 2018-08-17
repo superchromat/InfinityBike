@@ -3,63 +3,62 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class NPCAroundPlayer : MonoBehaviour {
-
-
+    
     private GameObject player;
     private NPCspawner nPCspawner;
-    public int spawnNodeDistance = -10;
-    public float maxDistanceFromPlayer = 50f;
+    public float distanceFromPlayer = 50;
+    public int spawnNodeDistance = -1;
+    
+    private List<AIDriver> aiDriverList;
+    private PlayerMovement playerMovement; 
 
-    bool isCheckStarted = false;
-
-    // Use this for initialization
     void Start ()
     {   
         nPCspawner = GetComponent<NPCspawner>();
         player = nPCspawner.player;
+        playerMovement = player.GetComponent<PlayerMovement>();
+
+        aiDriverList = new List<AIDriver>();
+        foreach (GameObject item in nPCspawner.npcList)
+        {   
+            AIDriver currentDriver = item.GetComponent<AIDriver>();
+            aiDriverList.Add(currentDriver);
+            item.GetComponent<Respawn>().AddFirstToRespawnAction(()=> { currentDriver.WaypointNodeID = playerMovement.ClosestNode + spawnNodeDistance; });
+        }
+        
     }   
-	
-	// Update is called once per frame
+
+    bool isCheckStarted = false;
 	void Update ()
     {
         if (!isCheckStarted)
         {   
             isCheckStarted = true;
-            StartCoroutine(CheckIfNPCisTooFarFromPlayer());
+            CheckIfNPCisTooFarFromPlayer();
         }   
     }   
     
-    IEnumerator CheckIfNPCisTooFarFromPlayer()
-    {   
-        List<GameObject> npcListHolder = new List<GameObject>(nPCspawner.npcList);
-        List<Respawn> npcToRespawn = new List<Respawn>();
-
-        foreach (GameObject item in npcListHolder)
-        {   
-            if (item.activeSelf)
-            {
-                Vector3 direction = item.transform.position - player.transform.position;
-
-                if (direction.sqrMagnitude > maxDistanceFromPlayer)
-                {   
-                    npcToRespawn.Add(item.GetComponent<Respawn>());
-                }   
-            }   
-            
-            yield return new WaitForSeconds(0.1f);
-        }   
-
-        int node = Respawn.FindNearestNode(nPCspawner.trackNodes, player.transform) + spawnNodeDistance;
-        foreach (Respawn item in npcToRespawn)
+    void CheckIfNPCisTooFarFromPlayer()
+    {
+        float sqrDistance = distanceFromPlayer * distanceFromPlayer;
+        foreach (AIDriver driver in aiDriverList)
         {
-            item.respawnNode = node;
-            item.CallRespawnAction();
-            
-            yield return new WaitForSeconds(0.2f);
-        }   
-        
+           
+            if (driver.gameObject.activeSelf && !driver.IdleMode)
+            {
+                if(sqrDistance < (player.transform.position-driver.transform.position).sqrMagnitude)
+                {   
+                    driver.WaypointNodeID = playerMovement.ClosestNode + spawnNodeDistance;
+                    driver.gameObject.GetComponent<Respawn>().CallRespawnAction();
+                }   
+                
+            }   
+        }
+
         isCheckStarted = false;
-    }   
-    
+
+
+    }
+
 
 }   

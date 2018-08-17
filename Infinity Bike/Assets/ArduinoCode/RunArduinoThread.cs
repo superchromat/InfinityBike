@@ -40,7 +40,7 @@ public ushort keyBoardSpeed = 80;
             if (!(Input.GetKey(KeyCode.A) ^ Input.GetKey(KeyCode.D)))
             { val = 512; }
 
-            arduinoThread.arduinoInfo.arduinoValueStorage.rawRotation = (ushort)Mathf.Lerp((float)(arduinoThread.arduinoInfo.arduinoValueStorage.rawRotation), val, 5.0f * Time.deltaTime);
+            arduinoThread.arduinoInfo.arduinoValueStorage.rawRotation = (ushort)Mathf.Lerp((float)(arduinoThread.arduinoInfo.arduinoValueStorage.rawRotation), val, 2.0f * Time.deltaTime);
 
         }
 

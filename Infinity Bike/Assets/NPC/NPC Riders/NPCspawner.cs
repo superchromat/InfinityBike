@@ -95,8 +95,6 @@ public class NPCspawner : MonoBehaviour
 			if (npcList[i].activeSelf == false) 
 			{
                 npcList[i].SetActive (true);
-
-
                 return; 
 			}	        
 		}	

@@ -280,10 +280,13 @@ MonoBehaviour:
   controlVariable: 0
   errorVariable: 0
   pidConstant:
-    kProportion: 6.09184
-    kIntegral: 1.127328
-    kDifferential: 0.1243544
-  pidValue: {fileID: 0}
+    kProportion: 9.494308
+    kIntegral: 4.267183
+    kDifferential: 0.1222885
+  pidValue:
+    proportionValue: 0
+    integralValue: 0
+    diffentialValue: 0
 --- !u!114 &114765275787244818
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -312,6 +315,7 @@ MonoBehaviour:
   trackNode: {fileID: 11400000, guid: 7d5b0d579628f5642b9e1a7c3b57d7ee, type: 2}
   pid: {fileID: 0}
   maximumSteeringAngle: 45
+  motorTorque: 0
   velocitySqr: 0
   lookAhead: 1
 --- !u!114 &114995508200210644

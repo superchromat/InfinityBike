@@ -14,13 +14,12 @@ public class AiPid : MonoBehaviour {
     public PIDConstant pidConstant = new PIDConstant(1,1,1);
 
     [SerializeField]
-    public PIDValue pidValue;
+    public PIDValue pidValue = new PIDValue();
 
     public Action UpdateErrorValue;
     private void Start()
     {
         if (pidValue == null)
-            pidValue = ScriptableObject.CreateInstance<PIDValue>();
         ResetValues();
     }
     
@@ -94,7 +93,7 @@ public class AiPid : MonoBehaviour {
     };
 
     [Serializable]
-    public class PIDValue:ScriptableObject
+    public class PIDValue
     {
         public float proportionValue;
         public float integralValue;

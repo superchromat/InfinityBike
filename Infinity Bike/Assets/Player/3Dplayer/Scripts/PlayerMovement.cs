@@ -24,10 +24,11 @@ public class PlayerMovement : Movement
     public Transform handleBar;
     public Vector3 centerOfMass = Vector3.down;
     public ArduinoThread serialValues;
-
+    public Respawn respawn;
 
     void Start ()
-	{   
+	{
+        respawn = GetComponent<Respawn>();
         MovementStart();
         backWheel.ConfigureVehicleSubsteps(1, 12, 15);
         frontWheel.ConfigureVehicleSubsteps(1, 12, 15);
@@ -36,7 +37,10 @@ public class PlayerMovement : Movement
         IdleMode = true;
 
     }
-
+    private void Update()
+    {   
+        closestNode = Respawn.FindNearestNode(respawn.trackNode, transform);
+    }   
     void FixedUpdate()
     {   
         float targetTorque = serialValues.arduinoInfo.arduinoValueStorage.rawSpeed * speedMultiplier;
@@ -80,7 +84,7 @@ public class PlayerMovement : Movement
 
     private void OnCollisionEnter(Collision collision)
     {
-        GetComponent<Respawn>().CallRespawnAction();
+        respawn.CallRespawnAction();
     }
     private void OnDrawGizmos()
     {

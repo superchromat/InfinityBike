@@ -22,8 +22,6 @@ public abstract class Movement : MonoBehaviour
     public float velocityDrag = 1f;
 
 
-
-
     
     [SerializeField]
     protected bool idleMode = true;
@@ -123,7 +121,7 @@ public abstract class Movement : MonoBehaviour
     public void Stop(float _breakForce)
     {
         backWheel.brakeTorque = _breakForce;
-        frontWheel.brakeTorque = _breakForce;
+        frontWheel.brakeTorque = 0;
         backWheel.motorTorque = 0;
     }
     
