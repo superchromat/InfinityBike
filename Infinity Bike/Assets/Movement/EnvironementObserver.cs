@@ -11,11 +11,11 @@ public class EnvironementObserver : MonoBehaviour
 
     [System.Serializable]
     public struct LayerToReact
-    {
+    {   
         public LayerMask playerLayer;
         public LayerMask npcLayer;
         public LayerMask obstacleLayer;
-    }
+    }   
 
     public void TallyUpCommingObstacles()
     {   

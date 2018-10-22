@@ -45274,7 +45274,7 @@ MonoBehaviour:
   - {fileID: 1406339958}
   - {fileID: 789672701}
   maxNpcOnTrack: 100
-  spawnProb: 0.2
+  spawnProb: 1
   spawnCooldown: 0.5
 --- !u!114 &2101937840
 MonoBehaviour:
