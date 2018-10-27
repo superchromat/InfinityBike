@@ -19,7 +19,7 @@ public class EnvironementObserver : MonoBehaviour
 
     public void TallyUpCommingObstacles()
     {   
-        Ray ray = new Ray(transform.position, transform.forward);
+        Ray ray = new Ray(transform.position + transform.forward*0.5f, transform.forward + transform.forward * 0.5f);
         Vector3 pos = transform.position;
         hit = Physics.SphereCastAll(ray, 0.4f, distanceToCheck, layersToCheck);
     }   

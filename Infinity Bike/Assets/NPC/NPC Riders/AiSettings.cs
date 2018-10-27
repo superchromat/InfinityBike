@@ -20,7 +20,8 @@ public class AiSettings
         trajectoryOffset.timeOffSet = UnityEngine.Random.Range(0, 2f * Mathf.PI)*0;
         trajectoryOffset.transverseOffset = UnityEngine.Random.Range(-trackWidth, trackWidth);
         trajectoryOffset.amplitude = UnityEngine.Random.Range(0.1f, (trackWidth - Mathf.Abs(trajectoryOffset.transverseOffset)) );
-    }
+    }   
+    
     [Serializable]
     public struct TrajectoryOffset
     {
