@@ -20,8 +20,6 @@ public abstract class Movement : MonoBehaviour
         get { return closestNode; }
     }
     public float velocityDrag = 1f;
-
-
     
     [SerializeField]
     protected bool idleMode = true;
@@ -45,20 +43,18 @@ public abstract class Movement : MonoBehaviour
         }   
 
     }
-
-
-
+    
     protected void MovementStart()
     {   
         rb = GetComponent<Rigidbody>();
+
+        if (backWheel == null || frontWheel == null)
+        { Debug.LogError("Wheel not attached to " + gameObject.name); }
+
+        backWheel.ConfigureVehicleSubsteps(1, 12, 15);
+        frontWheel.ConfigureVehicleSubsteps(1, 12, 15);
+
     }   
-
-    protected abstract void EnterIdleMode();
-    protected abstract void ExitIdleMode();
-
-
-
-    protected abstract void SetSteeringAngle();
 
     public void ApplyVelocityDrag(float drag)
     {
@@ -74,8 +70,8 @@ public abstract class Movement : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward, normal), 50f * Time.deltaTime);
         else
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward, Vector3.up), 50f * Time.deltaTime);
+    }   
 
-    }
     public Vector3 WheelNormal
     {
         get
@@ -85,9 +81,6 @@ public abstract class Movement : MonoBehaviour
             return new Vector3(normal.x,normal.y,normal.z);
         }   
     }
-
-
-
     protected void GetNormal(out Vector3 normal)
     {
         WheelHit hit;
@@ -109,9 +102,7 @@ public abstract class Movement : MonoBehaviour
         normal.Normalize();
         this.isGrounded = isGrounded;
     }
-
-
-    
+        
     public void Go(float _motorTorque)
     {
         backWheel.brakeTorque = 0;
@@ -124,5 +115,9 @@ public abstract class Movement : MonoBehaviour
         frontWheel.brakeTorque = 0;
         backWheel.motorTorque = 0;
     }
-    
+
+    protected abstract void EnterIdleMode();
+    protected abstract void ExitIdleMode();
+    protected abstract void SetSteeringAngle();
+
 }   
