@@ -36,7 +36,8 @@ void setup()
 
 void loop()
 {	
-	
+  delay(100); 
+	rotHandler(); 
 	while (Serial.available() > 0)
 	{
 		sCmd.readSerial();

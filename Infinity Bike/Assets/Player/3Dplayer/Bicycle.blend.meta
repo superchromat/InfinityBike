@@ -1,0 +1,325 @@
+fileFormatVersion: 2
+guid: ffad4e28933724e748e76e9e0929108f
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Cylinder_000
+    100004: FrontWheel
+    100006: Sphere
+    100008: BackWheel
+    100010: Bike_Frame
+    100012: Fork
+    100014: Hub
+    100016: Hub_001
+    100018: Pedal_000
+    100020: Pedal_001
+    100022: Pedal_leg
+    100024: Pedal_leg_001
+    100026: PedalShaft
+    100028: Seat
+    100030: Spokes_and_hub
+    100032: Spokes_and_hub_001
+    100034: Armature
+    100036: Armature_001
+    100038: Bone
+    100040: Bone_0
+    100042: Bone_001
+    100044: Bone_002
+    100046: Bone_003
+    100048: Bone_004
+    100050: Bone_005
+    100052: Bone_006
+    100054: Bone_007
+    100056: Bone_009
+    100058: Bone_1
+    100060: Cyclist
+    100062: CyclistMesh
+    100064: FEET_R
+    100066: FEETIK_R
+    400000: //RootNode
+    400002: Cylinder_000
+    400004: FrontWheel
+    400006: Sphere
+    400008: BackWheel
+    400010: Bike_Frame
+    400012: Fork
+    400014: Hub
+    400016: Hub_001
+    400018: Pedal_000
+    400020: Pedal_001
+    400022: Pedal_leg
+    400024: Pedal_leg_001
+    400026: PedalShaft
+    400028: Seat
+    400030: Spokes_and_hub
+    400032: Spokes_and_hub_001
+    400034: Armature
+    400036: Armature_001
+    400038: Bone
+    400040: Bone_0
+    400042: Bone_001
+    400044: Bone_002
+    400046: Bone_003
+    400048: Bone_004
+    400050: Bone_005
+    400052: Bone_006
+    400054: Bone_007
+    400056: Bone_009
+    400058: Bone_1
+    400060: Cyclist
+    400062: CyclistMesh
+    400064: FEET_R
+    400066: FEETIK_R
+    2100000: unnamed
+    2300000: Cylinder_000
+    2300002: FrontWheel
+    2300004: Sphere
+    2300006: BackWheel
+    2300008: Bike_Frame
+    2300010: Fork
+    2300012: Hub
+    2300014: Hub_001
+    2300016: Pedal_000
+    2300018: Pedal_001
+    2300020: Pedal_leg
+    2300022: Pedal_leg_001
+    2300024: PedalShaft
+    2300026: Seat
+    2300028: Spokes_and_hub
+    2300030: Spokes_and_hub_001
+    3300000: Cylinder_000
+    3300002: FrontWheel
+    3300004: Sphere
+    3300006: BackWheel
+    3300008: Bike_Frame
+    3300010: Fork
+    3300012: Hub
+    3300014: Hub_001
+    3300016: Pedal_000
+    3300018: Pedal_001
+    3300020: Pedal_leg
+    3300022: Pedal_leg_001
+    3300024: PedalShaft
+    3300026: Seat
+    3300028: Spokes_and_hub
+    3300030: Spokes_and_hub_001
+    4300000: Sphere
+    4300002: FrontWheel
+    4300004: Cylinder_000
+    4300006: PedalShaft
+    4300008: Pedal_leg_001
+    4300010: Pedal_000
+    4300012: Pedal_001
+    4300014: Pedal_leg
+    4300016: Seat
+    4300018: Fork
+    4300020: Spokes_and_hub
+    4300022: Hub_001
+    4300024: Hub
+    4300026: Bike_Frame
+    4300028: BackWheel
+    4300030: Spokes_and_hub_001
+    4300032: CyclistMesh
+    7400000: Default Take
+    7400002: ArmatureAction
+    7400004: CyclistAction
+    7400006: PoseLib_003
+    9500000: //RootNode
+    13700000: CyclistMesh
+    2186277476908879412: ImportLogs
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Default Take
+      takeName: Default Take
+      firstFrame: 0
+      lastFrame: 29
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: ArmatureAction
+      takeName: ArmatureAction
+      firstFrame: -1
+      lastFrame: 29
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: CyclistAction
+      takeName: CyclistAction
+      firstFrame: 0
+      lastFrame: 1
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: PoseLib_003
+      takeName: PoseLib_003
+      firstFrame: 0
+      lastFrame: 1
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
