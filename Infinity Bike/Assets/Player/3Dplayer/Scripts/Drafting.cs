@@ -89,7 +89,7 @@ public class Drafting : MonoBehaviour
     {   
         followingIndicator.transform.parent = following.transform;
         followingIndicator.SetActive(true);
-        followingIndicator.transform.localPosition = new Vector3(0, 1, 0);
+        followingIndicator.transform.localPosition = new Vector3(0, 0.5f, 0);
     }   
 
     protected bool CheckIfFollowingDriver(out GameObject obj)

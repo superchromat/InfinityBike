@@ -34,8 +34,6 @@ public class AiPid : MonoBehaviour {
         controlVariable = pidConstant.kProportion * pidValue.proportionValue + pidConstant.kIntegral * pidValue.integralValue + pidConstant.kDifferential * pidValue.diffentialValue;
 
         errorVariableLastFrame = errorVariable;
-
-
     }
 
     public void ResetValues()
@@ -52,17 +50,16 @@ public class AiPid : MonoBehaviour {
             float kDifferential,
             Action UpdateErrorValue
          )
-    {   
-        this.controlVariable = controlVariable;
-        this.errorVariableLastFrame = 0;
-        this.pidConstant.kProportion = kProportion;
-        this.pidConstant.kIntegral = kIntegral;
-        this.pidConstant.kDifferential = kDifferential;
-        
+        {   
+            this.controlVariable = controlVariable;
+            this.errorVariableLastFrame = 0;
+            this.pidConstant.kProportion = kProportion;
+            this.pidConstant.kIntegral = kIntegral;
+            this.pidConstant.kDifferential = kDifferential;        
 
-        errorVariable = 0;
-        this.UpdateErrorValue = UpdateErrorValue;
-    }   
+            errorVariable = 0;
+            this.UpdateErrorValue = UpdateErrorValue;
+        }   
 
     AiPid()
     {

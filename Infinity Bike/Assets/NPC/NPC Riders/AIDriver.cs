@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AIDriver : Movement
-{
-
+{   
     [SerializeField]
     public AiSettings aiSettings = new AiSettings();
 
@@ -14,7 +13,6 @@ public class AIDriver : Movement
     public float maximumSteeringAngle = 45;
 
     public float motorTorque = 0;
-
 
     private int waypointNodeID;
     public int WaypointNodeID
@@ -26,8 +24,7 @@ public class AIDriver : Movement
             trackNode.ClampIndex(ref waypointNodeID);
         }
     }
-
-
+    
     public float velocitySqr = 0;
     private Vector3 nextWaypoint;
 
@@ -36,7 +33,7 @@ public class AIDriver : Movement
     public int lookAhead = 2;
 
     private float TargetAngle
-    {
+    {   
         get { return targetAngle; }
         set
         {
@@ -51,37 +48,35 @@ public class AIDriver : Movement
             { targetAngle = -maximumSteeringAngle; }
             frontWheel.steerAngle = targetAngle;
         }
-    }
-
-
+    }   
+    
     void Start()
-    {
+    {   
         MovementStart();
 
-        respawn = GetComponent<Respawn>(); ;
         pid = GetComponent<AiPid>();
+        pid.UpdateErrorValue += () => 
+        {   
+            pid.errorVariable = (aiSettings.targetSqrSpeed - velocitySqr);
+        };  
 
         aiSettings.SetRandomValues();
-        waypointNodeID = -1;
 
+        timeAlive = 0;
+        InitialiseRespawn();
+
+    }
+
+    void InitialiseRespawn()
+    {
+        respawn = GetComponent<Respawn>(); ;
+        waypointNodeID = -1;
         respawn.AddLastToRespawnAction(pid.ResetValues);
         respawn.AddLastToRespawnAction(() => { Stop(breakForce); });
         respawn.AddLastToRespawnAction(() => { respawn.respawnNode = waypointNodeID - 1; });
         respawn.AddLastToRespawnAction(() => { timeAlive = 0; StartCoroutine(SetIdleOnATimer(2f)); });
         respawn.AddLastToRespawnAction(() => { respawn.RespawnObject(GetNextWayPoint(0), (GetNextWayPoint(0 + 1) - GetNextWayPoint(0)).normalized); });
-
-        timeAlive = 0;
-
-        pid.UpdateErrorValue += () => {
-            pid.errorVariable = (aiSettings.targetSqrSpeed - velocitySqr);
-
-
-        };
-
-        backWheel.ConfigureVehicleSubsteps(1, 12, 15);
-        frontWheel.ConfigureVehicleSubsteps(1, 12, 15);
-    }
-
+    }   
 
     private void Update()
     {
@@ -101,7 +96,7 @@ public class AIDriver : Movement
     void FixedUpdate()
     {
         if (!IdleMode && isGrounded)
-        {   
+        {
             pid.RunPID();
             motorTorque = pid.controlVariable;
             Go(motorTorque);
@@ -149,9 +144,7 @@ public class AIDriver : Movement
 
         return targetPoint;
     }
-
-
-
+    
     private void OnCollisionEnter(Collision collision)
     {
         try
