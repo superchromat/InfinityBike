@@ -6,6 +6,12 @@ using UnityEngine.UI;
 public class TimerController : MonoBehaviour {
     private float startTime;
     private bool timerOn = false;
+    public float StartTime
+    {
+        get { return startTime; }
+    }
+
+    [HideInInspector]
     public Text timerText; 
 	// Use this for initialization
 	void Start () {
