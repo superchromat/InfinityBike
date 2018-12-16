@@ -13,7 +13,11 @@ public class MenuButton : MonoBehaviour
         STARTSCREEN = 0, OPTIONSCEEN = 1 , GAMESCREEN = 2
     }
     public Transform[] onScreenButtonGroup;
-    public int activeGroup = -1;
+    private int activeGroup = -1;
+    public int CurrentActivatedID
+    {
+        get { return activeGroup; }
+    }
 
     public void ActivateMenuButtons(int id)
     {

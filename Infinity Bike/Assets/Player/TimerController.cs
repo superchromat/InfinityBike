@@ -28,17 +28,17 @@ public class TimerController : MonoBehaviour {
     public void StartTimer()
     {
         if (!timerOn)
-        {
+        {   
             timerOn = true;
             startTime = Time.time;
-        }
-    }
+        }   
+    }   
+
     void UpdateTimer(){
         float currentTime = Time.time - startTime;
         timerText.text = "Time : " + FormatTime(currentTime);
+    }   
 
-
-    }
     string FormatTime(float currentTime) {
         float minute = Mathf.Floor(currentTime / 60);
         float second = Mathf.Floor(currentTime - minute * 60);

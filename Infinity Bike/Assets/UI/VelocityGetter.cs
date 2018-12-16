@@ -15,7 +15,7 @@ public class VelocityGetter : MonoBehaviour {
 
     public DataGraph dataGraph;
     int curveKey = 0;
-
+    float timeUnpaused = 0;
 
     // Use this for initialization
     void Start () {
@@ -26,6 +26,7 @@ public class VelocityGetter : MonoBehaviour {
         if (playerRB == null)
         {throw new System.Exception("playerRB is set to null in script attached to " + this.gameObject.name);}
         CreateCurve();
+        timeUnpaused = timerController.StartTime;
     }
 	
 	// Update is called once per frame
@@ -36,6 +37,8 @@ public class VelocityGetter : MonoBehaviour {
 
         if (!blockUpdate)
         { StartCoroutine(UpdateTestCurve()); }
+
+
     }
 
     void CreateCurve()
@@ -52,8 +55,11 @@ public class VelocityGetter : MonoBehaviour {
     {
         blockUpdate = true;
 
-        dataGraph.AddPointToExistingSeries(curveKey, new Vector2(timerController.StartTime + Time.time, Velocity));
-
+        if (!dataGraph.pauseDataAppending)
+        {   
+            timeUnpaused += Time.deltaTime;
+            dataGraph.AddPointToExistingSeries(curveKey, new Vector2(timeUnpaused, Velocity));
+        }   
         yield return new WaitForSeconds(0.01f);
         blockUpdate = false;
     }

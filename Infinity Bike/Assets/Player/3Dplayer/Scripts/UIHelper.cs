@@ -10,6 +10,7 @@ public class UIHelper : MonoBehaviour {
     public float menuReapearDelay = 1f;
     public int menuID = 0;
     private bool block = false;
+    public DataGraph powerDataGraph;
 
 	// Use this for initialization
 	void Start ()
@@ -19,19 +20,19 @@ public class UIHelper : MonoBehaviour {
 
         if (playerRB == null)
         { throw new System.Exception("playerRB is set to null in script attached to " + this.gameObject.name); }
-
+        powerDataGraph.pauseDataAppending = true;
     }
 
     // Update is called once per frame
     void FixedUpdate ()
     {
-        if (menuButton.activeGroup != menuID && !block && playerRB.velocity.magnitude < 0.01f)
+        if (menuButton.CurrentActivatedID != menuID && !block && playerRB.velocity.magnitude < 0.01f)
         {
             block = true;
             StartCoroutine(MakeMenuAppear());
-
-        }   		
-	}
+        }
+        powerDataGraph.pauseDataAppending = (menuButton.CurrentActivatedID == menuID );
+    }
 
     IEnumerator MakeMenuAppear()
     {   
@@ -40,7 +41,6 @@ public class UIHelper : MonoBehaviour {
         if (playerRB.velocity.magnitude < 0.01f)
         {
             menuButton.ActivateMenuButtons(menuID);
-
         }
         block = false;
     }   

@@ -43,7 +43,8 @@ public class DataGraph : MonoBehaviour {
 
     public bool autoFitAxis = true;
     public bool pauseTextureUpdate = false;
-    
+    public bool pauseDataAppending = false;
+
 
     void Start()
     {   
@@ -375,15 +376,18 @@ public class DataGraph : MonoBehaviour {
 
     public int AddDataSeries(List<Vector2> data, Color color, string curveName)
     {
+        
         Curve curve = new Curve(data, color, curveName);
         graphCurves.Add(curve.GraphID, curve);
         return curve.GraphID;
+        
         //if (data.Count >= 2)
         //FitAxisToCurve(curve);
     }
     public void AddPointToExistingSeries(int curveID, Vector2 vect)
     {   
-        graphCurves[curveID].GetCurveDataBuffer().Add(vect);
+        if (!pauseDataAppending)
+            graphCurves[curveID].GetCurveDataBuffer().Add(vect);
     }
 
     [System.Serializable]
