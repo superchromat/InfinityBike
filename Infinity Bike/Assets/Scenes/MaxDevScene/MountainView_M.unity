@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.070581764, g: 0.04853139, b: 0.04321327, a: 1}
+  m_IndirectSpecularColor: {r: 0.07063737, g: 0.048527624, b: 0.043328807, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -17959,7 +17959,7 @@ MonoBehaviour:
   saveLoad:
     fileName: track_1
     extension: .track
-    dataPath: C:\Users\alexa\AppData\Roaming
+    dataPath: /Users/maximeboudreau2/.config
   modes: 020000000200000002000000020000000200000002000000020000000200000002000000
   splineLenght: 0
   linearApproxSteps: 1000
@@ -25064,7 +25064,8 @@ MonoBehaviour:
   saveLoad:
     fileName: track_1
     extension: .track
-    dataPath: C:/Users/alexa/Documents/InfinityBike/Infinity Bike/Assets
+    dataPath: /Users/maximeboudreau2/Documents/Programmation/GitHubProjects/InfinityBike
+      (GH)/Infinity Bike/Assets
 --- !u!1 &1008798215
 GameObject:
   m_ObjectHideFlags: 0
@@ -26673,7 +26674,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arduinoThread: {fileID: 11400000, guid: ab43422274fb8424da89b606d1b35118, type: 2}
-  useKeyBoard: 0
+  useKeyBoard: 1
   keyBoardSpeed: 80
   keyBoardRotation: 250
 --- !u!114 &1116679975

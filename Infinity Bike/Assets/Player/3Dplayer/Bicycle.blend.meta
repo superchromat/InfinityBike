@@ -37,6 +37,10 @@ ModelImporter:
     100062: CyclistMesh
     100064: FEET_R
     100066: FEETIK_R
+    100068: Armature_002
+    100070: Bone_2
+    100072: FEETIK_L
+    100074: FeetL
     400000: //RootNode
     400002: Cylinder_000
     400004: FrontWheel
@@ -71,6 +75,10 @@ ModelImporter:
     400062: CyclistMesh
     400064: FEET_R
     400066: FEETIK_R
+    400068: Armature_002
+    400070: Bone_2
+    400072: FEETIK_L
+    400074: FeetL
     2100000: unnamed
     2300000: Cylinder_000
     2300002: FrontWheel
@@ -147,7 +155,7 @@ ModelImporter:
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
-    importConstraints: 0
+    importConstraints: 1
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
