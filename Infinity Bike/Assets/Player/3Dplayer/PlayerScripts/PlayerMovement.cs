@@ -7,6 +7,7 @@ public class PlayerMovement : Movement
 {
     public float speedMultiplier = 1f;
 	public float angleChangeRange = 180f;
+    public PlayerAnimatorScript playerAnimatorScript; 
 
     private float TargetAngle
     {
@@ -18,6 +19,7 @@ public class PlayerMovement : Movement
         {
             targetAngle = value;
             frontWheel.steerAngle = value;
+            playerAnimatorScript.UpdateSteeringAngle(value);
         }
     }
 
@@ -47,11 +49,14 @@ public class PlayerMovement : Movement
 
         if (!IdleMode && targetTorque > 0)
         {   
+
             Go(targetTorque);
+            playerAnimatorScript.UpdateCyclingSpeed(targetTorque);
         }   
         else
         {   
             Stop(breakForce);
+            playerAnimatorScript.UpdateCyclingSpeed(0);
             IdleMode = true;
         }
 
@@ -72,7 +77,9 @@ public class PlayerMovement : Movement
 
     protected override void SetSteeringAngle()
     {
-        TargetAngle = (serialValues.arduinoInfo.arduinoValueStorage.rawRotation / ((serialValues.arduinoInfo.rotationAnalogRange.range)) - 0.5f) * angleChangeRange;
+        TargetAngle = (serialValues.arduinoInfo.arduinoValueStorage.rawRotation / ((serialValues.arduinoInfo.rotationAnalogRange.range)) - 0.5f) * angleChangeRange; // TODO TargetAngle (remove Cap from T)
+        Debug.Log(TargetAngle);
+
     }
 
     protected override void EnterIdleMode()

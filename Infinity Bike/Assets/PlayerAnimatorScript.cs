@@ -5,22 +5,10 @@ using UnityEngine;
 public class PlayerAnimatorScript : MonoBehaviour {
     private Animator playerAnimator;
 
-   //[SerializeField]
-    private float steerAngle; 
-    public float SteerAngle
-    {
-        get
-        {
-            return steerAngle;
-        }
-        set
-        {
-            steerAngle = value;
-            Debug.Log("Set");
-            UpdateSteerAngle();
-        }
-    }
+    //[SerializeField]
 
+    //public float steerAngle;
+    
 
 
 
@@ -32,8 +20,16 @@ public class PlayerAnimatorScript : MonoBehaviour {
 
     }
 	
-	// Update is called once per frame
-	void UpdateSteerAngle () {
-        playerAnimator.Play("Steering", 1, steerAngle);
+	
+	public void UpdateSteeringAngle (float angle) {
+        float normalizedAngle = (angle + 45)/90;
+        //Debug.Log(normalizedAngle);
+        playerAnimator.Play("Steering", 1, normalizedAngle);
 	}
+    public void UpdateCyclingSpeed(float torque)
+    {
+        playerAnimator.SetFloat("cyclingSpeed", torque);
+    }
+   
+
 }
