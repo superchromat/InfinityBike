@@ -51,7 +51,21 @@ public class AIDriver : Movement
     }   
     
     void Start()
-    {   
+    {
+
+        foreach (var item in gameObject.GetComponentsInChildren<WheelCollider>())
+        { // This forloop shouln'd exit but unity wouln'd link the correct wheels.
+            if (item.name == "FrontWheel")
+            {
+                frontWheel = item;
+            }   
+            else if (item.name == "BackWheel")
+            {
+                backWheel = item;
+            }   
+
+        }
+
         MovementStart();
 
         pid = GetComponent<AiPid>();
@@ -95,6 +109,9 @@ public class AIDriver : Movement
 
     void FixedUpdate()
     {
+        Vector3 nrml = Vector3.zero;
+        GetNormal(out nrml);
+
         if (!IdleMode && isGrounded)
         {
             pid.RunPID();
@@ -120,15 +137,13 @@ public class AIDriver : Movement
 
     protected override void SetSteeringAngle()
     {
-
         Vector3 direction = transform.InverseTransformPoint(nextWaypoint);
         float dot = direction.x / direction.magnitude;
-
         TargetAngle = Mathf.Lerp(TargetAngle, dot * maximumSteeringAngle, aiSettings.turnSpeed * Time.fixedDeltaTime);
     }
 
     private Vector3 GetNextWayPoint(int lookAhead)
-    {
+    {   
         Vector3 targetPoint = trackNode.GetNode(waypointNodeID + lookAhead);
 
         Vector3 normal = WheelNormal;

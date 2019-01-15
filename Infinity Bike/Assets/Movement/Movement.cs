@@ -85,19 +85,22 @@ public abstract class Movement : MonoBehaviour
     {
         WheelHit hit;
         Vector3 vect = Vector3.zero;
-        bool isGrounded = false;
+        bool isGrounded = this.isGrounded;
         if (backWheel.GetGroundHit(out hit))
         {
             vect += hit.normal;
             isGrounded = true;
         }
-
-        if (frontWheel.GetGroundHit(out hit))
+        else if (frontWheel.GetGroundHit(out hit))
         {
             vect += hit.normal;
             isGrounded = true;
         }
+        else
+        {
 
+            isGrounded = false;
+        }
         normal = vect;
         normal.Normalize();
         this.isGrounded = isGrounded;

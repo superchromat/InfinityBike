@@ -78,7 +78,6 @@ public class PlayerMovement : Movement
     protected override void SetSteeringAngle()
     {
         TargetAngle = (serialValues.arduinoInfo.arduinoValueStorage.rawRotation / ((serialValues.arduinoInfo.rotationAnalogRange.range)) - 0.5f) * angleChangeRange; // TODO TargetAngle (remove Cap from T)
-        Debug.Log(TargetAngle);
 
     }
 

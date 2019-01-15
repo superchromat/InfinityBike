@@ -53,8 +53,6 @@ public class Drafting : MonoBehaviour
         }       
     }   
     
-    
-    
     void FixedUpdate ()
     {
         GameObject newFollowing = null;
