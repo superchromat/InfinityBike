@@ -2251,6 +2251,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93d8721936ab4413fa16c2aac53ef7a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cyclingSpeedFactor: 1
+  wheelRotationFactor: 10
+  frontWheel: {fileID: 4181025866347260}
+  backWheel: {fileID: 4333322704586966}
 --- !u!114 &114453828571665508
 MonoBehaviour:
   m_ObjectHideFlags: 1
