@@ -35,7 +35,9 @@ public class UIHelper : MonoBehaviour {
         }   
 
         dataGraph.pauseDataAppending = (menuButton.CurrentActivatedID == MenuButtonManager.Menu.PAUSESCREEN);
-    }   
+    }
+
+
 
     IEnumerator MakeMenuAppear()
     {   

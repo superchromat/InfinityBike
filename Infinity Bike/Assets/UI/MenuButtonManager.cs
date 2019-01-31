@@ -12,9 +12,13 @@ public class MenuButtonManager : MonoBehaviour
     public Slider slider;
     public Transform[] onScreenButtonGroup;
 
-    private Menu activeGroup = (Menu)(- 1);
+    private Menu activeGroup = Menu.PAUSESCREEN;
     public Menu CurrentActivatedID
-    {get { return activeGroup; }}
+    {
+        get {
+            return activeGroup;
+        }
+    }
 
 
 
