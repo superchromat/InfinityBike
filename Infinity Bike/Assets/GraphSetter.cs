@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PowerGraphSetter : MonoBehaviour {
+public class GraphSetter : MonoBehaviour {
 
     public DataGraph dataGraph;
     public int curveID;
     private Vector2 nextValueToSet;
+
     // Use this for initialization
     void Start()
     {   
@@ -25,10 +26,10 @@ public class PowerGraphSetter : MonoBehaviour {
         }
     }
 
-    public void AddToCurve(float time, float value)
+    public void AddToCurve(float _time, float value)
     {
         gotNewValue = true;
-        nextValueToSet = new Vector2(time, value);
+        nextValueToSet = new Vector2(_time, value);
     }
 
     void CreateCurve()

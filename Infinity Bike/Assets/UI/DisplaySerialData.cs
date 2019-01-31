@@ -11,13 +11,10 @@ public class DisplaySerialData : MonoBehaviour {
     public Text rotationText;
 
     public ArduinoThread serialData;
-    public PowerGraphSetter dataGraph;
-    private float timeStart;
 
     
     void Start ()
     {
-        timeStart = 0;
     }   
     
 	// Update is called once per frame
@@ -25,8 +22,6 @@ public class DisplaySerialData : MonoBehaviour {
     {   
         speedText.text = serialData.arduinoInfo.arduinoValueStorage.rawSpeed.ToString();
         rotationText.text = serialData.arduinoInfo.arduinoValueStorage.rawRotation.ToString();
-        dataGraph.AddToCurve(timeStart, serialData.arduinoInfo.arduinoValueStorage.rawSpeed);
-        timeStart += Time.deltaTime;
 
     }   
 

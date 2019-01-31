@@ -12,18 +12,19 @@ public class VelocityGetter : MonoBehaviour {
     private float lastVelocity;
     public float Velocity{get{return lastVelocity; }}
     public TimerController timerController;
-    float timeUnpaused = 0;
+    private GraphSetter graphSetter;
+    private float time;
 
     // Use this for initialization
     void Start () {
 
         playerRB = commonCanvasVariables.playerRB.GetComponent<Rigidbody>();
         vel = GetComponent<Text> ();
+        graphSetter = GetComponent<GraphSetter>();
 
         if (playerRB == null)
         {throw new System.Exception("playerRB is set to null in script attached to " + this.gameObject.name);}
-
-        timeUnpaused = timerController.StartTime;
+        time = 0; ;
     }
 	
 	// Update is called once per frame
@@ -31,6 +32,8 @@ public class VelocityGetter : MonoBehaviour {
 	{   
         lastVelocity = Mathf.Floor(playerRB.velocity.magnitude * 10000) / 10000;
         vel.text = (lastVelocity).ToString();
+        graphSetter.AddToCurve(time, lastVelocity);
+        time += Time.deltaTime;
     }   
     
 
