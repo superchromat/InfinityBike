@@ -12,16 +12,9 @@ double interuptPeriod = 0;
 bool ledState = false;
 bool printing = false;
 bool interruptPrinting = false;
-MPU6050 mpu;
-
-
-
 
 SerialCommand sCmd;
 bool reset = true;
-
-
-
 
 unsigned long lastRevolTime = 0;
 unsigned long revolSpeed = 0;
@@ -39,8 +32,6 @@ void setup()
   interruptPrinting = false;
   interuptPeriod = 1. / (16000000. / ((double)PRESCALER * ((double)CMP + 1.)));
   pinMode(LED_PIN, OUTPUT);
-  mpu.ConnectMPU();
-  mpu.CalibrateMPU();
   SetUpTimerInterrupt();
 
 
@@ -63,7 +54,6 @@ void setup()
 
 void loop()
 {
-	mpu.UpdateMPU(deltaTime * interuptPeriod);
   deltaTime = 0;
 
 	while (Serial.available() > 0)
