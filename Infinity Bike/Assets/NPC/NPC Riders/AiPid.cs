@@ -28,7 +28,7 @@ public class AiPid : MonoBehaviour {
         UpdateErrorValue();
 
         pidValue.proportionValue = errorVariable;
-        pidValue.integralValue   +=errorVariable * Time.fixedDeltaTime;
+        pidValue.integralValue  +=errorVariable * Time.fixedDeltaTime;
         pidValue.diffentialValue = (errorVariableLastFrame - errorVariable) / Time.fixedDeltaTime;
 
         controlVariable = pidConstant.kProportion * pidValue.proportionValue + pidConstant.kIntegral * pidValue.integralValue + pidConstant.kDifferential * pidValue.diffentialValue;
@@ -87,7 +87,17 @@ public class AiPid : MonoBehaviour {
             this.kIntegral = kIntegral;
             this.kDifferential = kDifferential;
         }
+
+        public void SetRandomConstants()
+        {
+            kProportion = UnityEngine.Random.Range(0, 10f);
+            kDifferential = UnityEngine.Random.Range(0, 10f);
+            kIntegral = UnityEngine.Random.Range(0, 10f);
+        }
     };
+
+
+
 
     [Serializable]
     public class PIDValue
@@ -96,6 +106,7 @@ public class AiPid : MonoBehaviour {
         public float integralValue;
         public float diffentialValue;
     };
+
 
 
 }

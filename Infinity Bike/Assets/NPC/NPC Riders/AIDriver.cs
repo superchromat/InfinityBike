@@ -26,6 +26,7 @@ public class AIDriver : Movement
     }
     
     public float velocitySqr = 0;
+    public float lastVelocitySqr = 0;
     private Vector3 nextWaypoint;
 
     private float timeAlive = 0;
@@ -71,7 +72,17 @@ public class AIDriver : Movement
         pid = GetComponent<AiPid>();
         pid.UpdateErrorValue += () => 
         {   
-            pid.errorVariable = (aiSettings.targetSqrSpeed - velocitySqr);
+            pid.errorVariable = (aiSettings.targetSqrSpeed - velocitySqr)/ aiSettings.targetSqrSpeed;
+            
+            float accel = (velocitySqr - lastVelocitySqr) / Time.deltaTime;
+            
+            float val = (aiSettings.targetMaximumAcceleration - accel) / aiSettings.targetMaximumAcceleration * pid.errorVariable;
+
+            Debug.Log(pid.errorVariable+ "\t"+val);
+
+            pid.errorVariable += val;
+
+
         };  
 
         aiSettings.SetRandomValues();
@@ -85,6 +96,7 @@ public class AIDriver : Movement
     {
         respawn = GetComponent<Respawn>(); ;
         waypointNodeID = -1;
+        respawn.AddLastToRespawnAction(()=> { motorTorque = 0; });
         respawn.AddLastToRespawnAction(pid.ResetValues);
         respawn.AddLastToRespawnAction(() => { Stop(breakForce); });
         respawn.AddLastToRespawnAction(() => { respawn.respawnNode = waypointNodeID - 1; });
@@ -93,10 +105,13 @@ public class AIDriver : Movement
     }   
 
     private void Update()
-    {
-        timeAlive += Time.deltaTime * rb.velocity.magnitude;
+    {   
 
+        timeAlive += Time.deltaTime * rb.velocity.magnitude;
+        
+        lastVelocitySqr = velocitySqr;
         velocitySqr = Vector3.Dot(rb.velocity, transform.forward) * Mathf.Abs(Vector3.Dot(rb.velocity, transform.forward));
+
         SetRotationUp();
 
         UpdateWaypointID();
@@ -105,25 +120,32 @@ public class AIDriver : Movement
         Vector3 trackDirection = (trackNode.GetNode(waypointNodeID + 1) - trackNode.GetNode(waypointNodeID)).normalized;
         if (Vector3.Dot(trackDirection, transform.forward) < 0)
         { respawn.CallRespawnAction(); }
-    }   
-
-    void FixedUpdate()
-    {
+        
         Vector3 nrml = Vector3.zero;
         GetNormal(out nrml);
 
         if (!IdleMode && isGrounded)
-        {
+        {   
             pid.RunPID();
-            motorTorque = pid.controlVariable;
-            Go(motorTorque);
+            motorTorque = Mathf.Lerp(motorTorque,pid.controlVariable,0.5f);
+
+            if (motorTorque >= 0)
+                Go(motorTorque);
+            else
+                Stop(0.1f);
+            
+
+
         }   
 
         SetSteeringAngle();
+
         ApplyVelocityDrag(velocityDrag);
+
         if (trackNode.isLoopOpen && ((waypointNodeID + 1) >= (trackNode.GetNodeCount())))
         { IdleMode = true; }
-    }
+    }   
+    
 
     protected override void EnterIdleMode()
     {
