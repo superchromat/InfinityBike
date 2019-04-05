@@ -10,6 +10,7 @@ public class RunArduinoThread : MonoBehaviour
        
     public ushort keyBoardSpeed = 80;
     public ushort keyBoardRotation = 200;
+
     // Use this for initialization
     void Start ()
     {   
@@ -19,8 +20,15 @@ public class RunArduinoThread : MonoBehaviour
 
     private void Update()
     {
-        if (!arduinoThread.IsArduinoConnected || useKeyBoard )
-        {   
+
+
+        if (!useKeyBoard)
+        {
+            arduinoThread.RunThread();
+        }
+
+        if ((!arduinoThread.IsArduinoConnected || useKeyBoard) )
+        {
             if (Input.GetKey(KeyCode.Space))
                 arduinoThread.arduinoInfo.arduinoValueStorage.rawSpeed = keyBoardSpeed;
             else
@@ -40,10 +48,7 @@ public class RunArduinoThread : MonoBehaviour
 
         }
 
-        if(!useKeyBoard)
-        {
-            arduinoThread.RunThread();
-        }
+
 
     }
 

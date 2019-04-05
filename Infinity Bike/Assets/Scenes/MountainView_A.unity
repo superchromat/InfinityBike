@@ -6964,7 +6964,7 @@ PrefabInstance:
     - target: {fileID: 114807506563526216, guid: 3a2f2fce2a3d049bba2cac964e96b0d6,
         type: 3}
       propertyPath: useKeyBoard
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a2f2fce2a3d049bba2cac964e96b0d6, type: 3}
@@ -8813,6 +8813,7 @@ MonoBehaviour:
   velocityDrag: 1
   idleMode: 0
   aiSettings:
+    targetMaximumAcceleration: 1
     targetSqrSpeed: 49
     turnSpeed: 5
     trajectoryOffset:
@@ -8825,6 +8826,7 @@ MonoBehaviour:
   maximumSteeringAngle: 45
   motorTorque: 0
   velocitySqr: 0
+  lastVelocitySqr: 0
   lookAhead: 1
 --- !u!114 &1978581683
 MonoBehaviour:

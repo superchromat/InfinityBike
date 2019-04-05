@@ -78,8 +78,6 @@ public class AIDriver : Movement
             
             float val = (aiSettings.targetMaximumAcceleration - accel) / aiSettings.targetMaximumAcceleration * pid.errorVariable;
 
-            Debug.Log(pid.errorVariable+ "\t"+val);
-
             pid.errorVariable += val;
 
 
