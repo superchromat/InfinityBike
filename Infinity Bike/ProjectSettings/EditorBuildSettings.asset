@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/StartScreen.unity
     guid: 8c2aad99a1c3fbf49935452a261e1f9e
   - enabled: 1
-    path: Assets/Scenes/MountainView.unity
-    guid: 0970ef3747a65412c923305ff3aa9b24
+    path: Assets/Scenes/MountainView_A.unity
+    guid: 97ae91a69857d6b428390b8520871e24
   m_configObjects: {}

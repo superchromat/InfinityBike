@@ -5,8 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MenuButtonManager : MonoBehaviour
-{
-
+{   
     public enum Menu{   DEFAULT = -1, PAUSESCREEN = 0, LOADSCREEN = 1  }
 
     public Slider slider;
@@ -19,10 +18,7 @@ public class MenuButtonManager : MonoBehaviour
             return activeGroup;
         }
     }
-
-
-
-
+    
     public void ActivePauseScreen()
     {// for unity buttons
         ActivateMenuButtons(Menu.PAUSESCREEN);
@@ -49,7 +45,7 @@ public class MenuButtonManager : MonoBehaviour
         { item.gameObject.SetActive(false); }
         activeGroup = Menu.DEFAULT;
     }   
-        
+    
     public void ExitGame()
     {   
         #if UNITY_EDITOR
