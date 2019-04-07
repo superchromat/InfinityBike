@@ -39,6 +39,8 @@ void setup()
   interruptPrinting = false;
   interuptPeriod = 1. / (16000000. / ((double)PRESCALER * ((double)CMP + 1.)));
   pinMode(LED_PIN, OUTPUT);
+  pinMode(2,INPUT_PULLUP);
+  
   //mpu.ConnectMPU();
   //mpu.CalibrateMPU();
   SetUpTimerInterrupt();
@@ -80,8 +82,8 @@ void loop()
 		revolSpeed >>= 1;
 	}
 
- // if(digitalRead(12) == 1)
- if (1==1)
+ if(digitalRead(12) == 1)
+ 
   {
     revolSpeed = 80;
   }

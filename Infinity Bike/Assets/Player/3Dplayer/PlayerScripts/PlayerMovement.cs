@@ -84,8 +84,16 @@ public class PlayerMovement : Movement
 
     protected override void SetSteeringAngle()
     {
-        TargetAngle = (serialValues.arduinoInfo.arduinoValueStorage.rawRotation / ((serialValues.arduinoInfo.rotationAnalogRange.range)) - 0.5f) * angleChangeRange; // TODO TargetAngle (remove Cap from T)
-
+        float angle = (serialValues.arduinoInfo.arduinoValueStorage.rawRotation / ((serialValues.arduinoInfo.rotationAnalogRange.range)) - 0.5f) * angleChangeRange; // 
+       
+        if (serialValues.arduinoInfo.inverseRot)
+        {
+            TargetAngle = -angle; 
+        }
+        else
+        {
+            TargetAngle = angle; 
+        }
     }
 
     protected override void EnterIdleMode()

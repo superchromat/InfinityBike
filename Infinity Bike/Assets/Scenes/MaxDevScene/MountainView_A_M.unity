@@ -6922,7 +6922,7 @@ PrefabInstance:
     - target: {fileID: 114807506563526216, guid: 3a2f2fce2a3d049bba2cac964e96b0d6,
         type: 3}
       propertyPath: useKeyBoard
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114436464995125026, guid: 3a2f2fce2a3d049bba2cac964e96b0d6,
         type: 3}
@@ -8062,6 +8062,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6441825548273540469, guid: 8b42209de75ad4140a82a50e71f8db46,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 751.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6441825548273540469, guid: 8b42209de75ad4140a82a50e71f8db46,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 350.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6441825548273540469, guid: 8b42209de75ad4140a82a50e71f8db46,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 247.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 780700647868086824, guid: 8b42209de75ad4140a82a50e71f8db46,
+        type: 3}
+      propertyPath: height
+      value: 722
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b42209de75ad4140a82a50e71f8db46, type: 3}

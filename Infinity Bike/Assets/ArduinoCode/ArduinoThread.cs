@@ -135,7 +135,7 @@ public class ArduinoThread : ScriptableObject
         int p = (int)Environment.OSVersion.Platform;
         if (p == 4 || p == 128 || p == 6)
         {
-            ports = new string[]{ "/dev/cu.wchusbserial14210"};
+            ports = new string[]{ "/dev/cu.wchusbserial1420"};
         //ports = GetPortNamesOSX();
             }
         else

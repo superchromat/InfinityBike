@@ -3935,6 +3935,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93d8721936ab4413fa16c2aac53ef7a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wheelRotationSpeed: 1
   cyclingSpeedFactor: 0.08
   wheelRotationFactor: 500
   frontWheel: {fileID: 944995737}
@@ -7981,6 +7982,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93d8721936ab4413fa16c2aac53ef7a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wheelRotationSpeed: 1
   cyclingSpeedFactor: 0.08
   wheelRotationFactor: 500
   frontWheel: {fileID: 1651528385}
@@ -9356,6 +9358,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93d8721936ab4413fa16c2aac53ef7a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wheelRotationSpeed: 1
   cyclingSpeedFactor: 0.08
   wheelRotationFactor: 500
   frontWheel: {fileID: 991784683}
@@ -10058,6 +10061,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93d8721936ab4413fa16c2aac53ef7a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wheelRotationSpeed: 1
   cyclingSpeedFactor: 0.08
   wheelRotationFactor: 500
   frontWheel: {fileID: 1131790738}
@@ -16557,6 +16561,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93d8721936ab4413fa16c2aac53ef7a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wheelRotationSpeed: 1
   cyclingSpeedFactor: 0.08
   wheelRotationFactor: 500
   frontWheel: {fileID: 1189267394}
@@ -19126,6 +19131,11 @@ PrefabInstance:
     - target: {fileID: 114807506563526216, guid: 3a2f2fce2a3d049bba2cac964e96b0d6,
         type: 3}
       propertyPath: useKeyBoard
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114043672605350868, guid: 3a2f2fce2a3d049bba2cac964e96b0d6,
+        type: 3}
+      propertyPath: idleMode
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4595878061528302, guid: 3a2f2fce2a3d049bba2cac964e96b0d6, type: 3}
@@ -19140,21 +19150,29 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -2.11
       objectReference: {fileID: 0}
-    - target: {fileID: 4696912688428960, guid: 3a2f2fce2a3d049bba2cac964e96b0d6, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.28
-      objectReference: {fileID: 0}
-    - target: {fileID: 4696912688428960, guid: 3a2f2fce2a3d049bba2cac964e96b0d6, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.09
-      objectReference: {fileID: 0}
-    - target: {fileID: 4696912688428960, guid: 3a2f2fce2a3d049bba2cac964e96b0d6, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -4.72
-      objectReference: {fileID: 0}
     - target: {fileID: 1844857213517736, guid: 3a2f2fce2a3d049bba2cac964e96b0d6, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4378544219860690, guid: 3a2f2fce2a3d049bba2cac964e96b0d6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4378544219860690, guid: 3a2f2fce2a3d049bba2cac964e96b0d6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.4320072
+      objectReference: {fileID: 0}
+    - target: {fileID: 4378544219860690, guid: 3a2f2fce2a3d049bba2cac964e96b0d6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4378544219860690, guid: 3a2f2fce2a3d049bba2cac964e96b0d6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.90187013
+      objectReference: {fileID: 0}
+    - target: {fileID: 4378544219860690, guid: 3a2f2fce2a3d049bba2cac964e96b0d6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 308.81
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a2f2fce2a3d049bba2cac964e96b0d6, type: 3}
@@ -19352,6 +19370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93d8721936ab4413fa16c2aac53ef7a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wheelRotationSpeed: 1
   cyclingSpeedFactor: 0.08
   wheelRotationFactor: 500
   frontWheel: {fileID: 130538910}
@@ -20884,6 +20903,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93d8721936ab4413fa16c2aac53ef7a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wheelRotationSpeed: 1
   cyclingSpeedFactor: 0.08
   wheelRotationFactor: 500
   frontWheel: {fileID: 1712467535}
@@ -25091,6 +25111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93d8721936ab4413fa16c2aac53ef7a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wheelRotationSpeed: 1
   cyclingSpeedFactor: 0.08
   wheelRotationFactor: 500
   frontWheel: {fileID: 652739925}
@@ -27389,6 +27410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93d8721936ab4413fa16c2aac53ef7a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wheelRotationSpeed: 1
   cyclingSpeedFactor: 0.08
   wheelRotationFactor: 500
   frontWheel: {fileID: 2086835576}

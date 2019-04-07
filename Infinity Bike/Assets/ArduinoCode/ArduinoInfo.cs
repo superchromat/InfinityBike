@@ -15,6 +15,7 @@ public class ArduinoInfo
     
     public SerialPort arduinoPort = null;
     public AnalogRange rotationAnalogRange = new AnalogRange();
+    public bool inverseRot = false; 
     public ArduinoValueStorage arduinoValueStorage = new ArduinoValueStorage();
 
     public void OpenArduinoPort(string port)
@@ -87,6 +88,7 @@ public class ArduinoInfo
 
         public void SetValue(UInt16 rawRotation, UInt16 rawSpeed)
         {
+            
             this.rawRotation = rawRotation;
             this.rawSpeed = rawSpeed;
         }

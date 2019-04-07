@@ -13,9 +13,13 @@ public class RunArduinoThread : MonoBehaviour
 
     // Use this for initialization
     void Start ()
-    {   
-        if (arduinoThread.arduinoInfo.arduinoPort == null || !arduinoThread.arduinoInfo.arduinoPort.IsOpen)
-        {arduinoThread.Initialisation();}   
+    {
+        if (!useKeyBoard)
+        {
+            if (arduinoThread.arduinoInfo.arduinoPort == null || !arduinoThread.arduinoInfo.arduinoPort.IsOpen)
+            { arduinoThread.Initialisation(); }
+        }
+
     }   
 
     private void Update()

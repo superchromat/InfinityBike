@@ -3,8 +3,9 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -12,12 +13,12 @@ MonoBehaviour:
   m_Name: ArduinoThread
   m_EditorClassIdentifier: 
   arduinoInfo:
-    comPort: COM5
+    comPort: /dev/cu.wchusbserial14210
     baudRate: 9600
     arduinoReadTimeout: 50
     rotationAnalogRange:
       center: 512
       range: 1024
     arduinoValueStorage:
-      rawRotation: 1023
-      rawSpeed: 0
+      rawRotation: 486
+      rawSpeed: 80
