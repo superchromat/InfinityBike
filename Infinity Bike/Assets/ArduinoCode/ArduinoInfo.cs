@@ -19,6 +19,7 @@ public class ArduinoInfo
 
     public void OpenArduinoPort(string port)
     {
+
         try { ArduinoAgentCleanup(); } catch (Exception) { }
 
         arduinoPort = new SerialPort(port, (int)baudRate);

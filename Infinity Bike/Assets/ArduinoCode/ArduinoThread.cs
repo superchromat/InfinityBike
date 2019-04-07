@@ -21,24 +21,12 @@ public class ArduinoThread : ScriptableObject
 
     public void Initialisation()
     {
-<<<<<<< HEAD
-       arduinoThread = (new Thread(AsychronousAutoDetectArduino));
-       CurrentActiveValueGetter = 
-       () => 
-       {
-           if (!arduinoThread.IsAlive)
 
-           {
-             arduinoThread.Start();
-           }
-           
-       };
-=======
         if (activeThread != null && activeThread.IsAlive)
         { activeThread.Abort();}
 
         threadQueue.Enqueue((new Thread(AsychronousAutoDetectArduino)));
->>>>>>> 346887c691f365e571c7b7d89e62dbdba5decb98
+
     }
 
     void AddToThreadQueue(Thread toAdd)
@@ -146,19 +134,17 @@ public class ArduinoThread : ScriptableObject
         string[] ports;
         int p = (int)Environment.OSVersion.Platform;
         if (p == 4 || p == 128 || p == 6)
-        {ports = GetPortNamesOSX();}
+        {
+            ports = new string[]{ "/dev/cu.wchusbserial14210"};
+        //ports = GetPortNamesOSX();
+            }
         else
         {ports = SerialPort.GetPortNames();}
 
-<<<<<<< HEAD
-         foreach (string port in ports) 
-        { 
-        //string port = ports[3];  
 
-=======
         foreach (string port in ports) {   
             
->>>>>>> 346887c691f365e571c7b7d89e62dbdba5decb98
+
             string result = null;
 
 

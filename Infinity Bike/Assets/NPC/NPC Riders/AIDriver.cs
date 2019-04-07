@@ -128,12 +128,7 @@ public class AIDriver : Movement
         if (!IdleMode && isGrounded)
         {   
             pid.RunPID();
-<<<<<<< HEAD
-            motorTorque = pid.controlVariable;
-            Go(motorTorque);
-            //To handle animation 
-            playerAnimatorScript.UpdateCyclingSpeed(motorTorque);
-=======
+
             motorTorque = Mathf.Lerp(motorTorque,pid.controlVariable,0.5f);
 
             if (motorTorque >= 0)
@@ -142,8 +137,6 @@ public class AIDriver : Movement
                 Stop(0.1f);
             
 
-
->>>>>>> 346887c691f365e571c7b7d89e62dbdba5decb98
         }   
 
         SetSteeringAngle();

@@ -23,6 +23,7 @@ public class PlayerMovement : Movement
             frontWheel.steerAngle = value;
             if(playerAnimatorScript!=null)
             playerAnimatorScript.UpdateSteeringAngle(value);
+
         }
     }
 
@@ -69,6 +70,7 @@ public class PlayerMovement : Movement
 
 		if (handleBar != null)
         {handleBar.localRotation = Quaternion.Euler (0, TargetAngle + 90, 90);}
+
 
         SetRotationUp();
         ApplyVelocityDrag(velocityDrag);
