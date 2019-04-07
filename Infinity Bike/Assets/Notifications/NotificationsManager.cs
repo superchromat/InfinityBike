@@ -29,12 +29,13 @@ public class NotificationsManager : MonoBehaviour {
 
     }
 
-    public void PushNotification(string notificationText)
+    public void PushNotification(string notificationText,float pers)
     {
         lastMessageTime = Time.time;
         tMPro.text = notificationText; 
         tMPro.enabled = true;
-        textVisible = true; 
+        textVisible = true;
+        persistance = pers; 
         
         
 

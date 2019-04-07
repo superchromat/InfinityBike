@@ -10,16 +10,16 @@ public class EventsNotificationsManager : MonoBehaviour {
     private int eventNum;  
 	// Use this for initialization
 	void Start () {
-		
+        eventNum = 0;
 	}
 	
 	// Update is called once per frame
 	void Update () {
         if (eventNum < trainingEvents.Length)
         {
-            if (Time.time > trainingEvents[eventNum].eventTime)
+            if (Time.time > trainingEvents[eventNum].GetEventTime())
             {
-                notificationsManager.PushNotification(trainingEvents[eventNum].eventMessages);
+                notificationsManager.PushNotification(trainingEvents[eventNum].eventMessages,trainingEvents[eventNum].persistance);
 
                 eventNum++;
             }
@@ -41,5 +41,12 @@ public class TrainingEvent
 {
     public string eventName;
     public string eventMessages; 
-    public float eventTime; 
+    public float eventMinute;
+    public float eventSecond;
+    public float persistance; 
+
+    public float GetEventTime()
+    {
+        return eventMinute * 60f + eventSecond;
+    }
 }
