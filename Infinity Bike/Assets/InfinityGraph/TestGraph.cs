@@ -19,7 +19,7 @@ public class TestGraph : MonoBehaviour {
     void TestCurve()
     {
         DataGraph.GraphtList.Clear();
-        dataGraph.graphCurves.Clear();
+        dataGraph.curves.Clear();
 
         List<Vector2> data = new List<Vector2>();
         data.Add(Vector2.zero);
@@ -28,16 +28,16 @@ public class TestGraph : MonoBehaviour {
 
     void UpdateTestCurve()
     {
-        foreach (int item in dataGraph.graphCurves.Keys)
+        foreach (int item in dataGraph.curves.Keys)
         {   
             Vector2 curvePoint;
             
             int count = 0;
             float val = 0;
-            if ((count = dataGraph.graphCurves[item].GetCurveDataBuffer().Count) != 0)
-            {val = dataGraph.graphCurves[item].GetCurveDataBuffer()[count - 1].x;}   
-            else if ((count = dataGraph.graphCurves[item].GetCurveData().Count) != 0)
-            {val = dataGraph.graphCurves[item].GetCurveData()[count - 1].x;}   
+            if ((count = dataGraph.curves[item].GetCurveDataBuffer().Count) != 0)
+            {val = dataGraph.curves[item].GetCurveDataBuffer()[count - 1].x;}   
+            else if ((count = dataGraph.curves[item].GetCurveData().Count) != 0)
+            {val = dataGraph.curves[item].GetCurveData()[count - 1].x;}   
 
             curvePoint.x = val + 0.01f;
             curvePoint.y = Mathf.Sin(curvePoint.x * 10f) * Mathf.Sin(curvePoint.x * 5f) * Mathf.Sin(curvePoint.x);

@@ -12,56 +12,29 @@ public class VelocityGetter : MonoBehaviour {
     private float lastVelocity;
     public float Velocity{get{return lastVelocity; }}
     public TimerController timerController;
-
-    public DataGraph dataGraph;
-    int curveKey = 0;
-    float timeUnpaused = 0;
+    private GraphSetter graphSetter;
+    private float time;
 
     // Use this for initialization
     void Start () {
 
         playerRB = commonCanvasVariables.playerRB.GetComponent<Rigidbody>();
         vel = GetComponent<Text> ();
+        graphSetter = GetComponent<GraphSetter>();
 
         if (playerRB == null)
         {throw new System.Exception("playerRB is set to null in script attached to " + this.gameObject.name);}
-        CreateCurve();
-        timeUnpaused = timerController.StartTime;
+        time = 0; ;
     }
 	
 	// Update is called once per frame
 	void LateUpdate () 
-	{
+	{   
         lastVelocity = Mathf.Floor(playerRB.velocity.magnitude * 10000) / 10000;
         vel.text = (lastVelocity).ToString();
-
-        if (!blockUpdate)
-        { StartCoroutine(UpdateTestCurve()); }
-
-
-    }
-
-    void CreateCurve()
-    {   
-        dataGraph.graphCurves.Clear();
-        
-        List<Vector2> data = new List<Vector2>();
-        data.Add(Vector2.zero);
-        curveKey = dataGraph.AddDataSeries(data, Color.red, "Power Curve");
+        graphSetter.AddToCurve(time, lastVelocity);
+        time += Time.deltaTime;
     }   
-
-    bool blockUpdate = false;
-    IEnumerator UpdateTestCurve()
-    {
-        blockUpdate = true;
-
-        if (!dataGraph.pauseDataAppending)
-        {   
-            timeUnpaused += Time.deltaTime;
-            dataGraph.AddPointToExistingSeries(curveKey, new Vector2(timeUnpaused, Velocity));
-        }   
-        yield return new WaitForSeconds(0.01f);
-        blockUpdate = false;
-    }
+    
 
 }

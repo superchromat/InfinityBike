@@ -1,9 +1,11 @@
 //#include "SoftwareSerial.h"
 #include "SerialCommand.h"
 #include "SoftwareSerial.h"
-#include "MPU6050.h"
 
+#define INTERRUPT_PIN 2
+#define VEL_PIN 10
 #define LED_PIN 13
+
 #define PRESCALER 8
 #define CMP 999
 
@@ -12,16 +14,9 @@ double interuptPeriod = 0;
 bool ledState = false;
 bool printing = false;
 bool interruptPrinting = false;
-MPU6050 mpu;
-
-
-
 
 SerialCommand sCmd;
 bool reset = true;
-
-
-
 
 unsigned long lastRevolTime = 0;
 unsigned long revolSpeed = 0;
@@ -31,22 +26,19 @@ unsigned long zeroSpeedTime = 0;
 void rotHandler();
 void speedHandler();
 
-
 void setup()
 {
 
   printing = false;
   interruptPrinting = false;
   interuptPeriod = 1. / (16000000. / ((double)PRESCALER * ((double)CMP + 1.)));
-  pinMode(LED_PIN, OUTPUT);
-  mpu.ConnectMPU();
-  mpu.CalibrateMPU();
+
   SetUpTimerInterrupt();
 
 
 	zeroSpeedTime = millis();
 	Serial.begin(9600);
-	attachInterrupt(0, rpm_fun, RISING);
+	attachInterrupt(INTERRUPT_PIN, rpm_fun, RISING);
 
 	sCmd.addCommand("ROT", rotHandler);
 	sCmd.addCommand("SPEED", speedHandler);
@@ -54,8 +46,8 @@ void setup()
 	sCmd.addCommand("READY", StartCommunication);
 	sCmd.addCommand("DONE", StopCommunication);
 
-	pinMode(11, OUTPUT);
-  pinMode(12, INPUT);
+	pinMode(LED_PIN, OUTPUT);
+  pinMode(VEL_PIN, INPUT);
 	digitalWrite(LED_BUILTIN, LOW);
 }
 
@@ -63,7 +55,6 @@ void setup()
 
 void loop()
 {
-	mpu.UpdateMPU(deltaTime * interuptPeriod);
   deltaTime = 0;
 
 	while (Serial.available() > 0)
@@ -75,20 +66,19 @@ void loop()
 	if ((currMillis - zeroSpeedTime) > zeroSpeedThreshold)
 	{
 		zeroSpeedTime = currMillis;
-		revolSpeed >>= 1;
+		revolSpeed /= 2;
 	}
 
-  if(digitalRead(12) == 1)
+  if(digitalRead(VEL_PIN) == 1)
   {
     revolSpeed = 80;
   }
 
 
-
 }
 
 void rotHandler()
-{
+{ 
 	Serial.println(analogRead(A0));
   Serial.flush  ();
 }
@@ -109,12 +99,12 @@ void StartCommunication()
 
 	Serial.println("READY");
   Serial.flush  ();
-  digitalWrite(11, HIGH);
+  digitalWrite(LED_PIN, HIGH);
 }
 
 void StopCommunication()
 {
-	digitalWrite(11, LOW);
+	digitalWrite(LED_PIN, LOW);
 
 }
 
@@ -123,11 +113,12 @@ void StopCommunication()
 void rpm_fun() {
 	unsigned long revolTime = millis();
 	unsigned long deltaTime = revolTime - lastRevolTime;
-
-	revolSpeed = 20000 / deltaTime;
-	lastRevolTime = revolTime;
-	zeroSpeedTime = millis();
-
+  if(deltaTime != 0)
+  {  
+	  revolSpeed = 20000 / deltaTime;
+    lastRevolTime = revolTime;
+    zeroSpeedTime = millis();
+  }
 }
 
 

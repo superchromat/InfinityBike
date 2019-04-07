@@ -27,6 +27,7 @@ public class PlayerAnimatorScript : MonoBehaviour {
     private void FixedUpdate()
     {
         //UpdateWheel rotation
+<<<<<<< HEAD:Infinity Bike/Assets/Player/PlayerAnimatorScript.cs
         frontWheel.Rotate(0,wheelRotationSpeed*wheelRotationFactor * Time.deltaTime, 0);
         //The front wheel rotates in y because of mixup with Blender. The front
         //wheel is bound to a bone...
@@ -34,6 +35,13 @@ public class PlayerAnimatorScript : MonoBehaviour {
     }
 
 
+=======
+        frontWheel.Rotate(wheelRotationSpeed*wheelRotationFactor * Time.deltaTime, 0, 0);
+        backWheel.Rotate(wheelRotationSpeed * wheelRotationFactor*Time.deltaTime, 0, 0);
+    }
+
+
+>>>>>>> 346887c691f365e571c7b7d89e62dbdba5decb98:Infinity Bike/Assets/PlayerAnimatorScript.cs
     public void UpdateSteeringAngle (float angle) {
         float normalizedAngle = (-angle + 45)/90;
         //Debug.Log(normalizedAngle);

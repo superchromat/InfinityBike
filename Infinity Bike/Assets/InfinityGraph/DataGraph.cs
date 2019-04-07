@@ -14,12 +14,17 @@ public class DataGraph : MonoBehaviour {
     /// Use this to acces any graph present in the scene.
     /// </summary>
     static public Dictionary<int, DataGraph> GraphtList
-    { get { return graphList; } }
+    {
+        get
+        {
+            return graphList;
+        }
+    }
 
     /// <summary>
     /// Use this to acces any curvres on this graph.
     /// </summary>
-    public Dictionary<int,Curve> graphCurves = new Dictionary<int, Curve>();
+    public Dictionary<int,Curve> curves = new Dictionary<int, Curve>();
 
     public string graphName;
     public int height = 640;
@@ -78,7 +83,7 @@ public class DataGraph : MonoBehaviour {
             SetBackGroundColor(backgroundColor);
             DrawAxis(ref verticalAxis);
             DrawAxis(ref horizontalAxis);
-            foreach (Curve item in graphCurves.Values)
+            foreach (Curve item in curves.Values)
             {   
                 if (item.GetCurveData().Count > 1)
                 {
@@ -104,9 +109,7 @@ public class DataGraph : MonoBehaviour {
         if (mapUpdate == null || !mapUpdate.IsAlive)
         {   
             if (autoFitAxis)
-            {FitAxisToAllData();}
-            
-
+            {FitAxisToAllData();}       
 
             mapUpdate = (new Thread(threadStart));
             mapUpdate.Start();
@@ -127,18 +130,12 @@ public class DataGraph : MonoBehaviour {
         horizontalAxis.axisValueMinMax.x = float.PositiveInfinity;
         horizontalAxis.axisValueMinMax.y = float.NegativeInfinity;
                 
-        foreach (Curve item in graphCurves.Values)
+        foreach (Curve item in curves.Values)
         {   
             item.AppendBufferToCurveData();
             FitAxisToCurve(item);
         }
-        //AxisRangeLock rangeLockType;
-               
-        //float verticalBuffer = Mathf.Abs(verticalAxis.axisValueMinMax.x - verticalAxis.axisValueMinMax.y) * 0.05f;
-
-        //verticalAxis.axisValueMinMax.x -= verticalBuffer;
-        //verticalAxis.axisValueMinMax.y += verticalBuffer;
-    }
+    }   
 
     void FitAxisToCurve(Curve curve)
     {
@@ -192,7 +189,6 @@ public class DataGraph : MonoBehaviour {
             Vector2 start = new Vector2(axis.start.x * width, axis.start.y * width);
             Vector2 stop = new Vector2(axis.stop.x * width, axis.stop.y * width);
             float angle = VectorAngle(stop - start);
-
             
             for (int majorMinor = 0; majorMinor < 2; majorMinor++)
             {   
@@ -337,13 +333,11 @@ public class DataGraph : MonoBehaviour {
             bool areBothPointsInTextureRange = (secondPoint.x <= 1 && secondPoint.x >= 0 && secondPoint.y <= 1 && secondPoint.y >= 0) && (firstPoint.x <= 1 && firstPoint.x >= 0 && firstPoint.y <= 1 && firstPoint.y >= 0);
 
             if (areBothPointsInTextureRange)
-            {
-
-
-                isFirstValid_x = (firstPoint.x >= horizontalAxis.start.x) ^ (firstPoint.x >= horizontalAxis.stop.x);
-                isFirstValid_y = ((firstPoint.y >= verticalAxis.start.y) ^ (firstPoint.y >= verticalAxis.stop.y) );
-                isSecondValid_x = (secondPoint.x >= horizontalAxis.start.x) ^ (secondPoint.x >= horizontalAxis.stop.x);
-                isSecondValid_y = ((secondPoint.y >= verticalAxis.start.y) ^ (secondPoint.y >= verticalAxis.stop.y));
+            {   
+                isFirstValid_x = (firstPoint.x >= horizontalAxis.start.x) ^ (firstPoint.x > horizontalAxis.stop.x);
+                isFirstValid_y = ((firstPoint.y >= verticalAxis.start.y) ^ (firstPoint.y > verticalAxis.stop.y) );
+                isSecondValid_x = (secondPoint.x >= horizontalAxis.start.x) ^ (secondPoint.x > horizontalAxis.stop.x);
+                isSecondValid_y = ((secondPoint.y >= verticalAxis.start.y) ^ (secondPoint.y > verticalAxis.stop.y));
 
                 if (((isFirstValid_x && isFirstValid_y) || (isSecondValid_x && isSecondValid_y)) || (isFirstValid_x ^ isSecondValid_x) && (isFirstValid_y ^ isSecondValid_y))
                 {   
@@ -373,21 +367,20 @@ public class DataGraph : MonoBehaviour {
         graphTexture.Apply();
     }
 
-
     public int AddDataSeries(List<Vector2> data, Color color, string curveName)
-    {
-        
+    {   
         Curve curve = new Curve(data, color, curveName);
-        graphCurves.Add(curve.GraphID, curve);
+        curves.Add(curve.GraphID, curve);
         return curve.GraphID;
-        
-        //if (data.Count >= 2)
-        //FitAxisToCurve(curve);
-    }
+    }   
+    
     public void AddPointToExistingSeries(int curveID, Vector2 vect)
     {   
         if (!pauseDataAppending)
-            graphCurves[curveID].GetCurveDataBuffer().Add(vect);
+        {
+            curves[curveID].GetCurveDataBuffer().Add(vect);
+
+        }
     }
 
     [System.Serializable]

@@ -21,6 +21,7 @@ public class PlayerMovement : Movement
         {
             targetAngle = value;
             frontWheel.steerAngle = value;
+            if(playerAnimatorScript!=null)
             playerAnimatorScript.UpdateSteeringAngle(value);
         }
     }
@@ -53,11 +54,13 @@ public class PlayerMovement : Movement
         {   
 
             Go(targetTorque);
+            if(playerAnimatorScript!=null)
             playerAnimatorScript.UpdateCyclingSpeed(targetTorque);
         }   
         else
         {   
             Stop(breakForce);
+            if(playerAnimatorScript!=null)
             playerAnimatorScript.UpdateCyclingSpeed(0);
             IdleMode = true;
         }
