@@ -119,6 +119,11 @@ ModelImporter:
     400112: TOHB_R
     2100000: unnamed
     2100002: Material
+    2100004: SKIN
+    2100006: HELMET
+    2100008: Fork
+    2100010: Tire
+    2100012: Bike_frame
     2300000: BackWheel
     2300002: Bike_Frame
     2300004: Hub_001
@@ -175,7 +180,7 @@ ModelImporter:
   externalObjects: {}
   materials:
     importMaterials: 1
-    materialName: 0
+    materialName: 2
     materialSearch: 1
     materialLocation: 1
   animations:

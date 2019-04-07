@@ -27,7 +27,9 @@ public class PlayerAnimatorScript : MonoBehaviour {
     private void FixedUpdate()
     {
         //UpdateWheel rotation
-        frontWheel.Rotate(wheelRotationSpeed*wheelRotationFactor * Time.deltaTime, 0, 0);
+        frontWheel.Rotate(0,wheelRotationSpeed*wheelRotationFactor * Time.deltaTime, 0);
+        //The front wheel rotates in y because of mixup with Blender. The front
+        //wheel is bound to a bone...
         backWheel.Rotate(wheelRotationSpeed * wheelRotationFactor*Time.deltaTime, 0, 0);
     }
 

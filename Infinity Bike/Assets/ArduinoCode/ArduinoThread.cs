@@ -29,6 +29,7 @@ public class ArduinoThread : ScriptableObject
        () => 
        {
            if (!arduinoThread.IsAlive)
+
            {
              arduinoThread.Start();
            }
@@ -123,10 +124,12 @@ public class ArduinoThread : ScriptableObject
         else
         {ports = SerialPort.GetPortNames();}
 
-        foreach (string port in ports) 
-		{   
-            
+         foreach (string port in ports) 
+        { 
+        //string port = ports[3];  
+
             string result = null;
+
 
             arduinoInfo.OpenArduinoPort(port);
 
@@ -138,7 +141,7 @@ public class ArduinoThread : ScriptableObject
                     try
                     {   
                         arduinoInfo.WriteToArduino("READY");
-                        Thread.Sleep(50);
+                        Thread.Sleep(200);
                         result = arduinoInfo.arduinoPort.ReadLine();
                     }   
                     catch (TimeoutException)
@@ -146,7 +149,7 @@ public class ArduinoThread : ScriptableObject
                         result = null;
                     }
                         
-                    if (result == "READY")
+                    if (result == "READY" || result == "READY\r")
                     {
                         Debug.Log(port + " " + result);
                         arduinoThread = (new Thread(AsynchronousReadFromArduino));

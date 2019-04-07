@@ -7,6 +7,8 @@ public class PlayerMovement : Movement
 {
     public float speedMultiplier = 1f;
 	public float angleChangeRange = 180f;
+
+    //To handle animation 
     public PlayerAnimatorScript playerAnimatorScript; 
 
     private float TargetAngle

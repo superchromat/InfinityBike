@@ -12,6 +12,9 @@ public class AIDriver : Movement
     public AiPid pid = null;
     public float maximumSteeringAngle = 45;
 
+    //To handle animation 
+    public PlayerAnimatorScript playerAnimatorScript;
+
     public float motorTorque = 0;
 
     private int waypointNodeID;
@@ -117,6 +120,8 @@ public class AIDriver : Movement
             pid.RunPID();
             motorTorque = pid.controlVariable;
             Go(motorTorque);
+            //To handle animation 
+            playerAnimatorScript.UpdateCyclingSpeed(motorTorque);
         }   
 
         SetSteeringAngle();
@@ -140,6 +145,7 @@ public class AIDriver : Movement
         Vector3 direction = transform.InverseTransformPoint(nextWaypoint);
         float dot = direction.x / direction.magnitude;
         TargetAngle = Mathf.Lerp(TargetAngle, dot * maximumSteeringAngle, aiSettings.turnSpeed * Time.fixedDeltaTime);
+        playerAnimatorScript.UpdateSteeringAngle(TargetAngle);
     }
 
     private Vector3 GetNextWayPoint(int lookAhead)

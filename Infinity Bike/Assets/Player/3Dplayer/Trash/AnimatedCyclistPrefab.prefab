@@ -2141,6 +2141,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93d8721936ab4413fa16c2aac53ef7a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cyclingSpeedFactor: 1
+  wheelRotationFactor: 10
+  frontWheel: {fileID: 0}
+  backWheel: {fileID: 0}
 --- !u!137 &137018020309158648
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
