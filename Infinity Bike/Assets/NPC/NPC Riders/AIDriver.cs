@@ -207,7 +207,7 @@ public class AIDriver : Movement
 
     void UpdateWaypointID()
     {
-        WaypointNodeID = Respawn.FindNearestNode(trackNode, transform);
+        WaypointNodeID = TrackNode.FindNearestNode(trackNode, transform);
     }
 
 }

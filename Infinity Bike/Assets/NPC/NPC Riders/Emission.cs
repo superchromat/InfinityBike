@@ -12,6 +12,7 @@ using UnityEditor;
 public class Emission : MonoBehaviour {
 
     public float frequency = 1;
+
     public float amplitude = 1;
     public Vector3 positionOffset = Vector3.zero;
     private float time = 0;

@@ -27,25 +27,31 @@ public class TrackNodeTool : MonoBehaviour {
 
         if (trackNode != null)
         {
-
+            bool indexSwitch = false;
             for (int index = 0; index < trackNode.GetNodeCount(); index++)
             {
-                if (trackNode.isLoopOpen && index == 0)
+
+                if (index == 0)
                 { continue; }
+
                 Color col;
-                if ((index & 1) == 1)
-                {
-                    col = Color.red;
-                }
+                if (indexSwitch)
+                {col = Color.red;}
                 else
-                {
-                    col = Color.cyan;
-                }
+                {col = Color.cyan;}
+                
+                indexSwitch = !indexSwitch;
+
                 Debug.DrawLine(trackNode.GetNode(index), trackNode.GetNode(index - 1),col);
             }
+            if (!trackNode.isLoopOpen)
+            {
+                Debug.DrawLine(trackNode.GetNode(0), trackNode.GetNode(- 1), Color.white);
+
+            }
+
 
             Debug.DrawLine(trackNode.GetNode(trackNode.GetNodeCount() - 1), transform.position, Color.blue);
-
             Debug.DrawLine(trackNode.GetNode(0), transform.position, Color.yellow);
             Debug.DrawLine(trackNode.GetNode(trackNodeToolSettings.cycleNodeIndex), transform.position, Color.green);
 

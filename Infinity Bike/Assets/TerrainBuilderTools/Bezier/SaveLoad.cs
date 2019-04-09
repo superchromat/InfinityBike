@@ -18,10 +18,10 @@ public class SaveLoad
             if (dataPath == null)
             {dataPath = Application.dataPath;}
 
-            string destination = dataPath + "\\" + fileName;
+            string destination = dataPath + Path.DirectorySeparatorChar + fileName;
             
             FileStream file;
-
+            
             if (File.Exists(destination)) file = File.OpenWrite(destination)/*+".dat"*/;
             else file = File.Create(destination);
             BinaryFormatter bf = new BinaryFormatter();

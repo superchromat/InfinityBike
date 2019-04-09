@@ -3,36 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 public class Respawn : MonoBehaviour
-{
-
+{   
     public TrackNode trackNode = null;
     public float respawnDistance = 50f;
     private Rigidbody rb = null;
     public int respawnNode = 0;
     bool blockSpawnCheck = false;
 
-
     private Action onRespawn = null;
 
     public void AddLastToRespawnAction(Action toAdd)
     { onRespawn += toAdd; }
-
     public void AddFirstToRespawnAction(Action toAdd)
     {
         Action total = onRespawn;
         onRespawn = toAdd;
         onRespawn += total;
     }
-
+    
     public void CallRespawnAction()
-    {
+    {   
         if (onRespawn == null)
             RespawnObject();
         else
             onRespawn();
-    }
-
-
+    }   
 
     void Start()
     {
@@ -40,19 +35,18 @@ public class Respawn : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    void LateUpdate()
-    {
-
+    void Update()
+    {   
         if (!blockSpawnCheck)
         {
             blockSpawnCheck = true;
             StartCoroutine(CheckIfRespawnIsNeeded());
         }
-    }
+    }   
 
     private IEnumerator CheckIfRespawnIsNeeded()
     {
-        int node = FindNearestNode(trackNode, transform);
+        int node = TrackNode.FindNearestNode(trackNode, transform);
         if (Vector3.Distance(trackNode.GetNode(node), transform.position) > respawnDistance)
         {
             respawnNode = node;
@@ -62,8 +56,7 @@ public class Respawn : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         blockSpawnCheck = false;
     }
-
-
+    
     public void RespawnObject()
     {
         if (trackNode.GetNodeCount() <= 1)
@@ -97,26 +90,13 @@ public class Respawn : MonoBehaviour
         transform.forward = spawnDirection;
     }
 
-    static public int FindNearestNode(TrackNode respawnPoint, Transform objToRespawn)
+    public void OnEnable()
     {
-        float minDistance = float.MaxValue;
-        int minDistanceNode = 0;
+        int node = TrackNode.FindNearestNode(trackNode, transform);
+        respawnNode = node;
+        CallRespawnAction();
 
-        for (int index = 0; index < respawnPoint.GetNodeCount(); index++)
-        {
-            Vector3 distance = objToRespawn.transform.position - respawnPoint.GetNode(index);
-            float sqrMagn = distance.sqrMagnitude;
-
-            if (sqrMagn < minDistance)
-            {
-                minDistance = sqrMagn;
-                minDistanceNode = index;
-            }
-        }
-
-        return minDistanceNode;
+        Debug.Log("Respawn");
     }
-
-
 }
 

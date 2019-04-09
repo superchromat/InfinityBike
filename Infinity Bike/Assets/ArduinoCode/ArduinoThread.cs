@@ -112,6 +112,12 @@ public class ArduinoThread : ScriptableObject
             AddToThreadQueue(new Thread(AsychronousAutoDetectArduino));
 
         }
+        catch (Exception e)
+        {
+            arduinoInfo.arduinoValueStorage.SetValue(0, 0);
+            Debug.LogWarning("UNHandled Error -> " + e.GetType() + " : " + e.Message);
+            AddToThreadQueue(new Thread(AsychronousAutoDetectArduino));
+        }
     }   
 
     private void AsychronousAutoDetectArduino()

@@ -71,8 +71,11 @@ public class NPCspawner : MonoBehaviour
 	void FixedUpdate () 
 	{
         if(isReadyForNextSpawn)
-        StartCoroutine(SpanwNextNPC());
-	}
+        {
+            StartCoroutine(SpanwNextNPC());
+
+        }
+    }
 
     IEnumerator SpanwNextNPC()
     {   
@@ -87,7 +90,7 @@ public class NPCspawner : MonoBehaviour
         isReadyForNextSpawn = true;
     }   
 
-	[ContextMenu("Spawn NPC")]
+
 	void SpawnNPC()
 	{
         for (int i = 0 ; i < npcList.Count; i++) 

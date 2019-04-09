@@ -227,8 +227,7 @@ public class Editor_TrackNodeTool : Editor
             CycleNodeIndex += dir;
         }
     }
-
-    
+      
 
     void SetHandleAtIndex(int index)
     {
