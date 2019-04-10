@@ -90,13 +90,5 @@ public class Respawn : MonoBehaviour
         transform.forward = spawnDirection;
     }
 
-    public void OnEnable()
-    {
-        int node = TrackNode.FindNearestNode(trackNode, transform);
-        respawnNode = node;
-        CallRespawnAction();
-
-        Debug.Log("Respawn");
-    }
 }
 

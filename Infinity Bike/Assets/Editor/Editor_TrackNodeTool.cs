@@ -205,7 +205,7 @@ public class Editor_TrackNodeTool : Editor
         GUILayout.EndHorizontal();
 
         if (doDrawTrajectory)
-        { GUILayout.TextField("Debug Draw color legend\n\tMain Track : RED and CYAN\n\tSelected node : GREEN\n\tFirst Node : YELLOW\n\tLast Node : BLUE"); }
+        { GUILayout.TextField("Debug Draw color legend\n\tMain Track : RED, CYAN and WHITE (if track node is a closed loop) \n\tSelected node : GREEN\n\tFirst Node : YELLOW\n\tLast Node : BLUE"); }
 
         if (useSpaceBarToSet)
         { GUILayout.TextField("Use Space Bar To Add\n\tDrag the tool around the scene and press spacebar to add a new node.\n\tTip : Place the scene in isometric view with a top view."); }
