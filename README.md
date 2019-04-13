@@ -92,7 +92,7 @@ To add features to the project, please branch out of the develop branch.
 
 ### Project structure 
 
-### Medium term goall 
+### Medium term goals 
 
 
 
