@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: ArduinoThread
   m_EditorClassIdentifier: 
   arduinoInfo:
-    comPort: /dev/cu.wchusbserial14210
+    comPort: /dev/cu.wchusbserial1420
     baudRate: 9600
     arduinoReadTimeout: 50
     rotationAnalogRange:
       center: 512
       range: 1024
+    inverseRot: 0
     arduinoValueStorage:
-      rawRotation: 486
-      rawSpeed: 80
+      rawRotation: 512
+      rawSpeed: 0

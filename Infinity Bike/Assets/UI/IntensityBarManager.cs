@@ -33,16 +33,17 @@ public  Color[] colors;
 
         for (int i = 0; i < numBar; i++)
         {
+            int j = numBar - i - 1;
             Image bar = bars[i];
             float alpha = 0.1f;
 
-            if ((float) speed /(float) maxSpeed > (float)(i + 1) /(float) numBar){
+            if ((float) speed /(float) maxSpeed > (float)(j + 1) /(float) numBar){
                 alpha = 1f; 
             }
 
 
 
-            bar.color = new Color(colors[i].r,colors[i].g, colors[i].b, alpha);
+            bar.color = new Color(colors[j].r,colors[j].g, colors[j].b, alpha);
 
         }
 		
