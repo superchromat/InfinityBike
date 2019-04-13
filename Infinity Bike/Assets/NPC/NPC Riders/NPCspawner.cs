@@ -68,11 +68,13 @@ public class NPCspawner : MonoBehaviour
 
 
 	// Update is called once per frame
-	void FixedUpdate () 
+	void Update () 
 	{
         if(isReadyForNextSpawn)
-        StartCoroutine(SpanwNextNPC());
-	}
+        {   
+            StartCoroutine(SpanwNextNPC());
+        }   
+    }
 
     IEnumerator SpanwNextNPC()
     {   
@@ -87,7 +89,7 @@ public class NPCspawner : MonoBehaviour
         isReadyForNextSpawn = true;
     }   
 
-	[ContextMenu("Spawn NPC")]
+
 	void SpawnNPC()
 	{
         for (int i = 0 ; i < npcList.Count; i++) 

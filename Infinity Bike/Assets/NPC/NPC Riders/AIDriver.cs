@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AIDriver : Movement
-{   
+{
     [SerializeField]
     public AiSettings aiSettings = new AiSettings();
 
@@ -27,7 +27,7 @@ public class AIDriver : Movement
             trackNode.ClampIndex(ref waypointNodeID);
         }
     }
-    
+
     public float velocitySqr = 0;
     public float lastVelocitySqr = 0;
     private Vector3 nextWaypoint;
@@ -37,7 +37,7 @@ public class AIDriver : Movement
     public int lookAhead = 2;
 
     private float TargetAngle
-    {   
+    {
         get { return targetAngle; }
         set
         {
@@ -52,8 +52,8 @@ public class AIDriver : Movement
             { targetAngle = -maximumSteeringAngle; }
             frontWheel.steerAngle = targetAngle;
         }
-    }   
-    
+    }
+
     void Start()
     {
 
@@ -62,54 +62,55 @@ public class AIDriver : Movement
             if (item.name == "FrontWheel")
             {
                 frontWheel = item;
-            }   
+            }
             else if (item.name == "BackWheel")
             {
                 backWheel = item;
-            }   
+            }
 
         }
 
         MovementStart();
 
         pid = GetComponent<AiPid>();
-        pid.UpdateErrorValue += () => 
-        {   
-            pid.errorVariable = (aiSettings.targetSqrSpeed - velocitySqr)/ aiSettings.targetSqrSpeed;
-            
+        pid.UpdateErrorValue += () =>
+        {
+            pid.errorVariable = (aiSettings.targetSqrSpeed - velocitySqr) / aiSettings.targetSqrSpeed;
+
             float accel = (velocitySqr - lastVelocitySqr) / Time.deltaTime;
-            
+
             float val = (aiSettings.targetMaximumAcceleration - accel) / aiSettings.targetMaximumAcceleration * pid.errorVariable;
 
             pid.errorVariable += val;
 
 
-        };  
+        };
 
         aiSettings.SetRandomValues();
 
         timeAlive = 0;
         InitialiseRespawn();
-
+        respawn.CallRespawnAction();
     }
 
     void InitialiseRespawn()
     {
+        const int defaultRespawnNode = -1;
         respawn = GetComponent<Respawn>(); ;
-        waypointNodeID = -1;
-        respawn.AddLastToRespawnAction(()=> { motorTorque = 0; });
-        respawn.AddLastToRespawnAction(pid.ResetValues);
+        waypointNodeID = defaultRespawnNode;
+        respawn.AddLastToRespawnAction(() => { Go(0); });
         respawn.AddLastToRespawnAction(() => { Stop(breakForce); });
+        respawn.AddLastToRespawnAction(pid.ResetValues);
         respawn.AddLastToRespawnAction(() => { respawn.respawnNode = waypointNodeID - 1; });
         respawn.AddLastToRespawnAction(() => { timeAlive = 0; StartCoroutine(SetIdleOnATimer(2f)); });
         respawn.AddLastToRespawnAction(() => { respawn.RespawnObject(GetNextWayPoint(0), (GetNextWayPoint(0 + 1) - GetNextWayPoint(0)).normalized); });
-    }   
+    }
 
     private void Update()
-    {   
+    {
 
         timeAlive += Time.deltaTime * rb.velocity.magnitude;
-        
+
         lastVelocitySqr = velocitySqr;
         velocitySqr = Vector3.Dot(rb.velocity, transform.forward) * Mathf.Abs(Vector3.Dot(rb.velocity, transform.forward));
 
@@ -121,23 +122,23 @@ public class AIDriver : Movement
         Vector3 trackDirection = (trackNode.GetNode(waypointNodeID + 1) - trackNode.GetNode(waypointNodeID)).normalized;
         if (Vector3.Dot(trackDirection, transform.forward) < 0)
         { respawn.CallRespawnAction(); }
-        
+
         Vector3 nrml = Vector3.zero;
         GetNormal(out nrml);
 
         if (!IdleMode && isGrounded)
-        {   
+        {
             pid.RunPID();
 
-            motorTorque = Mathf.Lerp(motorTorque,pid.controlVariable,0.5f);
+            motorTorque = Mathf.Lerp(motorTorque, pid.controlVariable, 0.5f);
 
             if (motorTorque >= 0)
                 Go(motorTorque);
             else
                 Stop(0.1f);
-            
 
-        }   
+
+        }
 
         SetSteeringAngle();
 
@@ -145,8 +146,8 @@ public class AIDriver : Movement
 
         if (trackNode.isLoopOpen && ((waypointNodeID + 1) >= (trackNode.GetNodeCount())))
         { IdleMode = true; }
-    }   
-    
+    }
+
 
     protected override void EnterIdleMode()
     {
@@ -155,7 +156,6 @@ public class AIDriver : Movement
 
     protected override void ExitIdleMode()
     {
-
     }
 
     protected override void SetSteeringAngle()
@@ -166,19 +166,26 @@ public class AIDriver : Movement
         playerAnimatorScript.UpdateSteeringAngle(TargetAngle);
     }
 
+
+    private float CalculateTrajectoryOffset()
+    {
+        float offset = ((aiSettings.trajectoryOffset.amplitude * Mathf.Sin(aiSettings.trajectoryOffset.frequency * timeAlive + aiSettings.trajectoryOffset.timeOffSet)) + aiSettings.trajectoryOffset.transverseOffset);
+
+        return offset;
+    }
+
     private Vector3 GetNextWayPoint(int lookAhead)
     {   
         Vector3 targetPoint = trackNode.GetNode(waypointNodeID + lookAhead);
 
-        Vector3 normal = WheelNormal;
-        Vector3 forward = trackNode.GetNode(waypointNodeID + lookAhead) - trackNode.GetNode(waypointNodeID + lookAhead - 1);
+        Vector3 forward = targetPoint - trackNode.GetNode(waypointNodeID + lookAhead - 1);
 
-        if (!isGrounded)
-        { normal = Vector3.up; }
+        Vector3 normal = WheelNormal;
+        if (!isGrounded){ normal = Vector3.up; }
 
         Vector3 perpendicularDirection = Vector3.Cross(forward, normal).normalized;
 
-        float offset = ((aiSettings.trajectoryOffset.amplitude * Mathf.Sin(aiSettings.trajectoryOffset.frequency * timeAlive + aiSettings.trajectoryOffset.timeOffSet)) + aiSettings.trajectoryOffset.transverseOffset);
+        float offset = CalculateTrajectoryOffset();
         targetPoint += perpendicularDirection * offset;
 
         return targetPoint;
@@ -207,7 +214,7 @@ public class AIDriver : Movement
 
     void UpdateWaypointID()
     {
-        WaypointNodeID = Respawn.FindNearestNode(trackNode, transform);
+        WaypointNodeID = TrackNode.FindNearestNode(trackNode, transform);
     }
 
 }

@@ -21,7 +21,6 @@ public class TrackNode : ScriptableObject
         ClampIndex(ref indexAhead);
         nodeList.Insert(indexAhead, toadd);
     }
-
     private Vector3 FindLocationForPoint(Vector3 toCalculate)
     {
         RaycastHit hit;
@@ -34,7 +33,6 @@ public class TrackNode : ScriptableObject
         return toCalculate;
 
     }
-
     public void AddNode(Vector3 toadd)
     {
         nodeList.Add(FindLocationForPoint(toadd));
@@ -96,7 +94,29 @@ public class TrackNode : ScriptableObject
             }
         }
 
-    }   
+    }
+
+    static public int FindNearestNode(TrackNode respawnPoint, Transform objToRespawn)
+    {
+        float minDistance = float.MaxValue;
+        int minDistanceNode = 0;
+
+        for (int index = 0; index < respawnPoint.GetNodeCount(); index++)
+        {
+            Vector3 distance = objToRespawn.transform.position - respawnPoint.GetNode(index);
+            float sqrMagn = distance.sqrMagnitude;
+
+            if (sqrMagn < minDistance)
+            {
+                minDistance = sqrMagn;
+                minDistanceNode = index;
+            }
+        }
+
+        return minDistanceNode;
+    }
+
+
 }   
 
 [Serializable]
