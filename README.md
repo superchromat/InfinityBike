@@ -11,7 +11,7 @@ Rainy days and the Winter season can really disrupt a training program. Riders a
 will always make it a bit difficult to keep up the pace. This is why we decided to add a little bit on interactivity to our training program. The Infinity Bike set-up is designed to be a simple as possible
 while still allowing a rider to read the speed and steering from a bike mounted on any trainers and relay the information to the computer. 
 
-See the Youtube video: 
+See the Youtube video (for a deprecated version of Infinity Bike): 
 
 [![Link to youtube video](https://img.youtube.com/vi/j3q3ih8c10g/0.jpg)](https://www.youtube.com/watch?v=j3q3ih8c10g)
 
