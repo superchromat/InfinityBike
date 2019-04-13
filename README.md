@@ -77,7 +77,10 @@ More info on this device is available [here](https://github.com/AlexandreDoucet/
 #### Circuit
 
 <img src="/Ressources/Images/Circuit.png" width="500">
-
+[link](/Ressources/Electronics/AutodeskEagleProject/Infinity Bike/Readme.md) 
+<img src = "/Ressources/Electronics/AutodeskEagleProject/Infinity Bike/PCB.jpeg" width = 300 px> 
+<img src = "/Ressources/Electronics/AutodeskEagleProject/Infinity Bike/PCB_TurnTable.jpeg" width = 300 px> 
+<img src = "/Ressources/Electronics/AutodeskEagleProject/Infinity Bike/MagnetAndHall.jpeg" width = 300 px> 
 
 ## How to use?
 We published a short 
