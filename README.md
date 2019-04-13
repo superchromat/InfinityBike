@@ -3,13 +3,17 @@
   
 Welcome to the Infinity Bike repository. A simple and inexpensive indoors bike training video game with built-in sensors that allows the player to ride on a virtual track.
 
-Visit our new website! www.infinitybike.net
+Visit our website! www.infinitybike.net
 
 ## Why use Infinity Bike? 
 
 Rainy days and the Winter season can really disrupt a training program. Riders always have the option to mount their bike on a trainer but the monotony of trainers
 will always make it a bit difficult to keep up the pace. This is why we decided to add a little bit on interactivity to our training program. The Infinity Bike set-up is designed to be a simple as possible
 while still allowing a rider to read the speed and steering from a bike mounted on any trainers and relay the information to the computer. 
+
+<img src = "/Ressources/Images/Gameplay_V0/Menu.png" width="900">
+
+<img src = "/Ressources/Images/Gameplay_V0/Biking.png" width="900">
 
 See the Youtube video (for a deprecated version of Infinity Bike): 
 
@@ -65,15 +69,19 @@ You can use them as-is but make sure that the dimensions we used match your bike
 
 Please note that we are currently working on a better stearing measurement device. As seen in the picture above, it is based on a rotation platform placed under the bike wheel. 
 
-<img src="/Ressources/3DprintedParts STL V0.1/RotationPlatform/Screenshot.png" width = "300">
+<img src="/Ressources/3DprintedPartsSTLV0_0/RotationPlatform/ Screenshot.png" width = "300">
 
 More info on this device is available [here](https://github.com/AlexandreDoucet/InfinityBike/tree/master/Ressources/3DprintedParts%20STL%20V0.1/RotationPlatform).
 
 
 #### Circuit
+The following circuit can used for prototyping. 
 
 <img src="/Ressources/Images/Circuit.png" width="500">
 
+We are currently developping a permanent PCB design to get a more robust platform. The Eagle files of this PCB can be found in the [AutodeskEagleProject folder](https://github.com/AlexandreDoucet/InfinityBike/tree/master/Ressources/Electronics/AutodeskEagleProject/InfinityBike/Readme.md).
+
+<img src = "/Ressources/Electronics/AutodeskEagleProject/Infinity Bike/PCB.jpeg" width = 250 px> <img src = "/Ressources/Electronics/AutodeskEagleProject/Infinity Bike/PBC_TurnTable.jpeg" width = 250 px> <img src = "/Ressources/Electronics/AutodeskEagleProject/Infinity Bike/MagnetAndHall.jpeg" width = 250 px> 
 
 ## How to use?
 We published a short 
@@ -87,7 +95,7 @@ Please note that this tutorial is no longer up to date with the project and will
 ## How to contribute? 
 From now on, we use the [git branching model proposed by Vincent Driessen](https://nvie.com/posts/a-successful-git-branching-model/). 
 
-To add features to the project, please branch out of the develop branch. 
+To add features to the project, please branch out of the develop branch. The testing of pull request will be done with the 018.3.12f1 version of Unity. 
 
 
 ### Project structure 
