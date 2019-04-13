@@ -81,7 +81,7 @@ The following circuit can used for prototyping.
 
 We are currently developping a permanent PCB design to get a more robust platform. The Eagle files of this PCB can be found in the AutodeskEagleProject folder. 
 
-[link](/Ressources/Electronics/AutodeskEagleProject/Infinity Bike/Readme.md) 
+[link](https://github.com/AlexandreDoucet/InfinityBike/tree/master/Ressources/Electronics/AutodeskEagleProject/Infinity Bike/Readme.md) 
 
 <img src = "/Ressources/Electronics/AutodeskEagleProject/Infinity Bike/PCB.jpeg" width = 250 px> <img src = "/Ressources/Electronics/AutodeskEagleProject/Infinity Bike/PBC_TurnTable.jpeg" width = 250 px> <img src = "/Ressources/Electronics/AutodeskEagleProject/Infinity Bike/MagnetAndHall.jpeg" width = 250 px> 
 
