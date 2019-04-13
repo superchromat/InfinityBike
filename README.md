@@ -72,14 +72,27 @@ We published a short
 <a href="https://www.instructables.com/id/Infinity-Bike-Indoors-Bike-Training-Video-Game/">instructable</a> 
 tutorial that should provide enough information to get started with this project. 
 
-Building a more in-depth tutorial for potential contributors is on our To-do list.
+Please note that this tutorial is no longer up to date with the project and will need to be revisited. Building a more in-depth tutorial for potential contributors is on our To-do list.
 
 ** Because we used blender to generate the 3d models, you must have blender installed before opening the project. Otherwise some assets wont load properly.**
+
+## How to contribute? 
+From now on, we use the [git branching model proposed by Vincent Driessen](https://nvie.com/posts/a-successful-git-branching-model/). 
+
+To add features to the project, please branch out of the develop branch. 
+
+
+### Project structure 
+
+### Medium term goal 
+
+
 
 ## Credits
 ### Project contributors
 Alexandre Doucet (_Doucet_)</br>
 Maxime Boudreau (MxBoud)
+Alexis Nosovich 
 
 ### External ressources
 [The Unity game engine](https://unity3d.com)
