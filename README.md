@@ -49,10 +49,6 @@ The files we used are listed bellow and they're numbered with the same conventio
 You can use them as-is but make sure that the dimensions we used match your bike.
 <img src="/Ressources/Images/3DprintedParts/PartsLayout.png" width="900">
 
-Please note that we are currently working on a better stearing measurement device. As seen in the picture above, it is based on a rotation platform placed under the bike wheel. 
-<img src="/Ressources/Images/3DprintedParts STL V0.1/RotationPlatform/Screenshot.png" width = "900">
-More info on this device is available [here](https://github.com/AlexandreDoucet/InfinityBike/tree/master/Ressources/3DprintedParts%20STL%20V0.1/RotationPlatform).
-
 ##### Parts filename
 1. FrameConnection_PotentiometerHolder_U_Holder.stl
 2. FrameConnection_Spacer.stl
@@ -66,6 +62,13 @@ More info on this device is available [here](https://github.com/AlexandreDoucet/
 10. HallSensorAttach.stl
 ##### Assembled parts pictures
 <img src="/Ressources/Images/InstalledParts.png" width="900">
+
+Please note that we are currently working on a better stearing measurement device. As seen in the picture above, it is based on a rotation platform placed under the bike wheel. 
+
+<img src="/Ressources/3DprintedParts STL V0.1/RotationPlatform/Screenshot.png" width = "300">
+
+More info on this device is available [here](https://github.com/AlexandreDoucet/InfinityBike/tree/master/Ressources/3DprintedParts%20STL%20V0.1/RotationPlatform).
+
 
 #### Circuit
 
