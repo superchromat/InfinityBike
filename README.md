@@ -3,7 +3,7 @@
   
 Welcome to the Infinity Bike repository. A simple and inexpensive indoors bike training video game with built-in sensors that allows the player to ride on a virtual track.
 
-Visit our new website! www.infinitybike.net
+Visit our website! www.infinitybike.net
 
 ## Why use Infinity Bike? 
 
@@ -69,7 +69,7 @@ You can use them as-is but make sure that the dimensions we used match your bike
 
 Please note that we are currently working on a better stearing measurement device. As seen in the picture above, it is based on a rotation platform placed under the bike wheel. 
 
-<img src="/Ressources/3DprintedPartsSTLV0.1/RotationPlatform/Screenshot.png" width = "300">
+<img src="/Ressources/3DprintedPartsSTLV0_0/RotationPlatform/Screenshot.png" width = "300">
 
 More info on this device is available [here](https://github.com/AlexandreDoucet/InfinityBike/tree/master/Ressources/3DprintedParts%20STL%20V0.1/RotationPlatform).
 
