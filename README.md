@@ -96,14 +96,14 @@ To add features to the project, please branch out of the develop branch. The tes
 
 ### Project structure 
 
-### Medium term goall 
+### Medium term goals 
 
 
 
 ## Credits
 ### Project contributors
 Alexandre Doucet (_Doucet_)</br>
-Maxime Boudreau (MxBoud)
+Maxime Boudreau (MxBoud)</br>
 Alexis Nosovich 
 
 ### External ressources
